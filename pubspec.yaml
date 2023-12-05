@@ -1,0 +1,35 @@
+name: gsl
+version: 1.0.0+1
+publish_to: none
+description: skripsi
+environment: 
+  sdk: '>=3.2.2 <4.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  get: 4.6.6
+  flutter_dotenv: ^5.0.2
+  supabase_flutter: 1.2.2
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^2.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
+  uses-material-design: true
+
+  assets:
+    - .env
+    - images/gsl_logo.png
+    - images/logo_gsl.jpg
+    - images/logo_gsl.png
+    - images/logo_gsl_new.png
+    - images/logo_gsl_crop.png
+    - images/owner_icon.png
+    - images/karyawan_icon.png
+    - images/pelanggan_icon.png
+    - images/bg_logo.png
+
