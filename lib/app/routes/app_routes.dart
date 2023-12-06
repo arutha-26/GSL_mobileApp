@@ -8,6 +8,8 @@ abstract class Routes {
   static const SPLASHSCREEN = _Paths.SPLASHSCREEN;
   static const KARYAWANLOGIN = _Paths.KARYAWANLOGIN;
   static const OWNERHOME = _Paths.OWNERHOME;
+  static const OWNERPROFILE = _Paths.OWNERPROFILE;
+  static const ADDDATAKARYAWAN = _Paths.ADDDATAKARYAWAN;
 }
 
 abstract class _Paths {
@@ -17,4 +19,6 @@ abstract class _Paths {
   static const SPLASHSCREEN = '/splashscreen';
   static const KARYAWANLOGIN = '/karyawanlogin';
   static const OWNERHOME = '/ownerhome';
+  static const OWNERPROFILE = '/ownerprofile';
+  static const ADDDATAKARYAWAN = '/adddatakaryawan';
 }

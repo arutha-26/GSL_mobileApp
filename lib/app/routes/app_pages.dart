@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/adddatakaryawan/bindings/adddatakaryawan_binding.dart';
+import '../modules/adddatakaryawan/views/adddatakaryawan_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
@@ -8,6 +10,8 @@ import '../modules/ownerhome/bindings/ownerhome_binding.dart';
 import '../modules/ownerhome/views/ownerhome_view.dart';
 import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
 import '../modules/ownerlogin/views/ownerlogin_view.dart';
+import '../modules/ownerprofile/bindings/ownerprofile_binding.dart';
+import '../modules/ownerprofile/views/ownerprofile_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
 
@@ -41,8 +45,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OWNERHOME,
-      page: () => const OwnerhomeView(),
+      page: () => OwnerhomeView(),
       binding: OwnerhomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.OWNERPROFILE,
+      page: () => OwnerprofileView(),
+      binding: OwnerprofileBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDDATAKARYAWAN,
+      page: () => AdddatakaryawanView(),
+      binding: AdddatakaryawanBinding(),
     ),
   ];
 }

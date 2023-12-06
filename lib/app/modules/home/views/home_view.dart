@@ -25,7 +25,6 @@ class HomeView extends GetView<HomeController> {
                 onPressed: () {
                   // Initialize the controller before navigating to OwnerloginView
                   Get.put(OwnerloginController());
-
                   // Now navigate to OwnerloginView
                   Get.to(() => OwnerloginView());
                 },

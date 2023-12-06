@@ -12,7 +12,7 @@ class AuthController extends GetxController {
       authTimer!.cancel();
     }
 
-    authTimer = Timer(const Duration(seconds: 3600), () async {
+    authTimer = Timer(const Duration(seconds: 90000), () async {
       await client.auth.signOut();
       Get.offAllNamed(Routes.HOME);
     }); // after login will run auto logout after 1 hours
