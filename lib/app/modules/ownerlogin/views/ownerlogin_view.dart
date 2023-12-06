@@ -62,7 +62,7 @@ class OwnerloginView extends GetView<OwnerloginController> {
                     bool? cekAutoLogout = await controller.login();
                     if (cekAutoLogout != null && cekAutoLogout == true) {
                       await authC.autoLogout();
-                      Get.offAllNamed(Routes.HOME);
+                      Get.offAllNamed(Routes.OWNERHOME);
                     }
                   }
                 },

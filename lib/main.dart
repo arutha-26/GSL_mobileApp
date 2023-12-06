@@ -20,7 +20,9 @@ void main() async {
     GetMaterialApp(
       title: "Application",
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.SPLASHSCREEN,
+      initialRoute: supaProvider.client.auth.currentUser == null
+          ? Routes.SPLASHSCREEN
+          : Routes.HOME, //cek login current user
       getPages: AppPages.routes,
       onReady: () async {
         // Introduce a delay of 2 seconds before navigating to the home screen

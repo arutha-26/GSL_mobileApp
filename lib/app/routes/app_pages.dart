@@ -4,6 +4,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
 import '../modules/karyawanlogin/views/karyawanlogin_view.dart';
+import '../modules/ownerhome/bindings/ownerhome_binding.dart';
+import '../modules/ownerhome/views/ownerhome_view.dart';
 import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
 import '../modules/ownerlogin/views/ownerlogin_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.KARYAWANLOGIN,
       page: () => KaryawanloginView(),
       binding: KaryawanloginBinding(),
+    ),
+    GetPage(
+      name: _Paths.OWNERHOME,
+      page: () => const OwnerhomeView(),
+      binding: OwnerhomeBinding(),
     ),
   ];
 }
