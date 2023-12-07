@@ -4,53 +4,44 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class KaryawanloginController extends GetxController {
-  //TODO: Implement KaryawanloginController
 
-  final count = 0.obs;
+  OwnerloginController() {
+    print('KaryawanloginController initialized');
+  }
+
   @override
   void onInit() {
+    print('KaryawanloginController onInit called');
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
-  TextEditingController phone = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController emailC = TextEditingController();
+  TextEditingController passwordC = TextEditingController();
 
   SupabaseClient client = Supabase.instance.client;
 
   Future<bool?> login() async {
-    if (phone.text.isNotEmpty && password.text.isNotEmpty) {
+    if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       isLoading.value = true;
       try {
-        await client.auth.signInWithPassword(phone: phone.text, password: password.text);
+        await client.auth
+            .signInWithPassword(email: emailC.text, password: passwordC.text);
         isLoading.value = false;
         Get.defaultDialog(
-          barrierDismissible: false,
-          title: "Login success",
-          middleText: "Will be redirected to Home Page",
-          backgroundColor: Colors.green,
-        );
+            barrierDismissible: false,
+            title: "Login success",
+            middleText: "Will be redirect to Home Page",
+            backgroundColor: Colors.green);
         return true;
       } catch (e) {
         isLoading.value = false;
         Get.snackbar("ERROR", e.toString());
       }
     } else {
-      Get.snackbar("ERROR", "Phone and password are required");
+      Get.snackbar("ERROR", "Email and password are required");
     }
     return null;
   }
 }
-

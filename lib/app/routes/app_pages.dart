@@ -2,10 +2,16 @@ import 'package:get/get.dart';
 
 import '../modules/adddatakaryawan/bindings/adddatakaryawan_binding.dart';
 import '../modules/adddatakaryawan/views/adddatakaryawan_view.dart';
+import '../modules/adddatapelanggan/bindings/adddatapelanggan_binding.dart';
+import '../modules/adddatapelanggan/views/adddatapelanggan_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
+import '../modules/karyawanhome/views/karyawanhome_view.dart';
 import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
 import '../modules/karyawanlogin/views/karyawanlogin_view.dart';
+import '../modules/karyawanprofile/bindings/karyawanprofile_binding.dart';
+import '../modules/karyawanprofile/views/karyawanprofile_view.dart';
 import '../modules/ownerhome/bindings/ownerhome_binding.dart';
 import '../modules/ownerhome/views/ownerhome_view.dart';
 import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
@@ -20,7 +26,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.SPLASHSCREEN;
 
   static final routes = [
     GetPage(
@@ -57,6 +63,21 @@ class AppPages {
       name: _Paths.ADDDATAKARYAWAN,
       page: () => AdddatakaryawanView(),
       binding: AdddatakaryawanBinding(),
+    ),
+    GetPage(
+      name: _Paths.KARYAWANHOME,
+      page: () => KaryawanhomeView(),
+      binding: KaryawanhomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.KARYAWANPROFILE,
+      page: () => KaryawanprofileView(),
+      binding: KaryawanprofileBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDDATAPELANGGAN,
+      page: () =>  AdddatapelangganView(),
+      binding: AdddatapelangganBinding(),
     ),
   ];
 }

@@ -16,7 +16,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          title: const Text('Profile Owner'),
           centerTitle: true,
           actions: [
             TextButton(

@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:gsl/app/modules/ownerhome/controllers/ownerhome_controller.dart';
-
-import '../../home/controllers/home_controller.dart';
 import '../controllers/adddatakaryawan_controller.dart';
 
-// TODO: TAMBAHIN TEXT FIELD UNTUK NAMA, NO HP COBA ADD DATA SAMA TAMPILIN
-
 class AdddatakaryawanView extends GetView<AdddatakaryawanController> {
-
-  OwnerhomeController homeC = Get.find(); // get controller from another controller
 
   AdddatakaryawanView({Key? key}) : super(key: key);
   @override
@@ -21,41 +14,74 @@ class AdddatakaryawanView extends GetView<AdddatakaryawanController> {
         centerTitle: true,
       ),
         body: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(10),
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             TextField(
-              controller: controller.titleC,
+              autocorrect: false,
+              controller: controller.nameC,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 labelText: "Nama",
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(
-              height: 25,
+              height: 20,
             ),
             TextField(
-              controller: controller.descC,
+              autocorrect: false,
+              controller: controller.emailC,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
-                labelText: "No HP",
+                labelText: "Email",
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
+            TextField(
+              autocorrect: false,
+              controller: controller.nohpC,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: "No Hp",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Obx(() => TextField(
+              autocorrect: false,
+              controller: controller.passwordC,
+              textInputAction: TextInputAction.done,
+              obscureText: controller.isHidden.value,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                    onPressed: () => controller.isHidden.toggle(),
+                    icon: controller.isHidden.isTrue
+                        ? const Icon(Icons.remove_red_eye)
+                        : const Icon(Icons.remove_red_eye_outlined)),
+                labelText: "Password",
+                border: const OutlineInputBorder(),
+              ),
+            )),
+            const SizedBox(
+              height: 30,
+            ),
             Obx(() => ElevatedButton(
-                onPressed: () async {
-                  if (controller.isLoading.isFalse) {
-                    bool res = await controller.addNote();
-                    if (res == true) {
-                      await homeC.getAllKaryawan();
-                      Get.back();
-                    }
-                    controller.isLoading.value = false;
-                  }
-                },
-                child: Text(
-                    controller.isLoading.isFalse ? "Tambah Data Karyawan" : "Loading...")))
+              onPressed: () {
+                if (controller.isLoading.isFalse) {
+                  controller.signUp();
+                }
+              },
+              child: Text(
+                  controller.isLoading.isFalse ? "Tambah Data" : "Loading..."),
+            )),
           ],
         ));
   }

@@ -10,6 +10,9 @@ abstract class Routes {
   static const OWNERHOME = _Paths.OWNERHOME;
   static const OWNERPROFILE = _Paths.OWNERPROFILE;
   static const ADDDATAKARYAWAN = _Paths.ADDDATAKARYAWAN;
+  static const KARYAWANHOME = _Paths.KARYAWANHOME;
+  static const KARYAWANPROFILE = _Paths.KARYAWANPROFILE;
+  static const ADDDATAPELANGGAN = _Paths.ADDDATAPELANGGAN;
 }
 
 abstract class _Paths {
@@ -21,4 +24,7 @@ abstract class _Paths {
   static const OWNERHOME = '/ownerhome';
   static const OWNERPROFILE = '/ownerprofile';
   static const ADDDATAKARYAWAN = '/adddatakaryawan';
+  static const KARYAWANHOME = '/karyawanhome';
+  static const KARYAWANPROFILE = '/karyawanprofile';
+  static const ADDDATAPELANGGAN = '/adddatapelanggan';
 }

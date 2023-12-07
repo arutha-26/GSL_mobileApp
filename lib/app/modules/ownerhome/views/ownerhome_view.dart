@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gsl/app/modules/adddatakaryawan/controllers/adddatakaryawan_controller.dart';
 import 'package:gsl/app/modules/adddatakaryawan/views/adddatakaryawan_view.dart';
+import 'package:gsl/app/modules/adddatapelanggan/controllers/adddatapelanggan_controller.dart';
+import 'package:gsl/app/modules/adddatapelanggan/views/adddatapelanggan_view.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../controllers/ownerhome_controller.dart';
@@ -13,7 +15,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Green Spirit Laundry'),
+        title: const Text('Owner Green Spirit Laundry'),
         centerTitle: true,
       ),
       body: Center(
@@ -39,8 +41,8 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddatakaryawanController());
-                  Get.to(() => AdddatakaryawanView());
+                  Get.put(AdddatapelangganController());
+                  Get.to(() => AdddatapelangganView());
                 },
                 icon: Icon(Icons.add),
                 label: Text('Tambah Data Pelanggan'),

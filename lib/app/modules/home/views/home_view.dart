@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:gsl/app/modules/karyawanlogin/controllers/karyawanlogin_controller.dart';
 import 'package:gsl/app/modules/karyawanlogin/views/karyawanlogin_view.dart';
 import 'package:gsl/app/modules/ownerlogin/views/ownerlogin_view.dart';
 import '../../ownerlogin/controllers/ownerlogin_controller.dart';
@@ -51,6 +52,7 @@ class HomeView extends GetView<HomeController> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
+                  Get.put(KaryawanloginController());
                   Get.to(() => KaryawanloginView());
                 },
                 style: ElevatedButton.styleFrom(

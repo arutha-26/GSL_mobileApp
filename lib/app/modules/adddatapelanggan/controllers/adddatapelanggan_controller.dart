@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AdddatakaryawanController extends GetxController {
+class AdddatapelangganController extends GetxController {
 
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
@@ -54,4 +53,16 @@ class AdddatakaryawanController extends GetxController {
       Get.snackbar("ERROR", "Email, password, nama, and No HP Harus isi");
     }
   }
+
+  RxString selectedKategori = "".obs;
+  List<String> kategoriOptions = ["Option 1", "Option 2", "Option 3"];
+
+  String getSelectedKategori() {
+    return selectedKategori.value;
+  }
+
+  void setSelectedKategori(String? value) {
+    selectedKategori.value = value ?? "individual";
+  }
+
 }
