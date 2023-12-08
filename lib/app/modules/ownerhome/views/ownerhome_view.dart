@@ -61,9 +61,23 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 label: Text('Tambah Data Transaksi'),
               ),
             ),
+            const SizedBox(height: 15),
+            Container(
+              width: 350,
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Get.put(AdddatakaryawanController());
+                  Get.to(() => AdddatakaryawanView());
+                },
+                icon: Icon(Icons.add),
+                label: Text('Lihat Data Pelanggan'),
+              ),
+            ),
           ],
         ),
       ),
+
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
         onTap: (index) {

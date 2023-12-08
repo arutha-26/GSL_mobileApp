@@ -4,6 +4,8 @@ import '../modules/adddatakaryawan/bindings/adddatakaryawan_binding.dart';
 import '../modules/adddatakaryawan/views/adddatakaryawan_view.dart';
 import '../modules/adddatapelanggan/bindings/adddatapelanggan_binding.dart';
 import '../modules/adddatapelanggan/views/adddatapelanggan_view.dart';
+import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
+import '../modules/datapelanggan/views/datapelanggan_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
@@ -76,8 +78,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADDDATAPELANGGAN,
-      page: () =>  AdddatapelangganView(),
+      page: () => AdddatapelangganView(),
       binding: AdddatapelangganBinding(),
+    ),
+    GetPage(
+      name: _Paths.DATAPELANGGAN,
+      page: () => const DatapelangganView(),
+      binding: DatapelangganBinding(),
     ),
   ];
 }
