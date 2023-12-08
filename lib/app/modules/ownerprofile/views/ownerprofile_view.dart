@@ -59,7 +59,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                     controller: controller.nameC2,
                     textInputAction: TextInputAction.done,
                     decoration: const InputDecoration(
-                      labelText: "Name",
+                      labelText: "Nama",
                       border: OutlineInputBorder(),
                     ),
                   ),

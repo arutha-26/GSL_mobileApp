@@ -61,7 +61,7 @@ class AdddatapelangganView extends GetView<AdddatapelangganController> {
           ),
           TextField(
             autocorrect: false,
-            controller: controller.nohpC,
+            controller: controller.alamatC,
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
               labelText: "Alamat Pelanggan",
@@ -69,57 +69,57 @@ class AdddatapelangganView extends GetView<AdddatapelangganController> {
             ),
           ),
           const SizedBox(
-            height: 20,),
-          // ), DropdownButton(items: items, onChanged: onChanged)
-          // DropdownSearch<String>(
-          //   popupProps: PopupProps.menu(
-          //     constraints: BoxConstraints(maxHeight: 170),
-          //     showSelectedItems: true,
-          //     disabledItemFn: (String s) => s.startsWith('a'),
-          //   ),
-          //   items: ["Individual", "Hotel", "Villa"],
-          //   dropdownDecoratorProps: const DropDownDecoratorProps(
-          //     dropdownSearchDecoration: InputDecoration(
-          //       labelText: "Kategori Pelanggan",
-          //       border: OutlineInputBorder(),
-          //       // hintText: "country in menu mode",
-          //     ),
-          //   ),
-          //   onChanged: print,
-          //   // selectedItem: "Individual",
-          // ),
+            height: 20,
+          ),
+          DropdownSearch<String>(
+            popupProps: const PopupProps.menu(
+              constraints: BoxConstraints(maxHeight: 170),
+              showSelectedItems: true,
+            ),
+            items: ["Individual", "Hotel", "Villa"],
+            dropdownDecoratorProps: const DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+                labelText: "Kategori Pelanggan",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            onChanged: (String? value) {
+              controller.setSelectedKategori(value);
+            },
+            // selectedItem: "Individual",
+          ),
           const SizedBox(
             height: 20,
           ),
           Obx(() => TextField(
-            autocorrect: false,
-            controller: controller.passwordC,
-            textInputAction: TextInputAction.done,
-            obscureText: controller.isHidden.value,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: () => controller.isHidden.toggle(),
-                icon: controller.isHidden.isTrue
-                    ? const Icon(Icons.remove_red_eye)
-                    : const Icon(Icons.remove_red_eye_outlined),
-              ),
-              labelText: "Password",
-              border: const OutlineInputBorder(),
-            ),
-          )),
+                autocorrect: false,
+                controller: controller.passwordC,
+                textInputAction: TextInputAction.done,
+                obscureText: controller.isHidden.value,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    onPressed: () => controller.isHidden.toggle(),
+                    icon: controller.isHidden.isTrue
+                        ? const Icon(Icons.remove_red_eye)
+                        : const Icon(Icons.remove_red_eye_outlined),
+                  ),
+                  labelText: "Password",
+                  border: const OutlineInputBorder(),
+                ),
+              )),
           const SizedBox(
             height: 30,
           ),
           Obx(() => ElevatedButton(
-            onPressed: () {
-              if (controller.isLoading.isFalse) {
-                controller.signUp();
-              }
-            },
-            child: Text(
-              controller.isLoading.isFalse ? "Tambah Data" : "Loading...",
-            ),
-          )),
+                onPressed: () {
+                  if (controller.isLoading.isFalse) {
+                    controller.signUp();
+                  }
+                },
+                child: Text(
+                  controller.isLoading.isFalse ? "Tambah Data" : "Loading...",
+                ),
+              )),
         ],
       ),
     );

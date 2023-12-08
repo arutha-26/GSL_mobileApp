@@ -58,7 +58,7 @@ class KaryawanprofileView extends GetView<KaryawanprofileController> {
                   controller: controller.nameC2,
                   textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
-                    labelText: "Name",
+                    labelText: "Nama",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -70,7 +70,7 @@ class KaryawanprofileView extends GetView<KaryawanprofileController> {
                   controller: controller.passwordC,
                   textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
-                    labelText: "New password",
+                    labelText: "Password Baru",
                     border: OutlineInputBorder(),
                   ),
                 ),

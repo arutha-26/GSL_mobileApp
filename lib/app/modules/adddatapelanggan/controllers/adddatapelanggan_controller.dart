@@ -9,7 +9,11 @@ class AdddatapelangganController extends GetxController {
   TextEditingController nameC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController nohpC = TextEditingController();
+
   TextEditingController passwordC = TextEditingController();
+
+  TextEditingController alamatC = TextEditingController();
+
 
   SupabaseClient client = Supabase.instance.client;
 
@@ -17,6 +21,7 @@ class AdddatapelangganController extends GetxController {
     if (emailC.text.isNotEmpty &&
         passwordC.text.isNotEmpty &&
         nameC.text.isNotEmpty &&
+        alamatC.text.isNotEmpty &&
         nohpC.text.isNotEmpty) {
       isLoading.value = true;
       try {
@@ -25,17 +30,19 @@ class AdddatapelangganController extends GetxController {
         isLoading.value = false;
 
         // insert registered user to table users
-        await client.from("karyawan").insert({
-          "nama_karyawan": nameC.text,
+        await client.from("pelanggan").insert({
+          "nama_pelanggan": nameC.text,
           "email": emailC.text,
-          "no_hp": emailC.text,
+          "no_hp": nohpC.text,
+          "alamat": alamatC.text,
+          "kategori_pelanggan": getSelectedKategori(),
           "created_at": DateTime.now().toIso8601String(),
           "uid": res.user!.id,
         });
 
         Get.defaultDialog(
             barrierDismissible: false,
-            title: "Tambah Data Karyawan Berhasil",
+            title: "Tambah Data Pelanggan Berhasil",
             middleText: "Lakukan konfirmasi Email: ${res.user!.email}",
             actions: [
               OutlinedButton(
@@ -50,19 +57,19 @@ class AdddatapelangganController extends GetxController {
         Get.snackbar("ERROR", e.toString());
       }
     } else {
-      Get.snackbar("ERROR", "Email, password, nama, and No HP Harus isi");
+      Get.snackbar("ERROR", "Seluruh data harus terisi!");
     }
   }
 
   RxString selectedKategori = "".obs;
-  List<String> kategoriOptions = ["Option 1", "Option 2", "Option 3"];
+  List<String> kategoriOptions = ["Individual", "Hotel", "Villa"];
 
   String getSelectedKategori() {
     return selectedKategori.value;
   }
 
   void setSelectedKategori(String? value) {
-    selectedKategori.value = value ?? "individual";
+    selectedKategori.value = value ?? "Individual";
   }
 
 }

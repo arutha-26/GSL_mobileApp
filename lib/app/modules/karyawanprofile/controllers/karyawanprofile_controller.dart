@@ -21,20 +21,20 @@ class KaryawanprofileController extends GetxController {
 
   Future<void> getProfile() async {
     List<dynamic> res = await client
-        .from("users")
+        .from("karyawan")
         .select()
         .match({"uid": client.auth.currentUser!.id});
     Map<String, dynamic> user = (res).first as Map<String, dynamic>;
-    nameC.text = user["name"];
-    nameC2.text = user["name"];
+    nameC.text = user["nama_karyawan"];
+    nameC2.text = user["nama_karyawan"];
     emailC.text = user["email"];
   }
 
   Future<void> updateProfile() async {
     if (nameC2.text.isNotEmpty) {
       isLoading.value = true;
-      await client.from("users").update({
-        "name": nameC2.text,
+      await client.from("karyawan").update({
+        "nama_karyawan": nameC2.text,
       }).match({"uid": client.auth.currentUser!.id});
       // if user want to update password
       if (passwordC.text.isNotEmpty) {
@@ -52,8 +52,8 @@ class KaryawanprofileController extends GetxController {
       }
       Get.defaultDialog(
           barrierDismissible: false,
-          title: "Update Profile success",
-          middleText: "Name or Password will be updated",
+          title: "Update Profile sukses",
+          middleText: "Nama dan password berhasil diupdate",
           actions: [
             OutlinedButton(
                 onPressed: () {
