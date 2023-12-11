@@ -14,6 +14,8 @@ import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
 import '../modules/karyawanlogin/views/karyawanlogin_view.dart';
 import '../modules/karyawanprofile/bindings/karyawanprofile_binding.dart';
 import '../modules/karyawanprofile/views/karyawanprofile_view.dart';
+import '../modules/loginpage/bindings/loginpage_binding.dart';
+import '../modules/loginpage/views/loginpage_view.dart';
 import '../modules/ownerhome/bindings/ownerhome_binding.dart';
 import '../modules/ownerhome/views/ownerhome_view.dart';
 import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.DATAPELANGGAN,
       page: () => DatapelangganView(),
       binding: DatapelangganBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGINPAGE,
+      page: () => const LoginpageView(),
+      binding: LoginpageBinding(),
     ),
   ];
 }

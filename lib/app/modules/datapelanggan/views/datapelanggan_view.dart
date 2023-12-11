@@ -1,3 +1,4 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,77 +19,56 @@ class DatapelangganView extends GetView<DatapelangganController> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-          future: controller.getProfile(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView(
-              padding: const EdgeInsets.all(10),
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Text(
-                    controller.emailC.text,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  autocorrect: false,
-                  controller: controller.nameC2,
-                  textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                    labelText: "Nama",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  autocorrect: false,
-                  controller: controller.passwordC,
-                  textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                    labelText: "Password Baru",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Obx(() => ElevatedButton(
-                  onPressed: () async {
-                    if (controller.isLoading.isFalse) {
-                      if (controller.nameC.text == controller.nameC2.text &&
-                          controller.passwordC.text.isEmpty) {
-                        // Check if user have same name and not want to change password but they click the button
-                        Get.snackbar("Info", "There is no data to update",
-                            borderWidth: 1, borderColor: Colors.white, barBlur: 100);
-                        return;
-                      }
-                      await controller.updateProfile();
-                      if (controller.passwordC.text.isNotEmpty &&
-                          controller.passwordC.text.length >= 6) {
-                        await controller.logout();
-                        await authC.resetTimer();
-                        Get.offAllNamed(Routes.HOME);
-                      }
-                    }
-                  },
-                  child: Text(
-                      controller.isLoading.isFalse ? "UPDATE PROFILE" : "Loading..."),
-                )),
-              ],
+        future: controller.fetchData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          }),
+          }
+
+          if (snapshot.hasError) {
+            print('Error: ${snapshot.error}');
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+
+          if (controller.data.isEmpty) {
+            print('No data available.');
+            return const Center(
+              child: Text('No data available.'),
+            );
+          }
+
+          print('Fetched data: ${controller.data}');
+
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              width: 350, // Adjust the width as needed
+              child: DataTable2(
+                columns: [
+                  for (var key in controller.data[0].keys)
+                    DataColumn2(
+                      label: Text(key),
+                      size: ColumnSize.L,
+                    ),
+                ],
+                rows: [
+                  for (var map in controller.data)
+                    DataRow(
+                      cells: [
+                        for (var value in map.values.toList())
+                          DataCell(Text('$value')),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 2,
         onTap: (index) {

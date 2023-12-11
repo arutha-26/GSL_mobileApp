@@ -8,62 +8,31 @@ import '../../../routes/app_pages.dart';
 class DatapelangganController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
-  TextEditingController nameC = TextEditingController();
-  TextEditingController nameC2 = TextEditingController();
-  TextEditingController emailC = TextEditingController();
-  TextEditingController passwordC = TextEditingController();
 
   SupabaseClient client = Supabase.instance.client;
 
-  Future<void> logout() async {
-    await client.auth.signOut();
-    Get.offAllNamed(Routes.HOME);
-  }
+  RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
 
-  Future<void> getProfile() async {
-    List<dynamic> res = await client
-        .from("karyawan")
-        .select()
-        .match({"uid": client.auth.currentUser!.id});
-    Map<String, dynamic> user = (res).first as Map<String, dynamic>;
-    nameC.text = user["nama_karyawan"];
-    nameC2.text = user["nama_karyawan"];
-    emailC.text = user["email"];
-  }
+  Future<void> fetchData() async {
+    try {
+      final response = await client.from('pelanggan').select('nama_pelanggan, kategori_pelanggan');
 
-  Future<void> updateProfile() async {
-    if (nameC2.text.isNotEmpty) {
-      isLoading.value = true;
-      await client.from("karyawan").update({
-        "nama_karyawan": nameC2.text,
-      }).match({"uid": client.auth.currentUser!.id});
-      // if user want to update password
-      if (passwordC.text.isNotEmpty) {
-        if (passwordC.text.length >= 6) {
-          try {
-            await client.auth.updateUser(UserAttributes(
-              password: passwordC.text,
-            ));
-          } catch (e) {
-            Get.snackbar("ERROR", e.toString());
-          }
-        } else {
-          Get.snackbar("ERROR", "Password must be longer than 6 characters");
-        }
+      if (response != null && response is List) {
+        // Convert each item in the list to a Map<String, dynamic>
+        data.value = response.map((item) => item as Map<String, dynamic>).toList();
+        print('Fetched data: $data');
+      } else {
+        print('Error: Invalid data format');
       }
-      Get.defaultDialog(
-          barrierDismissible: false,
-          title: "Update Profile sukses",
-          middleText: "Nama dan password berhasil diupdate",
-          actions: [
-            OutlinedButton(
-                onPressed: () {
-                  Get.back(); //close dialog
-                  Get.back(); //back to login page
-                },
-                child: const Text("OK"))
-          ]);
-      isLoading.value = false;
+    } catch (error) {
+      // Handle other exceptions
+      print('Error: $error');
     }
   }
+
+
+
+
+
 }
+
