@@ -6,6 +6,8 @@ import 'package:gsl/app/modules/adddatapelanggan/controllers/adddatapelanggan_co
 import 'package:gsl/app/modules/adddatapelanggan/views/adddatapelanggan_view.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
+import '../../adddata/controllers/adddata_controller.dart';
+import '../../adddata/views/adddata_view.dart';
 import '../../datapelanggan/controllers/datapelanggan_controller.dart';
 import '../../datapelanggan/views/datapelanggan_view.dart';
 import '../controllers/ownerhome_controller.dart';
@@ -56,8 +58,8 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddatakaryawanController());
-                  Get.to(() => AdddatakaryawanView());
+                  Get.put(AdddataController());
+                  Get.to(() => AdddataView());
                 },
                 icon: Icon(Icons.add),
                 label: Text('Tambah Data Transaksi'),

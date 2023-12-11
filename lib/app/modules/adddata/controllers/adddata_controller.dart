@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AdddatapelangganController extends GetxController {
+import '../../../routes/app_pages.dart';
 
+class AdddataController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
   TextEditingController nameC = TextEditingController();
@@ -30,24 +31,26 @@ class AdddatapelangganController extends GetxController {
         isLoading.value = false;
 
         // insert registered user to table users
-        await client.from("pelanggan").insert({
-          "nama_pelanggan": nameC.text,
-          "email": emailC.text,
-          "no_hp": nohpC.text,
-          "alamat": alamatC.text,
-          "kategori_pelanggan": getSelectedKategori(),
-          "created_at": DateTime.now().toIso8601String(),
+        await client.from("user").insert({
           "uid": res.user!.id,
+          "email": emailC.text,
+          "nama": nameC.text,
+          "role": getSelectedRole(),
+          "alamat": alamatC.text,
+          "phone": nohpC.text,
+          "kategori": getSelectedKategori(),
+          "created_at": DateTime.now().toIso8601String(),
         });
 
         Get.defaultDialog(
             barrierDismissible: false,
-            title: "Tambah Data Pelanggan Berhasil",
-            middleText: "Lakukan konfirmasi Email: ${res.user!.email}",
+            title: "Tambah Data Pengguna Berhasil",
+            // middleText: "Lakukan konfirmasi Email: ${res.user!.email}",
             actions: [
               OutlinedButton(
                   onPressed: () {
                     Get.back(); //close dialog
+                    Get.offAllNamed(Routes.OWNERHOME);
                   },
                   child: const Text("OK"))
             ]);
@@ -58,17 +61,29 @@ class AdddatapelangganController extends GetxController {
     } else {
       Get.snackbar("ERROR", "Seluruh data harus terisi!");
     }
+    refresh();
   }
 
   RxString selectedKategori = "".obs;
-  List<String> kategoriOptions = ["Individual", "Hotel", "Villa"];
+  List<String> kategoriOptions = ["-","Individual", "Hotel", "Villa"];
 
   String getSelectedKategori() {
     return selectedKategori.value;
   }
 
   void setSelectedKategori(String? value) {
-    selectedKategori.value = value ?? "Individual";
+    selectedKategori.value = value ?? "-";
+  }
+
+  RxString selectedRole = "".obs;
+  List<String> roleOptions = ["Owner", "Karyawan", "Pelanggan"];
+
+  String getSelectedRole() {
+    return selectedRole.value;
+  }
+
+  void setSelectedRole(String? value) {
+    selectedRole.value = value ?? "-";
   }
 
 }

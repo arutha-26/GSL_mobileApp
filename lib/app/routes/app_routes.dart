@@ -15,6 +15,7 @@ abstract class Routes {
   static const ADDDATAPELANGGAN = _Paths.ADDDATAPELANGGAN;
   static const DATAPELANGGAN = _Paths.DATAPELANGGAN;
   static const LOGINPAGE = _Paths.LOGINPAGE;
+  static const ADDDATA = _Paths.ADDDATA;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const ADDDATAPELANGGAN = '/adddatapelanggan';
   static const DATAPELANGGAN = '/datapelanggan';
   static const LOGINPAGE = '/loginpage';
+  static const ADDDATA = '/adddata';
 }

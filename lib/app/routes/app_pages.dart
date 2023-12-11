@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/adddata/bindings/adddata_binding.dart';
+import '../modules/adddata/views/adddata_view.dart';
 import '../modules/adddatakaryawan/bindings/adddatakaryawan_binding.dart';
 import '../modules/adddatakaryawan/views/adddatakaryawan_view.dart';
 import '../modules/adddatapelanggan/bindings/adddatapelanggan_binding.dart';
@@ -30,7 +32,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.LOGINPAGE;
 
   static final routes = [
     GetPage(
@@ -90,8 +92,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LOGINPAGE,
-      page: () => const LoginpageView(),
+      page: () => LoginpageView(),
       binding: LoginpageBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDDATA,
+      page: () => AdddataView(),
+      binding: AdddataBinding(),
     ),
   ];
 }
