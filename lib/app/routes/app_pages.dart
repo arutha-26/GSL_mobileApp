@@ -28,7 +28,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASHSCREEN;
+  static const INITIAL = Routes.HOME;
 
   static final routes = [
     GetPage(
@@ -83,7 +83,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DATAPELANGGAN,
-      page: () => const DatapelangganView(),
+      page: () => DatapelangganView(),
       binding: DatapelangganBinding(),
     ),
   ];

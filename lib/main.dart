@@ -24,13 +24,13 @@ void main() async {
           ? Routes.SPLASHSCREEN
           : Routes.HOME, //cek login current user
       getPages: AppPages.routes,
-      onReady: () async {
-        // Introduce a delay of 2 seconds before navigating to the home screen
-        await Future.delayed(const Duration(seconds: 3));
-
-        // Navigate to the home screen
-        Get.offNamed(Routes.HOME);
-      },
+      // onReady: () async {
+      //   // Introduce a delay of 2 seconds before navigating to the home screen
+      //   await Future.delayed(const Duration(seconds: 5));
+      //
+      //   // Navigate to the home screen
+      //   Get.offNamed(Routes.HOME);
+      // },
     ),
   );
 }
