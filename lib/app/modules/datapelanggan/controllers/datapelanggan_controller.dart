@@ -15,7 +15,7 @@ class DatapelangganController extends GetxController {
 
   Future<void> fetchData() async {
     try {
-      final response = await client.from('pelanggan').select('nama_pelanggan, kategori_pelanggan');
+      final response = await client.from('user').select('nama, kategori').eq('role', 'Pelanggan');
 
       if (response != null && response is List) {
         // Convert each item in the list to a Map<String, dynamic>
@@ -29,8 +29,6 @@ class DatapelangganController extends GetxController {
       print('Error: $error');
     }
   }
-
-
 
 
 

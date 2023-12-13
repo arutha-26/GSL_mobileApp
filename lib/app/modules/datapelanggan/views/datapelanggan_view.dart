@@ -46,20 +46,25 @@ class DatapelangganView extends GetView<DatapelangganController> {
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Container(
-              width: 350, // Adjust the width as needed
+              width: MediaQuery.of(context).size.width, // Adjust the width as needed
               child: DataTable2(
                 columns: [
+                  const DataColumn2(
+                    label: Text('No.'),
+                    size: ColumnSize.S,
+                  ),
                   for (var key in controller.data[0].keys)
                     DataColumn2(
-                      label: Text(key),
-                      size: ColumnSize.L,
+                        label: Text(key.capitalizeFirst.toString()),
+                      size: ColumnSize.L
                     ),
                 ],
                 rows: [
-                  for (var map in controller.data)
+                  for (int i = 0; i < controller.data.length; i++)
                     DataRow(
                       cells: [
-                        for (var value in map.values.toList())
+                        DataCell(Text('${i + 1}')),
+                        for (var value in controller.data[i].values.toList())
                           DataCell(Text('$value')),
                       ],
                     ),

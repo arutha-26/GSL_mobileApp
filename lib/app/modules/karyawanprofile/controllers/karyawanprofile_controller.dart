@@ -16,25 +16,25 @@ class KaryawanprofileController extends GetxController {
 
   Future<void> logout() async {
     await client.auth.signOut();
-    Get.offAllNamed(Routes.HOME);
+    Get.offAllNamed(Routes.LOGINPAGE);
   }
 
   Future<void> getProfile() async {
     List<dynamic> res = await client
-        .from("karyawan")
+        .from("user")
         .select()
         .match({"uid": client.auth.currentUser!.id});
     Map<String, dynamic> user = (res).first as Map<String, dynamic>;
-    nameC.text = user["nama_karyawan"];
-    nameC2.text = user["nama_karyawan"];
+    nameC.text = user["nama"];
+    nameC2.text = user["nama"];
     emailC.text = user["email"];
   }
 
   Future<void> updateProfile() async {
     if (nameC2.text.isNotEmpty) {
       isLoading.value = true;
-      await client.from("karyawan").update({
-        "nama_karyawan": nameC2.text,
+      await client.from("user").update({
+        "nama": nameC2.text,
       }).match({"uid": client.auth.currentUser!.id});
       // if user want to update password
       if (passwordC.text.isNotEmpty) {
@@ -47,7 +47,7 @@ class KaryawanprofileController extends GetxController {
             Get.snackbar("ERROR", e.toString());
           }
         } else {
-          Get.snackbar("ERROR", "Password must be longer than 6 characters");
+          Get.snackbar("ERROR", "Password harus lebih dari 6");
         }
       }
       Get.defaultDialog(
