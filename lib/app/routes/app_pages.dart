@@ -24,6 +24,8 @@ import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
 import '../modules/ownerlogin/views/ownerlogin_view.dart';
 import '../modules/ownerprofile/bindings/ownerprofile_binding.dart';
 import '../modules/ownerprofile/views/ownerprofile_view.dart';
+import '../modules/pelangganhome/bindings/pelangganhome_binding.dart';
+import '../modules/pelangganhome/views/pelangganhome_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
 
@@ -99,6 +101,11 @@ class AppPages {
       name: _Paths.ADDDATA,
       page: () => AdddataView(),
       binding: AdddataBinding(),
+    ),
+    GetPage(
+      name: _Paths.PELANGGANHOME,
+      page: () => const PelangganhomeView(),
+      binding: PelangganhomeBinding(),
     ),
   ];
 }

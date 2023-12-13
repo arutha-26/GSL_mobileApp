@@ -62,19 +62,6 @@ class LoginpageView extends GetView<LoginpageController> {
                     bool? cekAutoLogout = await controller.login();
                     if (cekAutoLogout != null && cekAutoLogout == true) {
                       await authC.autoLogout();
-                      Get.offAllNamed(Routes.OWNERHOME);
-
-                      // if(){
-                      //   Get.offAllNamed(Routes.OWNERHOME);
-                      // }else if(){
-                      //   Get.offAllNamed(Routes.OWNERHOME);
-                      //
-                      // }else if(){
-                      //   Get.offAllNamed(Routes.OWNERHOME);
-                      // }
-                      // else{
-                      //   Get.offAllNamed(Routes.OWNERHOME);
-                      // }
                     }
                   }
                 },

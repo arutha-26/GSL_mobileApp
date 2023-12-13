@@ -22,7 +22,7 @@ class SplashscreenController extends GetxController {
     count.value++;
     if (count.value == 1) {
       // Navigates to the home screen when count is updated
-      Get.offNamed(Routes.HOME);
+      Get.offNamed(Routes.LOGINPAGE);
     }
   }
 }
