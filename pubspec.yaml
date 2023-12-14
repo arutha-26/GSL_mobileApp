@@ -14,6 +14,7 @@ dependencies:
   flutter: 
     sdk: flutter
   data_table_2: ^2.5.9
+  http: ^0.13.3
 
 dev_dependencies: 
   flutter_lints: ^3.0.1
@@ -34,4 +35,5 @@ flutter:
     - images/karyawan_icon.png
     - images/pelanggan_icon.png
     - images/bg_logo.png
+    - images/user_profile.png
 

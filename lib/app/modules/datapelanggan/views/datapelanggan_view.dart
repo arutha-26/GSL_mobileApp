@@ -55,8 +55,8 @@ class DatapelangganView extends GetView<DatapelangganController> {
                   ),
                   for (var key in controller.data[0].keys)
                     DataColumn2(
-                        label: Text(key.capitalizeFirst.toString()),
-                      size: ColumnSize.L
+                      label: Text(key.capitalizeFirst.toString()),
+                      size: ColumnSize.L,
                     ),
                 ],
                 rows: [
@@ -65,11 +65,19 @@ class DatapelangganView extends GetView<DatapelangganController> {
                       cells: [
                         DataCell(Text('${i + 1}')),
                         for (var value in controller.data[i].values.toList())
-                          DataCell(Text('$value')),
+                          DataCell(
+                            Text('$value'),
+                            onTap: () {
+                              // Tambahkan aksi yang sesuai saat baris ditekan di sini
+                              // Misalnya, navigasi ke halaman lain
+                              Get.toNamed(Routes.DETAILPELANGGAN, arguments: controller.data[i]); // Ganti '/detail_page' dengan rute halaman detail Anda
+                            },
+                          ),
                       ],
                     ),
                 ],
               ),
+
             ),
           );
         },

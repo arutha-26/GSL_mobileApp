@@ -21,7 +21,7 @@ class OwnerprofileController extends GetxController {
 
   Future<void> getProfile() async {
     List<dynamic> res = await client
-        .from("owner")
+        .from("user")
         .select()
         .match({"uid": client.auth.currentUser!.id});
     Map<String, dynamic> user = (res).first as Map<String, dynamic>;
@@ -33,7 +33,7 @@ class OwnerprofileController extends GetxController {
   Future<void> updateProfile() async {
     if (nameC2.text.isNotEmpty) {
       isLoading.value = true;
-      await client.from("owner").update({
+      await client.from("user").update({
         "nama": nameC2.text,
       }).match({"uid": client.auth.currentUser!.id});
       // if user want to update password
