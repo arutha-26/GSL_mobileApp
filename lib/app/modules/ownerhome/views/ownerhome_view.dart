@@ -4,6 +4,8 @@ import 'package:gsl/app/modules/adddatakaryawan/controllers/adddatakaryawan_cont
 import 'package:gsl/app/modules/adddatakaryawan/views/adddatakaryawan_view.dart';
 import 'package:gsl/app/modules/adddatapelanggan/controllers/adddatapelanggan_controller.dart';
 import 'package:gsl/app/modules/adddatapelanggan/views/adddatapelanggan_view.dart';
+import 'package:gsl/app/modules/addtransaksi/controllers/addtransaksi_controller.dart';
+import 'package:gsl/app/modules/addtransaksi/views/addtransaksi_view.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../../adddata/controllers/adddata_controller.dart';
@@ -32,11 +34,11 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddatakaryawanController());
-                  Get.to(() => AdddatakaryawanView());
+                  Get.put(AdddataController());
+                  Get.to(() => AdddataView());
                 },
                 icon: Icon(Icons.add),
-                label: Text('Tambah Data Karyawan'),
+                label: Text('Tambah Data Karyawan/Pelanggan'),
               ),
             ),
             const SizedBox(height: 15),
@@ -58,8 +60,8 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddataController());
-                  Get.to(() => AdddataView());
+                  Get.put(AddtransaksiController());
+                  Get.to(() => AddtransaksiView());
                 },
                 icon: Icon(Icons.add),
                 label: Text('Tambah Data Transaksi'),

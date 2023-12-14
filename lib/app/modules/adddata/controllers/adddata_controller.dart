@@ -26,13 +26,12 @@ class AdddataController extends GetxController {
         nohpC.text.isNotEmpty) {
       isLoading.value = true;
       try {
-        AuthResponse res = await client.auth
-            .signUp(password: passwordC.text, email: emailC.text);
-        isLoading.value = false;
+        // AuthResponse res = await client.auth
+        //     .signUp(password: passwordC.text, email: emailC.text);
+        // isLoading.value = false;
 
         // insert registered user to table users
         await client.from("user").insert({
-          "uid": res.user!.id,
           "email": emailC.text,
           "nama": nameC.text,
           "role": getSelectedRole(),
@@ -45,7 +44,7 @@ class AdddataController extends GetxController {
         Get.defaultDialog(
             barrierDismissible: false,
             title: "Tambah Data Pengguna Berhasil",
-            // middleText: "Lakukan konfirmasi Email: ${res.user!.email}",
+            middleText: "user: ${emailC.text} sudah bisa login!",
             actions: [
               OutlinedButton(
                   onPressed: () {

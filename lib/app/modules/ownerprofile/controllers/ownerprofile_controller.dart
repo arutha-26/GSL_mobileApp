@@ -16,7 +16,7 @@ class OwnerprofileController extends GetxController {
 
   Future<void> logout() async {
     await client.auth.signOut();
-    Get.offAllNamed(Routes.HOME);
+    Get.offAllNamed(Routes.LOGINPAGE);
   }
 
   Future<void> getProfile() async {
