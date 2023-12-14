@@ -54,32 +54,34 @@ class DatapelangganView extends GetView<DatapelangganController> {
                     size: ColumnSize.S,
                   ),
                   for (var key in controller.data[0].keys)
-                    DataColumn2(
-                      label: Text(key.capitalizeFirst.toString()),
-                      size: ColumnSize.L,
-                    ),
+                    if (key != 'id') // Exclude the 'id' column
+                      DataColumn2(
+                        label: Text(key.capitalizeFirst.toString()),
+                        size: ColumnSize.L,
+                      ),
                 ],
                 rows: [
                   for (int i = 0; i < controller.data.length; i++)
                     DataRow(
                       cells: [
                         DataCell(Text('${i + 1}')),
-                        for (var value in controller.data[i].values.toList())
-                          DataCell(
-                            Text('$value'),
-                            onTap: () {
-                              // Tambahkan aksi yang sesuai saat baris ditekan di sini
-                              // Misalnya, navigasi ke halaman lain
-                              Get.toNamed(Routes.DETAILPELANGGAN, arguments: controller.data[i]); // Ganti '/detail_page' dengan rute halaman detail Anda
-                            },
-                          ),
+                        for (var key in controller.data[i].keys)
+                          if (key != 'id') // Exclude the 'id' column
+                            DataCell(
+                              Text('${controller.data[i][key]}'),
+                              onTap: () {
+                                // Tambahkan aksi yang sesuai saat baris ditekan di sini
+                                // Misalnya, navigasi ke halaman lain
+                                Get.toNamed(Routes.DETAILPELANGGAN, arguments: controller.data[i]); // Ganti '/detail_page' dengan rute halaman detail Anda
+                              },
+                            ),
                       ],
                     ),
                 ],
               ),
-
             ),
           );
+
         },
       ),
       bottomNavigationBar: BottomNavBar(

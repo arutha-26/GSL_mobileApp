@@ -14,7 +14,7 @@ class DetailpelangganController extends GetxController {
       var response = await client
           .from("user")
           .select()
-          .match({"nama": userData['nama']}) // Gunakan kunci yang sesuai dari userData
+          .match({"id": userData['id']}) // Gunakan kunci yang sesuai dari userData
           .execute();
 
       if (response.status == 200 && response.data != null) {
