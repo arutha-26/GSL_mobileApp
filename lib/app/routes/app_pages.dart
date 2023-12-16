@@ -1,11 +1,6 @@
 import 'package:get/get.dart';
-
-import '../modules/adddata/bindings/adddata_binding.dart';
-import '../modules/adddata/views/adddata_view.dart';
-import '../modules/adddatakaryawan/bindings/adddatakaryawan_binding.dart';
-import '../modules/adddatakaryawan/views/adddatakaryawan_view.dart';
-import '../modules/adddatapelanggan/bindings/adddatapelanggan_binding.dart';
-import '../modules/adddatapelanggan/views/adddatapelanggan_view.dart';
+import '../modules/adddatauser/bindings/adddata_binding.dart';
+import '../modules/adddatauser/views/adddata_view.dart';
 import '../modules/addtransaksi/bindings/addtransaksi_binding.dart';
 import '../modules/addtransaksi/views/addtransaksi_view.dart';
 import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
@@ -72,11 +67,6 @@ class AppPages {
       binding: OwnerprofileBinding(),
     ),
     GetPage(
-      name: _Paths.ADDDATAKARYAWAN,
-      page: () => AdddatakaryawanView(),
-      binding: AdddatakaryawanBinding(),
-    ),
-    GetPage(
       name: _Paths.KARYAWANHOME,
       page: () => KaryawanhomeView(),
       binding: KaryawanhomeBinding(),
@@ -85,11 +75,6 @@ class AppPages {
       name: _Paths.KARYAWANPROFILE,
       page: () => KaryawanprofileView(),
       binding: KaryawanprofileBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADDDATAPELANGGAN,
-      page: () => AdddatapelangganView(),
-      binding: AdddatapelangganBinding(),
     ),
     GetPage(
       name: _Paths.DATAPELANGGAN,
@@ -118,7 +103,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADDTRANSAKSI,
-      page: () => const AddtransaksiView(),
+      page: () => AddtransaksiView(),
       binding: AddtransaksiBinding(),
     ),
   ];

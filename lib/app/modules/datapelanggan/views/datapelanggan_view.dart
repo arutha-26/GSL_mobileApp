@@ -85,7 +85,7 @@ class DatapelangganView extends GetView<DatapelangganController> {
         },
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 2,
+        currentIndex: 0,
         onTap: (index) {
           // Handle navigation using Get
           switch (index) {

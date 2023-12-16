@@ -21,7 +21,6 @@ class LoginpageController extends GetxController {
   RxBool isHidden = true.obs;
   TextEditingController emailC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
-
   SupabaseClient client = Supabase.instance.client;
 
   Future<String?> getUserRole() async {

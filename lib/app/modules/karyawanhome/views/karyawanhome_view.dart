@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:gsl/app/modules/adddatauser/controllers/adddata_controller.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
-import '../../adddatakaryawan/controllers/adddatakaryawan_controller.dart';
-import '../../adddatakaryawan/views/adddatakaryawan_view.dart';
+import '../../adddatauser/views/adddata_view.dart';
 import '../controllers/karyawanhome_controller.dart';
 
 class KaryawanhomeView extends GetView<KaryawanhomeController> {
@@ -27,8 +27,8 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddatakaryawanController());
-                  Get.to(() => AdddatakaryawanView());
+                  Get.put(AdddataController());
+                  Get.to(() => AdddataView());
                 },
                 icon: Icon(Icons.add),
                 label: Text('Tambah Data Karyawan'),
@@ -40,8 +40,8 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddatakaryawanController());
-                  Get.to(() => AdddatakaryawanView());
+                  Get.put(AdddataController());
+                  Get.to(() => AdddataView());
                 },
                 icon: Icon(Icons.add),
                 label: Text('Tambah Data Pelanggan'),
@@ -53,8 +53,8 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddatakaryawanController());
-                  Get.to(() => AdddatakaryawanView());
+                  Get.put(AdddataController());
+                  Get.to(() => AdddataView());
                 },
                 icon: Icon(Icons.add),
                 label: Text('Tambah Data Transaksi'),
