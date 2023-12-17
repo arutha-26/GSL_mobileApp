@@ -5,6 +5,18 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class AdddataController extends GetxController {
+
+  @override
+  void onClose() {
+    // Reset the controller's state when the page is disposed
+    nameC.clear();
+    emailC.clear();
+    nohpC.clear();
+    passwordC.clear();
+    alamatC.clear();
+    super.onClose();
+  }
+
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
   TextEditingController nameC = TextEditingController();

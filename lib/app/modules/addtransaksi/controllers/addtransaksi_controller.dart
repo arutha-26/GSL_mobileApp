@@ -60,35 +60,6 @@ class AddtransaksiController extends GetxController {
     return results;
   }
 
-
-  // RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
-  //
-  // Future<void> fetchdataPelanggan() async {
-  //   print("Fetching data...");
-  //   try {
-  //     final response = await client
-  //         .from('user')
-  //         .select('nama, id')
-  //         .eq('role', 'Pelanggan')
-  //         .execute();
-  //
-  //     print("Response: ${response.toString()}"); // Menampilkan seluruh respons
-  //
-  //     if (response.status == 200 && response.data != null && response.data is List) {
-  //       List<Map<String, dynamic>> fetchedData =
-  //       (response.data as List).map((item) => item as Map<String, dynamic>).toList();
-  //       data.assignAll(fetchedData);
-  //       print("Fetched data: $fetchedData");
-  //     } else {
-  //       print('Error: Response status ${response.status}, Data: ${response.data}, Error: $Future.error(error)');
-  //     }
-  //   } catch (error) {
-  //     print('Exception during fetching data: $error');
-  //   }
-  // }
-
-
-
   Future<void> signUp() async {
     if (emailC.text.isNotEmpty &&
         passwordC.text.isNotEmpty &&

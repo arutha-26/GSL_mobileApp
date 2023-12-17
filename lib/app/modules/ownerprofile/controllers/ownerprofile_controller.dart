@@ -65,4 +65,6 @@ class OwnerprofileController extends GetxController {
       isLoading.value = false;
     }
   }
+
+
 }

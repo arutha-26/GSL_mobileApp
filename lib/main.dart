@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'app/controllers/auth_controllers.dart';
 import 'app/routes/app_pages.dart';
+import 'app/utils/authentication_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,21 +17,22 @@ void main() async {
 
   final authC = Get.put(AuthController(), permanent: true);
 
-  runApp(
-    GetMaterialApp(
-      title: "Application",
-      debugShowCheckedModeBanner: false,
-      initialRoute: supaProvider.client.auth.currentUser == null
-          ? Routes.SPLASHSCREEN
-          : Routes.LOGINPAGE, //cek login current user
-      getPages: AppPages.routes,
-      onReady: () async {
-        // Introduce a delay of 2 seconds before navigating to the home screen
-        await Future.delayed(const Duration(seconds: 5));
+  runApp(GetMaterialApp(
+    title: "Application",
+    debugShowCheckedModeBanner: false,
+    initialRoute: Routes.SPLASHSCREEN, // Always start with splash screen
+    getPages: AppPages.routes,
+    onInit: () async {
+      await Future.delayed(const Duration(seconds: 2));
 
-        // Navigate to the home screen
+      AuthenticationService authService = AuthenticationService(supaProvider.client);
+
+      // Check if the user is already logged in
+      if (supaProvider.client.auth.currentUser != null) {
+        await authService.fetchUserRoleAndNavigate(); // Call fetchUserRoleAndNavigate here
+      } else {
         Get.offNamed(Routes.LOGINPAGE);
-      },
-    ),
-  );
+      }
+    },
+  ));
 }

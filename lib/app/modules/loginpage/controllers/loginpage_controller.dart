@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginpageController extends GetxController {
-
   OwnerloginController() {
     print('OwnerloginController initialized');
   }
@@ -56,8 +55,7 @@ class LoginpageController extends GetxController {
     if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       isLoading.value = true;
       try {
-        await client.auth
-            .signInWithPassword(email: emailC.text, password: passwordC.text);
+        await client.auth.signInWithPassword(email: emailC.text, password: passwordC.text);
         isLoading.value = false;
 
         // Fetch user role after successful login
@@ -95,4 +93,3 @@ class LoginpageController extends GetxController {
     }
   }
 }
-

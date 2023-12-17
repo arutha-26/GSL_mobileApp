@@ -7,8 +7,6 @@ import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
 import '../modules/datapelanggan/views/datapelanggan_view.dart';
 import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
 import '../modules/detailpelanggan/views/detailpelanggan_view.dart';
-import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
 import '../modules/karyawanhome/views/karyawanhome_view.dart';
 import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
@@ -33,14 +31,9 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGINPAGE;
+  static const INITIAL = Routes.SPLASHSCREEN;
 
   static final routes = [
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
     GetPage(
       name: _Paths.OWNERLOGIN,
       page: () => OwnerloginView(),

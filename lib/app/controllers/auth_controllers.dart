@@ -24,4 +24,5 @@ class AuthController extends GetxController {
       authTimer = null;
     }
   }
+
 }
