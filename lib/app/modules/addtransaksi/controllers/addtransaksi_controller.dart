@@ -16,19 +16,15 @@ class AddtransaksiController extends GetxController {
 
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
-  TextEditingController nameC = TextEditingController();
+  TextEditingController namaKaryawanC = TextEditingController();
   TextEditingController pelangganC = TextEditingController();
   TextEditingController karyawanC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController nohpC = TextEditingController();
-
   TextEditingController passwordC = TextEditingController();
-
   TextEditingController alamatC = TextEditingController();
 
-
   SupabaseClient client = Supabase.instance.client;
-
 
   Future<List<Pelanggan>> fetchdataPelanggan(String query) async {
     List<Pelanggan> results = [];
@@ -60,10 +56,19 @@ class AddtransaksiController extends GetxController {
     return results;
   }
 
-  Future<void> signUp() async {
+  Future<void> getDataKaryawan() async {
+    List<dynamic> res = await client
+        .from("user")
+        .select()
+        .match({"uid": client.auth.currentUser!.id});
+    Map<String, dynamic> user = (res).first as Map<String, dynamic>;
+    namaKaryawanC.text = user["nama"];
+  }
+
+  Future<void> addTransaksi() async {
     if (emailC.text.isNotEmpty &&
         passwordC.text.isNotEmpty &&
-        nameC.text.isNotEmpty &&
+        namaKaryawanC.text.isNotEmpty &&
         alamatC.text.isNotEmpty &&
         nohpC.text.isNotEmpty) {
       isLoading.value = true;
@@ -75,7 +80,7 @@ class AddtransaksiController extends GetxController {
         // insert registered user to table users
         await client.from("user").insert({
           "email": emailC.text,
-          "nama": nameC.text,
+          "nama": namaKaryawanC.text,
           "role": getSelectedRole(),
           "alamat": alamatC.text,
           "phone": nohpC.text,

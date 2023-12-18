@@ -60,6 +60,12 @@ class AuthenticationService {
             Get.snackbar("ERROR", "Unknown user role");
             break;
         }
+
+        // Print user information to logcat
+        print("User Information:");
+        print("UID: ${client.auth.currentUser?.id}");
+        print("Role: $userRole");
+        print("Email: ${client.auth.currentUser?.email}");
       } else {
         Get.snackbar("ERROR", "Failed to fetch user role");
       }
@@ -67,5 +73,4 @@ class AuthenticationService {
       Get.snackbar("ERROR", e.toString());
     }
   }
-// Other authentication-related functions can be added here
 }

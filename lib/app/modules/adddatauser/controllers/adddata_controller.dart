@@ -22,25 +22,39 @@ class AdddataController extends GetxController {
   TextEditingController nameC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController nohpC = TextEditingController();
-
-  TextEditingController passwordC = TextEditingController();
-
+  // TextEditingController passwordC = TextEditingController();
+  TextEditingController passwordC = TextEditingController(text: "123456789");
   TextEditingController alamatC = TextEditingController();
 
 
   SupabaseClient client = Supabase.instance.client;
 
-  Future<void> signUp() async {
+  Future<void> addData() async {
     if (emailC.text.isNotEmpty &&
-        passwordC.text.isNotEmpty &&
         nameC.text.isNotEmpty &&
         alamatC.text.isNotEmpty &&
         nohpC.text.isNotEmpty) {
       isLoading.value = true;
       try {
-        // AuthResponse res = await client.auth
-        //     .signUp(password: passwordC.text, email: emailC.text);
-        // isLoading.value = false;
+        // Store the current session
+        final originalSession = await client.auth.currentSession;
+
+        // Sign up the user without automatically recovering the session
+        AuthResponse res = await client.auth.signUp(
+          password: passwordC.text,
+          email: emailC.text,
+        );
+
+        // Log the data to be inserted
+        print('Inserting data to the database:');
+        print('Email: ${emailC.text}');
+        print('Name: ${nameC.text}');
+        print('Role: ${getSelectedRole()}');
+        print('Alamat: ${alamatC.text}');
+        print('Phone: ${nohpC.text}');
+        print('Kategori: ${getSelectedKategori()}');
+        print('Password: ${passwordC.text}');
+        print('Created At: ${DateTime.now().toIso8601String()}');
 
         // insert registered user to table users
         await client.from("user").insert({
@@ -53,18 +67,26 @@ class AdddataController extends GetxController {
           "created_at": DateTime.now().toIso8601String(),
         });
 
+        // Clear the session manually
+        await client.auth.signOut();
+
+        // Recover the original session
+        await client.auth.recoverSession(originalSession as String);
+
         Get.defaultDialog(
-            barrierDismissible: false,
-            title: "Tambah Data Pengguna Berhasil",
-            middleText: "user: ${emailC.text} sudah bisa login!",
-            actions: [
-              OutlinedButton(
-                  onPressed: () {
-                    Get.back(); //close dialog
-                    Get.offAllNamed(Routes.OWNERHOME);
-                  },
-                  child: const Text("OK"))
-            ]);
+          barrierDismissible: false,
+          title: "Tambah Data Pengguna Berhasil",
+          middleText: "user: ${emailC.text} sudah bisa login!",
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Get.back(); //close dialog
+                Get.offAllNamed(Routes.OWNERHOME);
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
       } catch (e) {
         isLoading.value = false;
         Get.snackbar("ERROR", e.toString());
@@ -74,6 +96,8 @@ class AdddataController extends GetxController {
     }
     refresh();
   }
+
+
 
   RxString selectedKategori = "".obs;
   List<String> kategoriOptions = ["-","Individual", "Hotel", "Villa"];
