@@ -37,13 +37,11 @@ class AdddataController extends GetxController {
       isLoading.value = true;
       try {
         // Store the current session
-        final originalSession = await client.auth.currentSession;
+        // final originalSession = await client.auth.currentSession;
 
-        // Sign up the user without automatically recovering the session
-        AuthResponse res = await client.auth.signUp(
-          password: passwordC.text,
-          email: emailC.text,
-        );
+        AuthResponse res = await client.auth
+            .signUp(password: passwordC.text, email: emailC.text);
+        isLoading.value = false;
 
         // Log the data to be inserted
         print('Inserting data to the database:');
@@ -70,18 +68,18 @@ class AdddataController extends GetxController {
         // Clear the session manually
         await client.auth.signOut();
 
-        // Recover the original session
-        await client.auth.recoverSession(originalSession as String);
+        // // Recover the original session
+        // await client.auth.recoverSession(originalSession as String);
 
         Get.defaultDialog(
           barrierDismissible: false,
-          title: "Tambah Data Pengguna Berhasil",
-          middleText: "user: ${emailC.text} sudah bisa login!",
+          title: "Tambah Data Pengguna Telah Berhasil",
+          middleText: "Harap Lakukan Login Kembali",
           actions: [
             OutlinedButton(
               onPressed: () {
                 Get.back(); //close dialog
-                Get.offAllNamed(Routes.OWNERHOME);
+                Get.offAllNamed(Routes.LOGINPAGE);
               },
               child: const Text("OK"),
             ),
@@ -94,7 +92,7 @@ class AdddataController extends GetxController {
     } else {
       Get.snackbar("ERROR", "Seluruh data harus terisi!");
     }
-    refresh();
+    // refresh();
   }
 
 

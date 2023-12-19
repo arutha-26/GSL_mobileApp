@@ -1,23 +1,13 @@
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../routes/app_pages.dart';
 
 class PelangganhomeController extends GetxController {
-  //TODO: Implement PelangganhomeController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  SupabaseClient client = Supabase.instance.client;
+  Future<void> logout() async {
+    await client.auth.signOut();
+    Get.offAllNamed(Routes.LOGINPAGE);
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

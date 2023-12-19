@@ -68,6 +68,9 @@ class AuthenticationService {
         print("Email: ${client.auth.currentUser?.email}");
       } else {
         Get.snackbar("ERROR", "Failed to fetch user role");
+        Get.snackbar("USER", "Sign Out User Because ERROR");
+        client.auth.signOut();
+        Get.offAllNamed(Routes.LOGINPAGE);
       }
     } catch (e) {
       Get.snackbar("ERROR", e.toString());

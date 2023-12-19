@@ -33,7 +33,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
               onPressed: () async {
                 await controller.logout();
                 await authC.resetTimer();
-                Get.offAllNamed(Routes.HOME);
+                Get.offAllNamed(Routes.LOGINPAGE);
               },
               child: const Text(
                 "LOGOUT",
