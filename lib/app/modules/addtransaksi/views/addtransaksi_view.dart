@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../utils/PelangganSearchWidget.dart';
 import '../controllers/addtransaksi_controller.dart';
@@ -9,7 +10,22 @@ import '../controllers/addtransaksi_controller.dart';
 class AddtransaksiView extends GetView<AddtransaksiController> {
   AddtransaksiView({Key? key}) : super(key: key);
 
-  final pelangganController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final kategoriController = TextEditingController();
+
+
+  Future<void> selectDate(BuildContext context, TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != DateTime.now()) {
+      controller.text = DateFormat('dd-MM-yyyy').format(picked);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,51 +62,54 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     height: 20,
                   ),
                   PelangganSearchWidget(
-                    controller: pelangganController,
+                    nameController: nameController,
+                    phoneController: phoneController,
+                    kategoriController: kategoriController,
                     addtransaksiController: controller,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextField(
-                    autocorrect: false,
-                    controller: controller.emailC,
-                    textInputAction: TextInputAction.next,
+                    controller: nameController,
                     decoration: const InputDecoration(
-                      labelText: "Email",
+                      labelText: "Nama Pelanggan",
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   TextField(
-                    autocorrect: false,
-                    controller: controller.nohpC,
-                    textInputAction: TextInputAction.next,
+                    controller: phoneController,
                     decoration: const InputDecoration(
-                      labelText: "No Telp",
+                      labelText: "No Pelanggan",
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   TextField(
-                    autocorrect: false,
-                    controller: controller.alamatC,
-                    textInputAction: TextInputAction.next,
+                    controller: kategoriController,
                     decoration: const InputDecoration(
-                      labelText: "Alamat",
+                      labelText: "Kategori Pelanggan",
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   DropdownSearch<String>(
                     popupProps: const PopupProps.menu(
-                      constraints: BoxConstraints(maxHeight: 170),
+                      constraints: BoxConstraints(maxHeight: 120),
+                      // 60 are per data height
                       showSelectedItems: true,
                     ),
-                    items: ["-", "Individual", "Hotel", "Villa"],
+                    items: const ["Regular", "Express"],
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
-                        labelText: "Kategori Pelanggan",
+                        labelText: "Metode Laundry",
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -101,25 +120,50 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Obx(() => TextField(
-                        autocorrect: false,
-                        controller: controller.passwordC,
-                        textInputAction: TextInputAction.done,
-                        obscureText: controller.isHidden.value,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () => controller.isHidden.toggle(),
-                            icon: controller.isHidden.isTrue
-                                ? const Icon(Icons.remove_red_eye)
-                                : const Icon(Icons.remove_red_eye_outlined),
-                          ),
-                          labelText: "Password",
-                          border: const OutlineInputBorder(),
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 30,
+                  DropdownSearch<String>(
+                    popupProps: const PopupProps.menu(
+                      constraints: BoxConstraints(maxHeight: 180),
+                      // 60 are per data height
+                      showSelectedItems: true,
+                    ),
+                    items: const ["Cuci Setrika", "Cuci Saja", "Setrika Saja"],
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                        labelText: "Layanan Laundry",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    onChanged: (String? value) {
+                      controller.setSelectedKategori(value);
+                    },
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextField(
+                    controller: controller.tanggalDatangController,
+                    decoration: const InputDecoration(
+                      labelText: "Tanggal Datang",
+                      border: OutlineInputBorder(),
+                    ),
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                      selectDate(context, controller.tanggalDatangController); // Call your date picker function
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: controller.tanggalSelesaiController,
+                    decoration: const InputDecoration(
+                      labelText: "Tanggal Selesai",
+                      border: OutlineInputBorder(),
+                    ),
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                      selectDate(context, controller.tanggalSelesaiController); // Call your date picker function
+                    },
+                  ),
+                  const SizedBox(height: 20),
                   Obx(() => ElevatedButton(
                         onPressed: () {
                           if (controller.isLoading.isFalse) {
@@ -127,7 +171,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                           }
                         },
                         child: Text(
-                          controller.isLoading.isFalse ? "Tambah Data" : "Loading...",
+                          controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
                         ),
                       )),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../routes/app_pages.dart';
@@ -8,21 +9,13 @@ import '../../../utils/pelanggan.dart';
 
 class AddtransaksiController extends GetxController {
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   fetchdataPelanggan();
-  // }
-
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;
   TextEditingController namaKaryawanC = TextEditingController();
-  TextEditingController pelangganC = TextEditingController();
-  TextEditingController karyawanC = TextEditingController();
-  TextEditingController emailC = TextEditingController();
-  TextEditingController nohpC = TextEditingController();
-  TextEditingController passwordC = TextEditingController();
-  TextEditingController alamatC = TextEditingController();
+
+  TextEditingController tanggalDatangController = TextEditingController();
+  TextEditingController tanggalSelesaiController = TextEditingController();
+
 
   SupabaseClient client = Supabase.instance.client;
 
@@ -31,9 +24,9 @@ class AddtransaksiController extends GetxController {
     try {
       final response = await client
           .from('user')
-          .select('nama, id, phone') // Include 'phone' in the select statement
+          .select('nama, id, phone, kategori') // Include 'phone' in the select statement
           .eq('role', 'Pelanggan')
-          .ilike('nama, phone', '%$query%')
+          .ilike('nama, phone, kategori', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
@@ -42,11 +35,13 @@ class AddtransaksiController extends GetxController {
           final nama = item['nama']?.toString() ?? '';
           final id = item['id']?.toString() ?? '';
           final phone = item['phone']?.toString() ?? '';
+          final kategori = item['kategori']?.toString() ?? '';
 
           return Pelanggan(
             nama: nama,
             id: id,
-            phone: phone, // Map the phone number
+            phone: phone,
+            kategori: kategori
           );
         }).toList();
       }
@@ -66,11 +61,7 @@ class AddtransaksiController extends GetxController {
   }
 
   Future<void> addTransaksi() async {
-    if (emailC.text.isNotEmpty &&
-        passwordC.text.isNotEmpty &&
-        namaKaryawanC.text.isNotEmpty &&
-        alamatC.text.isNotEmpty &&
-        nohpC.text.isNotEmpty) {
+    if (namaKaryawanC.text.isNotEmpty) {
       isLoading.value = true;
       try {
         // AuthResponse res = await client.auth
@@ -79,24 +70,24 @@ class AddtransaksiController extends GetxController {
 
         // insert registered user to table users
         await client.from("user").insert({
-          "email": emailC.text,
+          // "email": emailC.text,
           "nama": namaKaryawanC.text,
           "role": getSelectedRole(),
-          "alamat": alamatC.text,
-          "phone": nohpC.text,
+          // "alamat": alamatC.text,
+          // "phone": nohpC.text,
           "kategori": getSelectedKategori(),
           "created_at": DateTime.now().toIso8601String(),
         });
 
         Get.defaultDialog(
             barrierDismissible: false,
-            title: "Tambah Data Pengguna Berhasil",
-            middleText: "user: ${emailC.text} sudah bisa login!",
+            title: "Tambah Data Transaksi Berhasil",
+            middleText: ".......",
             actions: [
               OutlinedButton(
                   onPressed: () {
                     Get.back(); //close dialog
-                    Get.offAllNamed(Routes.OWNERHOME);
+                    // Get.offAllNamed(Routes.OWNERHOME);
                   },
                   child: const Text("OK"))
             ]);

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../modules/adddatauser/bindings/adddata_binding.dart';
 import '../modules/adddatauser/views/adddata_view.dart';
 import '../modules/addtransaksi/bindings/addtransaksi_binding.dart';
@@ -21,6 +22,8 @@ import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
 import '../modules/ownerlogin/views/ownerlogin_view.dart';
 import '../modules/ownerprofile/bindings/ownerprofile_binding.dart';
 import '../modules/ownerprofile/views/ownerprofile_view.dart';
+import '../modules/paneltransaksi/bindings/paneltransaksi_binding.dart';
+import '../modules/paneltransaksi/views/paneltransaksi_view.dart';
 import '../modules/pelangganhome/bindings/pelangganhome_binding.dart';
 import '../modules/pelangganhome/views/pelangganhome_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
@@ -98,6 +101,11 @@ class AppPages {
       name: _Paths.ADDTRANSAKSI,
       page: () => AddtransaksiView(),
       binding: AddtransaksiBinding(),
+    ),
+    GetPage(
+      name: _Paths.PANELTRANSAKSI,
+      page: () => const PaneltransaksiView(),
+      binding: PaneltransaksiBinding(),
     ),
   ];
 }

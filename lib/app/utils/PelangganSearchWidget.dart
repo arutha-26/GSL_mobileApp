@@ -4,10 +4,19 @@ import 'package:gsl/app/utils/pelanggan.dart';
 import '../modules/addtransaksi/controllers/addtransaksi_controller.dart';
 
 class PelangganSearchWidget extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController nameController;
+  final TextEditingController phoneController;
+  final TextEditingController kategoriController;
+
   final AddtransaksiController addtransaksiController;
 
-  PelangganSearchWidget({Key? key, required this.controller, required this.addtransaksiController}) : super(key: key);
+  PelangganSearchWidget({
+    Key? key,
+    required this.nameController,
+    required this.phoneController,
+    required this.kategoriController,
+    required this.addtransaksiController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +31,16 @@ class PelangganSearchWidget extends StatelessWidget {
         if (option != null) {
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
-          return '$name - +62$phone';
+          final kategori = option.kategori ?? '';
+          return '$name - +62$phone - $kategori';
         } else {
           return ''; // Return an empty string for null options
         }
       },
       onSelected: (Pelanggan selection) {
-        controller.text = '${selection.nama} - +62${selection.phone}';
+        nameController.text = selection.nama ?? '';
+        phoneController.text = '+62${selection.phone}' ?? '';
+        kategoriController.text = selection.kategori ?? '';
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
         return TextField(
@@ -36,7 +48,7 @@ class PelangganSearchWidget extends StatelessWidget {
           focusNode: focusNode,
           onEditingComplete: onEditingComplete,
           decoration: const InputDecoration(
-            labelText: "Pelanggan",
+            labelText: "Cari Pelanggan",
             border: OutlineInputBorder(),
           ),
         );

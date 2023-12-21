@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gsl/app/modules/addtransaksi/controllers/addtransaksi_controller.dart';
 import 'package:gsl/app/modules/addtransaksi/views/addtransaksi_view.dart';
+import 'package:gsl/app/modules/paneltransaksi/controllers/paneltransaksi_controller.dart';
+import 'package:gsl/app/modules/paneltransaksi/views/paneltransaksi_view.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../../adddatauser/controllers/adddata_controller.dart';
@@ -43,19 +45,6 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Get.put(AdddataController());
-                  Get.to(() => AdddataView());
-                },
-                icon: Icon(Icons.add),
-                label: Text('Tambah Data Pelanggan'),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Container(
-              width: 350,
-              height: 50,
-              child: ElevatedButton.icon(
-                onPressed: () {
                   Get.put(AddtransaksiController());
                   Get.to(() => AddtransaksiView());
                 },
@@ -69,10 +58,23 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: () {
+                  Get.put(PaneltransaksiController());
+                  Get.to(() => PaneltransaksiView());
+                },
+                icon: Icon(Icons.add),
+                label: Text('Panel Transaksi'),
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              width: 350,
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: () {
                   Get.put(DatapelangganController());
                   Get.to(() => DatapelangganView());
                 },
-                icon: Icon(Icons.add),
+                icon: Icon(Icons.account_box_rounded),
                 label: Text('Lihat Data Pelanggan'),
               ),
             ),

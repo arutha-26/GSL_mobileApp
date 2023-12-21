@@ -19,6 +19,7 @@ abstract class Routes {
   static const PELANGGANHOME = _Paths.PELANGGANHOME;
   static const DETAILPELANGGAN = _Paths.DETAILPELANGGAN;
   static const ADDTRANSAKSI = _Paths.ADDTRANSAKSI;
+  static const PANELTRANSAKSI = _Paths.PANELTRANSAKSI;
 }
 
 abstract class _Paths {
@@ -39,4 +40,5 @@ abstract class _Paths {
   static const PELANGGANHOME = '/pelangganhome';
   static const DETAILPELANGGAN = '/detailpelanggan';
   static const ADDTRANSAKSI = '/addtransaksi';
+  static const PANELTRANSAKSI = '/paneltransaksi';
 }
