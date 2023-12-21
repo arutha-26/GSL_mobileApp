@@ -82,7 +82,6 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
           ],
         ),
       ),
-
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
         onTap: (index) {

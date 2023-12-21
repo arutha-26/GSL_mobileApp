@@ -4,13 +4,11 @@ class Pelanggan {
   final String phone;
   final String kategori;
 
-
   Pelanggan({
     required this.nama,
     required this.id,
     required this.phone,
     required this.kategori,
-
   });
 
   factory Pelanggan.fromMap(Map<String, dynamic> map) {

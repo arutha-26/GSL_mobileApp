@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OwnerloginController extends GetxController {
-
   OwnerloginController() {
     print('OwnerloginController initialized');
   }
@@ -25,8 +24,7 @@ class OwnerloginController extends GetxController {
     if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       isLoading.value = true;
       try {
-        await client.auth
-            .signInWithPassword(email: emailC.text, password: passwordC.text);
+        await client.auth.signInWithPassword(email: emailC.text, password: passwordC.text);
         isLoading.value = false;
         Get.defaultDialog(
             barrierDismissible: false,

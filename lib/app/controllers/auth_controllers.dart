@@ -8,6 +8,7 @@ import '../routes/app_pages.dart';
 class AuthController extends GetxController {
   Timer? authTimer;
   SupabaseClient client = Supabase.instance.client;
+
   Future<void> autoLogout() async {
     if (authTimer != null) {
       authTimer!.cancel();
@@ -25,5 +26,4 @@ class AuthController extends GetxController {
       authTimer = null;
     }
   }
-
 }

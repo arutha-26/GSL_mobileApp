@@ -21,7 +21,8 @@ class OwnerloginView extends GetView<OwnerloginController> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Text(
-                'Selamat Datang di Green Spirit Laundry, Owner!', // Tambahkan teks welcome di sini
+                'Selamat Datang di Green Spirit Laundry, Owner!',
+                // Tambahkan teks welcome di sini
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -41,32 +42,32 @@ class OwnerloginView extends GetView<OwnerloginController> {
               ),
               const SizedBox(height: 16),
               Obx(() => TextFormField(
-                controller: controller.passwordC,
-                textInputAction: TextInputAction.done,
-                obscureText: controller.isHidden.value,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      onPressed: () => controller.isHidden.toggle(),
-                      icon: controller.isHidden.isTrue
-                          ? const Icon(Icons.remove_red_eye)
-                          : const Icon(Icons.remove_red_eye_outlined)),
-                  labelText: 'Password',
-                  labelStyle: const TextStyle(color: Colors.black87),
-                ),
-              )),
+                    controller: controller.passwordC,
+                    textInputAction: TextInputAction.done,
+                    obscureText: controller.isHidden.value,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () => controller.isHidden.toggle(),
+                          icon: controller.isHidden.isTrue
+                              ? const Icon(Icons.remove_red_eye)
+                              : const Icon(Icons.remove_red_eye_outlined)),
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.black87),
+                    ),
+                  )),
               const SizedBox(height: 24),
               Obx(() => ElevatedButton(
-                onPressed: () async {
-                  if (controller.isLoading.isFalse) {
-                    bool? cekAutoLogout = await controller.login();
-                    if (cekAutoLogout != null && cekAutoLogout == true) {
-                      await authC.autoLogout();
-                      Get.offAllNamed(Routes.OWNERHOME);
-                    }
-                  }
-                },
-                child: Text(controller.isLoading.isFalse ? "LOGIN" : "Loading..."),
-              )),
+                    onPressed: () async {
+                      if (controller.isLoading.isFalse) {
+                        bool? cekAutoLogout = await controller.login();
+                        if (cekAutoLogout != null && cekAutoLogout == true) {
+                          await authC.autoLogout();
+                          Get.offAllNamed(Routes.OWNERHOME);
+                        }
+                      }
+                    },
+                    child: Text(controller.isLoading.isFalse ? "LOGIN" : "Loading..."),
+                  )),
               const SizedBox(
                 height: 100,
               ),

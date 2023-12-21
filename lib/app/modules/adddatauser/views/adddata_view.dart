@@ -14,7 +14,6 @@ SAAT SETELAH INPUT DATA SELESAI TAMBAHKAN FUNC UNTUK KE HALAMAN HOME SESUAI ROLE
 class AdddataView extends GetView<AdddataController> {
   AdddataView({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

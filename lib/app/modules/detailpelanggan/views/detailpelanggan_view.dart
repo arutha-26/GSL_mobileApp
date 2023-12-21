@@ -18,7 +18,7 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
         title: const Text('Detail Pelanggan'),
         centerTitle: true,
       ),
-        body: FutureBuilder(
+      body: FutureBuilder(
         future: controller.getdatapelanggan(userData), // Teruskan userData
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -49,9 +49,7 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                       'images/user_profile.png',
                       width: 250,
                       height: 250,
-
                     ),
-
                     Text(
                       user['nama'].toString(), // Use the data from the fetched user
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

@@ -146,8 +146,12 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       border: OutlineInputBorder(),
                     ),
                     onTap: () {
-                      FocusScope.of(context).requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                      selectDate(context, controller.tanggalDatangController); // Call your date picker function
+                      FocusScope.of(context)
+                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                      selectDate(
+                          context,
+                          controller
+                              .tanggalDatangController); // Call your date picker function
                     },
                   ),
                   const SizedBox(height: 20),
@@ -158,8 +162,12 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       border: OutlineInputBorder(),
                     ),
                     onTap: () {
-                      FocusScope.of(context).requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                      selectDate(context, controller.tanggalSelesaiController); // Call your date picker function
+                      FocusScope.of(context)
+                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                      selectDate(
+                          context,
+                          controller
+                              .tanggalSelesaiController); // Call your date picker function
                     },
                   ),
                   const SizedBox(
@@ -167,7 +175,8 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   ),
                   TextField(
                     autocorrect: false,
-                    controller: controller.beratLaundryController, // controller diubah
+                    controller: controller.beratLaundryController,
+                    // controller diubah
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
@@ -215,45 +224,53 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     children: [
                       // Opsi "Sudah Dibayar"
                       Obx(() => GestureDetector(
-                        onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: controller.statusPembayaran.value == 'sudah_dibayar' ? Colors.green[100] : Colors.transparent,
-                            border: Border.all(
-                              color: controller.statusPembayaran.value == 'sudah_dibayar' ? Colors.green : Colors.transparent,
+                            onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller.statusPembayaran.value == 'sudah_dibayar'
+                                    ? Colors.green[100]
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: controller.statusPembayaran.value == 'sudah_dibayar'
+                                      ? Colors.green
+                                      : Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.payment, color: Colors.green),
+                                  Text('Sudah Dibayar'),
+                                ],
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.payment, color: Colors.green),
-                              Text('Sudah Dibayar'),
-                            ],
-                          ),
-                        ),
-                      )),
+                          )),
 
                       // Opsi "Belum Dibayar"
                       Obx(() => GestureDetector(
-                        onTap: () => controller.setStatusPembayaran('Belum Dibayar'),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: controller.statusPembayaran.value == 'Belum Dibayar' ? Colors.red[100] : Colors.transparent,
-                            border: Border.all(
-                              color: controller.statusPembayaran.value == 'Belum Dibayar' ? Colors.red : Colors.transparent,
+                            onTap: () => controller.setStatusPembayaran('Belum Dibayar'),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller.statusPembayaran.value == 'Belum Dibayar'
+                                    ? Colors.red[100]
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: controller.statusPembayaran.value == 'Belum Dibayar'
+                                      ? Colors.red
+                                      : Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.payment, color: Colors.red),
+                                  Text('Belum Dibayar'),
+                                ],
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.payment, color: Colors.red),
-                              Text('Belum Dibayar'),
-                            ],
-                          ),
-                        ),
-                      )),
+                          )),
                     ],
                   ),
                   const SizedBox(
@@ -264,65 +281,77 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     children: [
                       // Opsi "Diproses"
                       Obx(() => GestureDetector(
-                        onTap: () => controller.setStatusCucian('diproses'),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: controller.statusCucian.value == 'diproses' ? Colors.blue[100] : Colors.transparent,
-                            border: Border.all(
-                              color: controller.statusCucian.value == 'diproses' ? Colors.blue : Colors.transparent,
+                            onTap: () => controller.setStatusCucian('diproses'),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller.statusCucian.value == 'diproses'
+                                    ? Colors.blue[100]
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: controller.statusCucian.value == 'diproses'
+                                      ? Colors.blue
+                                      : Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.hourglass_empty, color: Colors.blue),
+                                  Text('Diproses'),
+                                ],
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.hourglass_empty, color: Colors.blue),
-                              Text('Diproses'),
-                            ],
-                          ),
-                        ),
-                      )),
+                          )),
 
                       // Opsi "Selesai"
                       Obx(() => GestureDetector(
-                        onTap: () => controller.setStatusCucian('selesai'),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: controller.statusCucian.value == 'selesai' ? Colors.green[100] : Colors.transparent,
-                            border: Border.all(
-                              color: controller.statusCucian.value == 'selesai' ? Colors.green : Colors.transparent,
+                            onTap: () => controller.setStatusCucian('selesai'),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller.statusCucian.value == 'selesai'
+                                    ? Colors.green[100]
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: controller.statusCucian.value == 'selesai'
+                                      ? Colors.green
+                                      : Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.check_circle_outline, color: Colors.green),
+                                  Text('Selesai'),
+                                ],
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.check_circle_outline, color: Colors.green),
-                              Text('Selesai'),
-                            ],
-                          ),
-                        ),
-                      )),
+                          )),
                       // Opsi "Diambil"
                       Obx(() => GestureDetector(
-                        onTap: () => controller.setStatusCucian('diambil'),
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: controller.statusCucian.value == 'diambil' ? Colors.orange[100] : Colors.transparent,
-                            border: Border.all(
-                              color: controller.statusCucian.value == 'diambil' ? Colors.orange : Colors.transparent,
+                            onTap: () => controller.setStatusCucian('diambil'),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: controller.statusCucian.value == 'diambil'
+                                    ? Colors.orange[100]
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: controller.statusCucian.value == 'diambil'
+                                      ? Colors.orange
+                                      : Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.done_all, color: Colors.orange),
+                                  Text('Diambil'),
+                                ],
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.done_all, color: Colors.orange),
-                              Text('Diambil'),
-                            ],
-                          ),
-                        ),
-                      )),
+                          )),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -338,8 +367,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       )),
                 ],
               );
-            }
-            )
-    );
+            }));
   }
 }

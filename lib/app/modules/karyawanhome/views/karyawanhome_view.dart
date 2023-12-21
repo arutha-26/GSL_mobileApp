@@ -9,6 +9,7 @@ import '../controllers/karyawanhome_controller.dart';
 
 class KaryawanhomeView extends GetView<KaryawanhomeController> {
   KaryawanhomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +69,8 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
           // Handle navigation using Get
           switch (index) {
             case 0:
-              Get.offAllNamed(Routes.KARYAWANHOME); // Replace '/home' with your actual home route
+              Get.offAllNamed(
+                  Routes.KARYAWANHOME); // Replace '/home' with your actual home route
               break;
             case 1:
               Get.offAllNamed(

@@ -20,10 +20,8 @@ class KaryawanprofileController extends GetxController {
   }
 
   Future<void> getProfile() async {
-    List<dynamic> res = await client
-        .from("user")
-        .select()
-        .match({"uid": client.auth.currentUser!.id});
+    List<dynamic> res =
+        await client.from("user").select().match({"uid": client.auth.currentUser!.id});
     Map<String, dynamic> user = (res).first as Map<String, dynamic>;
     nameC.text = user["nama"];
     nameC2.text = user["nama"];

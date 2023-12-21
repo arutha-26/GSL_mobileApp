@@ -7,6 +7,7 @@ import '../controllers/karyawanlogin_controller.dart';
 
 class KaryawanloginView extends GetView<KaryawanloginController> {
   final authC = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +21,8 @@ class KaryawanloginView extends GetView<KaryawanloginController> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Text(
-                'Selamat Datang di Green Spirit Laundry, Karyawan!', // Tambahkan teks welcome di sini
+                'Selamat Datang di Green Spirit Laundry, Karyawan!',
+                // Tambahkan teks welcome di sini
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -40,32 +42,32 @@ class KaryawanloginView extends GetView<KaryawanloginController> {
               ),
               const SizedBox(height: 16),
               Obx(() => TextFormField(
-                controller: controller.passwordC,
-                textInputAction: TextInputAction.done,
-                obscureText: controller.isHidden.value,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      onPressed: () => controller.isHidden.toggle(),
-                      icon: controller.isHidden.isTrue
-                          ? const Icon(Icons.remove_red_eye)
-                          : const Icon(Icons.remove_red_eye_outlined)),
-                  labelText: 'Password',
-                  labelStyle: const TextStyle(color: Colors.black87),
-                ),
-              )),
+                    controller: controller.passwordC,
+                    textInputAction: TextInputAction.done,
+                    obscureText: controller.isHidden.value,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () => controller.isHidden.toggle(),
+                          icon: controller.isHidden.isTrue
+                              ? const Icon(Icons.remove_red_eye)
+                              : const Icon(Icons.remove_red_eye_outlined)),
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.black87),
+                    ),
+                  )),
               const SizedBox(height: 24),
               Obx(() => ElevatedButton(
-                onPressed: () async {
-                  if (controller.isLoading.isFalse) {
-                    bool? cekAutoLogout = await controller.login();
-                    if (cekAutoLogout != null && cekAutoLogout == true) {
-                      await authC.autoLogout();
-                      Get.offAllNamed(Routes.KARYAWANHOME);
-                    }
-                  }
-                },
-                child: Text(controller.isLoading.isFalse ? "LOGIN" : "Loading..."),
-              )),
+                    onPressed: () async {
+                      if (controller.isLoading.isFalse) {
+                        bool? cekAutoLogout = await controller.login();
+                        if (cekAutoLogout != null && cekAutoLogout == true) {
+                          await authC.autoLogout();
+                          Get.offAllNamed(Routes.KARYAWANHOME);
+                        }
+                      }
+                    },
+                    child: Text(controller.isLoading.isFalse ? "LOGIN" : "Loading..."),
+                  )),
               const SizedBox(
                 height: 100,
               ),

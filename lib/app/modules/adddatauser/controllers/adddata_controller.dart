@@ -5,7 +5,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class AdddataController extends GetxController {
-
   @override
   void onClose() {
     // Reset the controller's state when the page is disposed
@@ -22,10 +21,10 @@ class AdddataController extends GetxController {
   TextEditingController nameC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController nohpC = TextEditingController();
+
   // TextEditingController passwordC = TextEditingController();
   TextEditingController passwordC = TextEditingController(text: "123456789");
   TextEditingController alamatC = TextEditingController();
-
 
   SupabaseClient client = Supabase.instance.client;
 
@@ -39,8 +38,8 @@ class AdddataController extends GetxController {
         // Store the current session
         // final originalSession = await client.auth.currentSession;
 
-        AuthResponse res = await client.auth
-            .signUp(password: passwordC.text, email: emailC.text);
+        AuthResponse res =
+            await client.auth.signUp(password: passwordC.text, email: emailC.text);
         isLoading.value = false;
 
         // Log the data to be inserted
@@ -95,10 +94,8 @@ class AdddataController extends GetxController {
     // refresh();
   }
 
-
-
   RxString selectedKategori = "".obs;
-  List<String> kategoriOptions = ["-","Individual", "Hotel", "Villa"];
+  List<String> kategoriOptions = ["-", "Individual", "Hotel", "Villa"];
 
   String getSelectedKategori() {
     return selectedKategori.value;
@@ -118,5 +115,4 @@ class AdddataController extends GetxController {
   void setSelectedRole(String? value) {
     selectedRole.value = value ?? "-";
   }
-
 }

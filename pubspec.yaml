@@ -5,24 +5,24 @@ description: skripsi
 environment:
   sdk: ">=2.18.5 <3.0.0"
 
-dependencies: 
+dependencies:
   cupertino_icons: ^1.0.2
   get: 4.6.6
   flutter_dotenv: ^5.0.2
   supabase_flutter: ^1.10.25
   dropdown_search: ^5.0.6
-  flutter: 
+  flutter:
     sdk: flutter
   data_table_2: ^2.5.9
   http: ^0.13.3
   intl: ^0.17.0
 
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: ^3.0.1
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
+flutter:
   uses-material-design: true
 
   assets:

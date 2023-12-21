@@ -7,7 +7,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../utils/pelanggan.dart';
 
 class AddtransaksiController extends GetxController {
-
   @override
   void onInit() {
     super.onInit();
@@ -32,7 +31,6 @@ class AddtransaksiController extends GetxController {
     statusCucian.value = 'diproses';
     statusPembayaran.value = 'Belum Dibayar';
   }
-
 
   @override
   void onClose() {
@@ -66,7 +64,6 @@ class AddtransaksiController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController kategoriController = TextEditingController();
 
-
   SupabaseClient client = Supabase.instance.client;
 
   Future<List<Pelanggan>> fetchdataPelanggan(String query) async {
@@ -87,12 +84,7 @@ class AddtransaksiController extends GetxController {
           final phone = item['phone']?.toString() ?? '';
           final kategori = item['kategori']?.toString() ?? '';
 
-          return Pelanggan(
-            nama: nama,
-            id: id,
-            phone: phone,
-            kategori: kategori
-          );
+          return Pelanggan(nama: nama, id: id, phone: phone, kategori: kategori);
         }).toList();
       }
     } catch (error) {
@@ -102,16 +94,16 @@ class AddtransaksiController extends GetxController {
   }
 
   Future<void> getDataKaryawan() async {
-    List<dynamic> res = await client
-        .from("user")
-        .select()
-        .match({"uid": client.auth.currentUser!.id});
+    List<dynamic> res =
+        await client.from("user").select().match({"uid": client.auth.currentUser!.id});
     Map<String, dynamic> user = (res).first as Map<String, dynamic>;
     namaKaryawanC.text = user["nama"];
   }
 
   Future<void> addTransaksi() async {
-    if (namaKaryawanC.text.isNotEmpty && beratLaundryController.text.isNotEmpty && hargaTotalController.text.isNotEmpty) {
+    if (namaKaryawanC.text.isNotEmpty &&
+        beratLaundryController.text.isNotEmpty &&
+        hargaTotalController.text.isNotEmpty) {
       isLoading.value = true;
       try {
         var dataTransaksi = {
@@ -129,7 +121,7 @@ class AddtransaksiController extends GetxController {
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
           "created_at": DateTime.now().toIso8601String(),
-          "is_hidden":false,
+          "is_hidden": false,
         };
 
         // Log the dataTransaksi to the console
@@ -151,10 +143,8 @@ class AddtransaksiController extends GetxController {
                     Get.back();
                     Get.back();
                   },
-                  child: const Text("OK")
-              )
-            ]
-        );
+                  child: const Text("OK"))
+            ]);
       } catch (e) {
         isLoading.value = false;
         Get.snackbar("ERROR", e.toString());
@@ -165,8 +155,6 @@ class AddtransaksiController extends GetxController {
     isLoading.value = false;
     refresh();
   }
-
-
 
   RxString selectedMetode = "".obs;
   List<String> metodeOptions = ["Regular", "Express"];
@@ -206,15 +194,15 @@ class AddtransaksiController extends GetxController {
     double hargaPerKg = await ambilHargaPerKg(
         kategoriPelanggan: kategoriController.text,
         metodeLaundry: selectedMetode.value,
-        layananLaundry: selectedLayanan.value
-    );
+        layananLaundry: selectedLayanan.value);
     double totalHarga = berat * hargaPerKg;
 
     // Store numeric value
     numericTotalHarga.value = totalHarga;
 
     // Format and display
-    NumberFormat currencyFormatter = NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 3);
+    NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 3);
     hargaTotalController.text = currencyFormatter.format(totalHarga);
   }
 
@@ -229,10 +217,14 @@ class AddtransaksiController extends GetxController {
     }
   }
 
-  Future<double> ambilHargaPerKg({required String kategoriPelanggan, required String metodeLaundry, required String layananLaundry}) async {
+  Future<double> ambilHargaPerKg(
+      {required String kategoriPelanggan,
+      required String metodeLaundry,
+      required String layananLaundry}) async {
     double harga = 0.0;
 
-    final response = await client.from('harga')
+    final response = await client
+        .from('harga')
         .select('harga_kilo')
         .eq('kategori_pelanggan', kategoriPelanggan)
         .eq('metode_laundry_id', metodeLaundry)
@@ -255,5 +247,4 @@ class AddtransaksiController extends GetxController {
   void setStatusPembayaran(String status) {
     statusPembayaran.value = status;
   }
-
 }

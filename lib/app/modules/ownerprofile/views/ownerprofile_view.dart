@@ -13,6 +13,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
   final authC = Get.find<AuthController>();
 
   SupabaseClient client = Supabase.instance.client;
+
   bool isCurrentUserPakeh() {
     // Dapatkan objek currentUser dari Supabase
     var currentUser = client.auth.currentUser;

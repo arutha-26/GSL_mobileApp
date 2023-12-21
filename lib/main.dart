@@ -21,7 +21,8 @@ void main() async {
   runApp(GetMaterialApp(
     title: "Application",
     debugShowCheckedModeBanner: false,
-    initialRoute: Routes.SPLASHSCREEN, // Always start with splash screen
+    initialRoute: Routes.SPLASHSCREEN,
+    // Always start with splash screen
     getPages: AppPages.routes,
     onInit: () async {
       await Future.delayed(const Duration(seconds: 2));

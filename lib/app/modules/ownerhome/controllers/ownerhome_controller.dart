@@ -3,7 +3,6 @@ import 'package:gsl/app/data/models/karyawan_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OwnerhomeController extends GetxController {
-
   static const supabaseUrl = 'https://vegdoanlxklpbvutmiij.supabase.co';
   static const supabaseKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyOTU0NjkyOSwiZXhwIjoxOTQ1MTIyOTI5fQ.9HQP76mHV-JrCo9KH3I-HeM27kGk-yK1UZYddPtWzp0';

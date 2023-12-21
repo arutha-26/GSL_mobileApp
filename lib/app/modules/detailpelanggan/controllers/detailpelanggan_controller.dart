@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'; // Import package http atau package lain yang Anda gunakan
 
 class DetailpelangganController extends GetxController {
-
   SupabaseClient client = Supabase.instance.client;
 
   Future<Map<String, dynamic>> getdatapelanggan(Map<String, dynamic> userData) async {
@@ -25,4 +24,3 @@ class DetailpelangganController extends GetxController {
     return {};
   }
 }
-

@@ -5,12 +5,7 @@ class Karyawan {
   int? uid;
   String? createdAt;
 
-  Karyawan(
-      {this.karyawanId,
-      this.noHp,
-      this.namaKaryawan,
-      this.uid,
-      this.createdAt});
+  Karyawan({this.karyawanId, this.noHp, this.namaKaryawan, this.uid, this.createdAt});
 
   Karyawan.fromJson(Map<String, dynamic> json) {
     karyawanId = json['karyawan_id'];

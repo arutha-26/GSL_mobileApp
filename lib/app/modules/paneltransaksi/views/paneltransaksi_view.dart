@@ -13,6 +13,7 @@ MENGUBAH DATA TERAKHIR DIUPDATE KE FORMAT JAM DAN TGL SIMPLE
 
 class PaneltransaksiView extends GetView<PaneltransaksiController> {
   PaneltransaksiView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +60,10 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                   Center(child: Text('${row[key]}')),
                   onTap: () {
                     if (controller.data[idx] != null) {
-                      print('Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: ${controller.data[idx]}');
-                      Get.toNamed(Routes.DETAILPANELTRANSAKSI, arguments: controller.data[idx]);
+                      print(
+                          'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: ${controller.data[idx]}');
+                      Get.toNamed(Routes.DETAILPANELTRANSAKSI,
+                          arguments: controller.data[idx]);
                     } else {
                       print('Error: Data for index $idx is null');
                     }
@@ -91,10 +94,12 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
               Get.offAllNamed(Routes.OWNERHOME); // Replace '/home' with your actual home route
               break;
             case 1:
-              Get.offAllNamed('/dashboard'); // Replace '/dashboard' with your actual dashboard route
+              Get.offAllNamed(
+                  '/dashboard'); // Replace '/dashboard' with your actual dashboard route
               break;
             case 2:
-              Get.offAllNamed(Routes.OWNERPROFILE); // Replace '/profile' with your actual profile route
+              Get.offAllNamed(
+                  Routes.OWNERPROFILE); // Replace '/profile' with your actual profile route
               break;
             default:
           }

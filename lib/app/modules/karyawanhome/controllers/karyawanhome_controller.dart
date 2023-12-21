@@ -4,6 +4,7 @@ class KaryawanhomeController extends GetxController {
   //TODO: Implement KaryawanhomeController
 
   final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();

@@ -10,6 +10,7 @@ import '../controllers/datapelanggan_controller.dart';
 class DatapelangganView extends GetView<DatapelangganController> {
   DatapelangganView({Key? key}) : super(key: key);
   final authC = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +72,9 @@ class DatapelangganView extends GetView<DatapelangganController> {
                               onTap: () {
                                 // Tambahkan aksi yang sesuai saat baris ditekan di sini
                                 // Misalnya, navigasi ke halaman lain
-                                Get.toNamed(Routes.DETAILPELANGGAN, arguments: controller.data[i]); // Ganti '/detail_page' dengan rute halaman detail Anda
+                                Get.toNamed(Routes.DETAILPELANGGAN,
+                                    arguments: controller.data[
+                                        i]); // Ganti '/detail_page' dengan rute halaman detail Anda
                               },
                             ),
                       ],
@@ -80,7 +83,6 @@ class DatapelangganView extends GetView<DatapelangganController> {
               ),
             ),
           );
-
         },
       ),
       bottomNavigationBar: BottomNavBar(
@@ -92,10 +94,12 @@ class DatapelangganView extends GetView<DatapelangganController> {
               Get.offAllNamed(Routes.OWNERHOME); // Replace '/home' with your actual home route
               break;
             case 1:
-              Get.offAllNamed('/dashboard'); // Replace '/dashboard' with your actual dashboard route
+              Get.offAllNamed(
+                  '/dashboard'); // Replace '/dashboard' with your actual dashboard route
               break;
             case 2:
-              Get.offAllNamed(Routes.OWNERPROFILE); // Replace '/profile' with your actual profile route
+              Get.offAllNamed(
+                  Routes.OWNERPROFILE); // Replace '/profile' with your actual profile route
               break;
             default:
           }
