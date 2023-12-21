@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart'; // Import package http atau package lain yang Anda gunakan
 
 class DetailpelangganController extends GetxController {

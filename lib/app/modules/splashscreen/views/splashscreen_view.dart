@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
 import '../controllers/splashscreen_controller.dart';
 
 class SplashscreenView extends GetView<SplashscreenController> {

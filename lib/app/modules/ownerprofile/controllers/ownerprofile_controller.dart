@@ -6,7 +6,6 @@ import '../../../routes/app_pages.dart';
 
 class OwnerprofileController extends GetxController {
   RxBool isLoading = false.obs;
-  RxBool isHidden = true.obs;
   TextEditingController nameC = TextEditingController();
   TextEditingController nameC2 = TextEditingController();
   TextEditingController emailC = TextEditingController();

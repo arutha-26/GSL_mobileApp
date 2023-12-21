@@ -1,13 +1,15 @@
-import 'package:data_table_2/data_table_2.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:gsl/app/modules/detailpaneltransaksi/controllers/detailpaneltransaksi_controller.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../controllers/paneltransaksi_controller.dart';
+
+// TODO
+/*
+MENGUBAH DATA TERAKHIR DIUPDATE KE FORMAT JAM DAN TGL SIMPLE
+
+* */
 
 class PaneltransaksiView extends GetView<PaneltransaksiController> {
   PaneltransaksiView({Key? key}) : super(key: key);
@@ -54,7 +56,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
             return DataRow(
               cells: row.keys.map((key) {
                 return DataCell(
-                  Text('${row[key]}'),
+                  Center(child: Text('${row[key]}')),
                   onTap: () {
                     if (controller.data[idx] != null) {
                       print('Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: ${controller.data[idx]}');

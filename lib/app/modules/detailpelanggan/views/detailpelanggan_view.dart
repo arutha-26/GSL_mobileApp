@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../controllers/auth_controllers.dart';
 import '../controllers/detailpelanggan_controller.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class DetailpelangganView extends GetView<DetailpelangganController> {
   DetailpelangganView({Key? key}) : super(key: key);

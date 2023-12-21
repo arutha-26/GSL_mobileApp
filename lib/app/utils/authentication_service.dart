@@ -1,7 +1,6 @@
 // services/authentication_service.dart
 
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:supabase/supabase.dart';
 
 import '../routes/app_pages.dart';
