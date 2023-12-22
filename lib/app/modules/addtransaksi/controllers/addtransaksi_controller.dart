@@ -29,7 +29,7 @@ class AddtransaksiController extends GetxController {
     selectedLayanan.value = "";
     selectedPembayaran.value = "-";
     statusCucian.value = 'diproses';
-    statusPembayaran.value = 'Belum Dibayar';
+    statusPembayaran.value = 'belum_dibayar';
   }
 
   @override
@@ -53,7 +53,7 @@ class AddtransaksiController extends GetxController {
 
   RxDouble numericTotalHarga = 0.0.obs; // Add this line
   RxString statusCucian = 'diproses'.obs;
-  RxString statusPembayaran = 'Belum Dibayar'.obs;
+  RxString statusPembayaran = 'belum_dibayar'.obs;
   RxBool isLoading = false.obs;
   TextEditingController namaKaryawanC = TextEditingController();
   TextEditingController tanggalDatangController = TextEditingController();

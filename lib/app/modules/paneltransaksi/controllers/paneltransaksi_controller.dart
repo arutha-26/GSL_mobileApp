@@ -33,6 +33,6 @@ class PaneltransaksiController extends GetxController {
     'metode_laundry_id': 'Metode Laundry',
     'layanan_laundry_id': 'Layanan Laundry',
     'harga_kilo': 'Harga Kilo',
-    'edit_at': 'Terkahir Update',
+    'edit_at': 'Terakhir Update',
   };
 }

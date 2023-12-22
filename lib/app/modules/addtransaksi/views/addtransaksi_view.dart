@@ -238,7 +238,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Column(
+                              child: const Column(
                                 children: [
                                   Icon(Icons.payment, color: Colors.green),
                                   Text('Sudah Dibayar'),
@@ -249,21 +249,21 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
 
                       // Opsi "Belum Dibayar"
                       Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusPembayaran('Belum Dibayar'),
+                        onTap: () => controller.setStatusPembayaran('belum_dibayar'),
                             child: Container(
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: controller.statusPembayaran.value == 'Belum Dibayar'
+                                color: controller.statusPembayaran.value == 'belum_dibayar'
                                     ? Colors.red[100]
                                     : Colors.transparent,
                                 border: Border.all(
-                                  color: controller.statusPembayaran.value == 'Belum Dibayar'
+                                  color: controller.statusPembayaran.value == 'belum_dibayar'
                                       ? Colors.red
                                       : Colors.transparent,
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Column(
+                          child: const Column(
                                 children: [
                                   Icon(Icons.payment, color: Colors.red),
                                   Text('Belum Dibayar'),

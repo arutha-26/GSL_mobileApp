@@ -91,8 +91,8 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
               Get.offAllNamed(Routes.OWNERHOME); // Replace '/home' with your actual home route
               break;
             case 1:
-              Get.offAllNamed(
-                  '/dashboard'); // Replace '/dashboard' with your actual dashboard route
+              Get.offAllNamed(Routes
+                  .DASHBOARD_OWNER); // Replace '/dashboard' with your actual dashboard route
               break;
             case 2:
               Get.offAllNamed(
