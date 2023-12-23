@@ -19,7 +19,7 @@ void main() async {
   final authC = Get.put(AuthController(), permanent: true);
 
   runApp(GetMaterialApp(
-    title: "Application",
+    title: "Green Spirit Laundry",
     debugShowCheckedModeBanner: false,
     initialRoute: Routes.SPLASHSCREEN,
     // Always start with splash screen

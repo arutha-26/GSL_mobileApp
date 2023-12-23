@@ -249,7 +249,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
 
                       // Opsi "Belum Dibayar"
                       Obx(() => GestureDetector(
-                        onTap: () => controller.setStatusPembayaran('belum_dibayar'),
+                            onTap: () => controller.setStatusPembayaran('belum_dibayar'),
                             child: Container(
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
