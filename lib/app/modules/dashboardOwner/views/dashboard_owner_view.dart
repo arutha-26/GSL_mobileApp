@@ -8,7 +8,7 @@ import '../../../utils/bottom_navbar.dart';
 import '../controllers/dashboard_owner_controller.dart';
 
 class DashboardOwnerView extends GetView<DashboardOwnerController> {
-  DashboardOwnerView({Key? key}) : super(key: key);
+  DashboardOwnerView({super.key});
   var selectedMonth = DateTime.now().obs;
 
   List<int>? get newData => null;
@@ -79,52 +79,76 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
 
   Widget _buildStatusAndDebtsCard() {
     return buildRowCard(
-      _buildStatusCard(),
+      _buildPaidDebtsCard(),
       _buildOutstandingDebtsCard(),
     );
   }
 
   Widget _buildProfitAndTransactionCountCard() {
     return buildRowCard(
-      _buildPaidDebtsCard(),
+      _buildStatusCard(),
       _buildTodayTransactionsCard(),
     );
   }
 
   Widget _buildStatusCard() {
-    return Card(
-      child: ListTile(
-        title: const Text('Status Cucian'),
-        subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+    return InkWell(
+      onTap: () {
+        // Arahkan ke halaman yang diinginkan
+        Get.offAllNamed(Routes.OWNERHOME);
+      },
+      child: Card(
+        child: ListTile(
+          title: const Text('Status Cucian'),
+          subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+        ),
       ),
     );
   }
 
   Widget _buildOutstandingDebtsCard() {
-    return Card(
-      color: Colors.redAccent,
-      child: ListTile(
-        title: const Text('Hutang Belum Dibayar'),
-        subtitle: Obx(() => Text('Rp${controller.totalDebt.value.toStringAsFixed(3)}')),
+    return InkWell(
+      onTap: () {
+        // Arahkan ke halaman yang diinginkan
+        Get.offAllNamed(Routes.OWNERHOME);
+      },
+      child: Card(
+        color: Colors.redAccent,
+        child: ListTile(
+          title: const Text('Hutang Belum Dibayar'),
+          subtitle: Obx(() => Text('Rp. ${controller.formattedTotalDebt.value}')),
+        ),
       ),
     );
   }
 
   Widget _buildPaidDebtsCard() {
-    return Card(
-      color: Colors.green,
-      child: ListTile(
-        title: const Text('Total Transaksi Sudah Dibayar'),
-        subtitle: Obx(() => Text('Rp${controller.totalPaidDebt.value.toStringAsFixed(3)}')),
+    return InkWell(
+      onTap: () {
+        // Arahkan ke halaman yang diinginkan
+        Get.offAllNamed(Routes.OWNERHOME);
+      },
+      child: Card(
+        color: Colors.green,
+        child: ListTile(
+          title: const Text('Total Transaksi Sudah Dibayar'),
+          subtitle: Obx(() => Text('Rp. ${controller.formattedTotalPaid.value}')),
+        ),
       ),
     );
   }
 
   Widget _buildTodayTransactionsCard() {
-    return Card(
-      child: ListTile(
-        title: const Text('Transaksi Hari Ini'),
-        subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+    return InkWell(
+      onTap: () {
+        // Arahkan ke halaman yang diinginkan
+        Get.offAllNamed(Routes.OWNERHOME);
+      },
+      child: Card(
+        child: ListTile(
+          title: const Text('Transaksi Hari Ini'),
+          subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+        ),
       ),
     );
   }
@@ -134,9 +158,14 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
       children: [
         monthSelectionDropdown(),
         Obx(() {
+          if (controller.isLoading.value) {
+            // Tampilkan indikator loading saat data sedang dimuat
+            return const Center(child: CircularProgressIndicator());
+          }
+
           final transactionsData = controller.monthlyTransactionData.value;
 
-          if (transactionsData != null && transactionsData.isNotEmpty) {
+          if (transactionsData.isNotEmpty) {
             // Use the selected month and year
             DateTime selectedMonth = controller.selectedMonth.value ?? DateTime.now();
             DateTime firstDayOfSelectedMonth =
@@ -147,7 +176,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
               return DateFormat('dd-MM').format(date); // Format as 'Day-Month'
             });
 
-            return Container(
+            return SizedBox(
               height: 200,
               child: BarChartSample3(
                 transactionsPerDay: transactionsData,
@@ -155,9 +184,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
               ),
             );
           } else {
-            return Container(
-                child:
-                    const Center(child: Text('Tidak ada data transaksi untuk ditampilkan.')));
+            return const Center(child: Text('Tidak ada data transaksi untuk ditampilkan.'));
           }
         }),
       ],

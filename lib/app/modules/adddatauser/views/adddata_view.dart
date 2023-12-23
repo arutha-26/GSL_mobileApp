@@ -32,7 +32,7 @@ class AdddataView extends GetView<AdddataController> {
             controller: controller.nameC,
             textInputAction: TextInputAction.next,
             onChanged: (String value) {
-              controller.emailC.text = value.replaceAll(" ", "").toLowerCase() + "@gsl.com";
+              controller.emailC.text = "${value.replaceAll(" ", "").toLowerCase()}@gsl.com";
             },
             decoration: const InputDecoration(
               labelText: "Nama Pengguna",
@@ -57,7 +57,7 @@ class AdddataView extends GetView<AdddataController> {
               constraints: BoxConstraints(maxHeight: 170),
               showSelectedItems: true,
             ),
-            items: ["Owner", "Karyawan", "Pelanggan"],
+            items: const ["Owner", "Karyawan", "Pelanggan"],
             dropdownDecoratorProps: const DropDownDecoratorProps(
               dropdownSearchDecoration: InputDecoration(
                 labelText: "Role",

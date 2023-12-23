@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -43,15 +44,33 @@ class AdddataController extends GetxController {
         isLoading.value = false;
 
         // Log the data to be inserted
-        print('Inserting data to the database:');
-        print('Email: ${emailC.text}');
-        print('Name: ${nameC.text}');
-        print('Role: ${getSelectedRole()}');
-        print('Alamat: ${alamatC.text}');
-        print('Phone: ${nohpC.text}');
-        print('Kategori: ${getSelectedKategori()}');
-        print('Password: ${passwordC.text}');
-        print('Created At: ${DateTime.now().toIso8601String()}');
+        if (kDebugMode) {
+          print('Inserting data to the database:');
+        }
+        if (kDebugMode) {
+          print('Email: ${emailC.text}');
+        }
+        if (kDebugMode) {
+          print('Name: ${nameC.text}');
+        }
+        if (kDebugMode) {
+          print('Role: ${getSelectedRole()}');
+        }
+        if (kDebugMode) {
+          print('Alamat: ${alamatC.text}');
+        }
+        if (kDebugMode) {
+          print('Phone: ${nohpC.text}');
+        }
+        if (kDebugMode) {
+          print('Kategori: ${getSelectedKategori()}');
+        }
+        if (kDebugMode) {
+          print('Password: ${passwordC.text}');
+        }
+        if (kDebugMode) {
+          print('Created At: ${DateTime.now().toIso8601String()}');
+        }
 
         // insert registered user to table users
         await client.from("user").insert({
@@ -62,6 +81,7 @@ class AdddataController extends GetxController {
           "phone": nohpC.text,
           "kategori": getSelectedKategori(),
           "created_at": DateTime.now().toIso8601String(),
+          "uid": res.user!.id,
         });
 
         // Clear the session manually
@@ -72,13 +92,15 @@ class AdddataController extends GetxController {
 
         Get.defaultDialog(
           barrierDismissible: false,
-          title: "Tambah Data Pengguna Telah Berhasil",
+          title: "Tambah Data Pengguna email: ${res.user!.email} Telah Berhasil",
           middleText: "Harap Lakukan Login Kembali",
           actions: [
             OutlinedButton(
               onPressed: () {
                 Get.back(); //close dialog
+                // Get.deleteAll(force: true);
                 Get.offAllNamed(Routes.LOGINPAGE);
+                // Get.back(); //close dialog
               },
               child: const Text("OK"),
             ),
@@ -113,6 +135,6 @@ class AdddataController extends GetxController {
   }
 
   void setSelectedRole(String? value) {
-    selectedRole.value = value ?? "-";
+    selectedRole.value = value ?? "";
   }
 }

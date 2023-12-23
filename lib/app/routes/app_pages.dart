@@ -6,6 +6,8 @@ import '../modules/addtransaksi/bindings/addtransaksi_binding.dart';
 import '../modules/addtransaksi/views/addtransaksi_view.dart';
 import '../modules/dashboardOwner/bindings/dashboard_owner_binding.dart';
 import '../modules/dashboardOwner/views/dashboard_owner_view.dart';
+import '../modules/dataTransaksi/bindings/data_transaksi_binding.dart';
+import '../modules/dataTransaksi/views/data_transaksi_view.dart';
 import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
 import '../modules/datapelanggan/views/datapelanggan_view.dart';
 import '../modules/detailpaneltransaksi/bindings/detailpaneltransaksi_binding.dart';
@@ -120,6 +122,11 @@ class AppPages {
       name: _Paths.DASHBOARD_OWNER,
       page: () => DashboardOwnerView(),
       binding: DashboardOwnerBinding(),
+    ),
+    GetPage(
+      name: _Paths.DATA_TRANSAKSI,
+      page: () => DataTransaksiView(),
+      binding: DataTransaksiBinding(),
     ),
   ];
 }

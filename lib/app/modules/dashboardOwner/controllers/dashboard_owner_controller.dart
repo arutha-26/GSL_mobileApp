@@ -47,6 +47,9 @@ class DashboardOwnerController extends GetxController {
     }
   }
 
+  final RxString formattedTotalDebt =
+      ''.obs; // Variabel baru untuk menyimpan nilai format string
+
   Future<void> fetchDataHutang() async {
     try {
       final response = await client
@@ -62,7 +65,12 @@ class DashboardOwnerController extends GetxController {
             total += double.tryParse(item['total_biaya'].toString()) ?? 0.0;
           }
         }
-        totalDebt.value = total;
+
+        totalDebt.value = total; // Simpan nilai numerik
+
+        // Format total biaya menjadi format uang dan simpan di formattedTotalDebt
+        final formatter = NumberFormat('#,##0.000', 'id_ID');
+        formattedTotalDebt.value = formatter.format(total);
       } else {
         if (kDebugMode) {
           print('Error fetching data: HTTP status ${response.status}');
@@ -74,6 +82,9 @@ class DashboardOwnerController extends GetxController {
       }
     }
   }
+
+  final RxString formattedTotalPaid =
+      ''.obs; // Variabel baru untuk menyimpan nilai format string
 
   Future<void> fetchDataPaid() async {
     try {
@@ -90,9 +101,16 @@ class DashboardOwnerController extends GetxController {
             total += double.tryParse(item['total_biaya'].toString()) ?? 0.0;
           }
         }
-        totalPaidDebt.value = total;
-      } else if (kDebugMode) {
-        print('Error fetching data: HTTP status ${response.status}');
+
+        totalPaidDebt.value = total; // Simpan nilai numerik
+
+        // Format total biaya menjadi format uang dan simpan di formattedTotalDebt
+        final formatter = NumberFormat('#,##0.000', 'id_ID');
+        formattedTotalPaid.value = formatter.format(total);
+      } else {
+        if (kDebugMode) {
+          print('Error fetching data: HTTP status ${response.status}');
+        }
       }
     } catch (error) {
       if (kDebugMode) {
@@ -103,20 +121,29 @@ class DashboardOwnerController extends GetxController {
 
   Future<void> fetchDataTodayTransactions() async {
     try {
-      DateTime now = DateTime.now();
-      String formattedDate =
-          DateFormat('yyyy-MM-dd').format(now); // Format the date as 'yyyy-MM-dd'
+      DateTime now = DateTime.now().toUtc();
+      String startDate = "${DateFormat('yyyy-MM-dd').format(now)}T00:00:00";
+      String endDate = "${DateFormat('yyyy-MM-dd').format(now)}T23:59:59";
 
       final response = await client
           .from('transaksi')
           .select('*')
-          .gte('tanggal_datang', formattedDate)
-          .lte('tanggal_datang', formattedDate)
+          .gte('tanggal_datang', startDate)
+          .lte('tanggal_datang', endDate)
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
-        // Set the count to the number of transactions
-        todayTransactionCount.value = response.data.length;
+        // Log the data for inspection
+        if (kDebugMode) {
+          print('Received data: ${response.data}');
+        }
+
+        // Additional check for data format
+        if (response.data.every((item) => item is Map<String, dynamic>)) {
+          todayTransactionCount.value = response.data.length;
+        } else if (kDebugMode) {
+          print('Data format is not as expected');
+        }
       } else if (kDebugMode) {
         print('Error fetching data: HTTP status ${response.status}');
       }
@@ -163,13 +190,19 @@ class DashboardOwnerController extends GetxController {
         // Debugging: Print the transaction data
         print('Monthly Transaction Data:');
         for (int day = 1; day <= lastDayOfMonth.day; day++) {
-          print('Day $day: ${transactionsPerDay[day - 1]} transactions');
+          if (kDebugMode) {
+            print('Day $day: ${transactionsPerDay[day - 1]} transactions');
+          }
         }
       } else {
-        print('Error fetching data: HTTP status ${response.status}');
+        if (kDebugMode) {
+          print('Error fetching data: HTTP status ${response.status}');
+        }
       }
     } catch (error) {
-      print('Exception during fetching data: $error');
+      if (kDebugMode) {
+        print('Exception during fetching data: $error');
+      }
     }
   }
 }

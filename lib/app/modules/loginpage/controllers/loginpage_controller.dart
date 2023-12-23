@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -28,7 +29,9 @@ class LoginpageController extends GetxController {
       var uid = client.auth.currentUser?.id;
 
       if (uid == null) {
-        print("User ID not found");
+        if (kDebugMode) {
+          print("User ID not found");
+        }
         return null;
       }
 
@@ -42,11 +45,15 @@ class LoginpageController extends GetxController {
       if (response.data != null && response.data.isNotEmpty) {
         return response.data['role'] as String?;
       } else {
-        print("No user found");
+        if (kDebugMode) {
+          print("No user found");
+        }
         return null;
       }
     } catch (e) {
-      print("Exception occurred: $e");
+      if (kDebugMode) {
+        print("Exception occurred: $e");
+      }
       return null;
     }
   }
