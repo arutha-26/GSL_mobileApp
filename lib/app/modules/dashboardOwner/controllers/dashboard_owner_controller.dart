@@ -20,7 +20,7 @@ class DashboardOwnerController extends GetxController {
     await fetchDataCucian();
     await fetchDataPaid();
     await fetchDataTodayTransactions();
-    await fetchMonthlyTransactionData();
+    await fetchMonthlyTransactionData(DateTime.now());
     isLoading.value = false;
   }
 
@@ -31,7 +31,7 @@ class DashboardOwnerController extends GetxController {
     fetchDataCucian();
     fetchDataPaid();
     fetchDataTodayTransactions();
-    fetchMonthlyTransactionData();
+    fetchMonthlyTransactionData(DateTime.now());
   }
 
   Future<void> fetchDataCucian() async {
@@ -127,18 +127,21 @@ class DashboardOwnerController extends GetxController {
     }
   }
 
-  Future<void> fetchMonthlyTransactionData() async {
+  var selectedMonth = DateTime.now().obs; // Menambahkan variable untuk bulan terpilih
+
+  // Modifikasi fungsi fetchMonthlyTransactionData untuk menerima parameter DateTime
+  Future<void> fetchMonthlyTransactionData(DateTime month) async {
     try {
-      DateTime now = DateTime.now();
-      String startOfMonth = DateFormat('yyyy-MM-01').format(now);
+      // Define the first and last day of the selected month
+      DateTime firstDayOfMonth = DateTime(month.year, month.month, 1);
+      DateTime lastDayOfMonth = DateTime(month.year, month.month + 1, 0);
 
-      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
-      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
-
+      // Fetch transactions for the selected month
       final response = await client
           .from('transaksi')
           .select('*')
-          .gte('tanggal_datang', startOfMonth)
+          .gte('tanggal_datang', DateFormat('yyyy-MM-dd').format(firstDayOfMonth))
+          .lte('tanggal_datang', DateFormat('yyyy-MM-dd').format(lastDayOfMonth))
           .order('tanggal_datang')
           .execute();
 
@@ -150,23 +153,23 @@ class DashboardOwnerController extends GetxController {
           dayCounts.update(dayIndex, (value) => value + 1, ifAbsent: () => 1);
         }
 
+        // Initialize transactionsPerDay with zeros for the entire month
         List<int> transactionsPerDay =
             List.generate(lastDayOfMonth.day, (index) => dayCounts[index] ?? 0);
+
+        // Update the observable with the new data
         monthlyTransactionData.value = transactionsPerDay;
 
+        // Debugging: Print the transaction data
         print('Monthly Transaction Data:');
         for (int day = 1; day <= lastDayOfMonth.day; day++) {
-          DateTime currentDay = firstDayOfMonth.add(Duration(days: day - 1));
-          String dayName = DateFormat('EEEE').format(currentDay); // Mendapatkan nama hari
-          print('Day $day ($dayName): ${transactionsPerDay[day - 1]} transactions');
+          print('Day $day: ${transactionsPerDay[day - 1]} transactions');
         }
-      } else if (kDebugMode) {
+      } else {
         print('Error fetching data: HTTP status ${response.status}');
       }
     } catch (error) {
-      if (kDebugMode) {
-        print('Exception during fetching data: $error');
-      }
+      print('Exception during fetching data: $error');
     }
   }
 }

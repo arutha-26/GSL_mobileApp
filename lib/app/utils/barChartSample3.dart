@@ -7,7 +7,10 @@ import 'appColors.dart';
 class BarChartSample3 extends StatefulWidget {
   final List<int> transactionsPerDay;
 
-  const BarChartSample3({Key? key, required this.transactionsPerDay}) : super(key: key);
+  final List<String> dates; // Add a list of dates
+
+  const BarChartSample3({Key? key, required this.transactionsPerDay, required this.dates})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => BarChartSample3State();
@@ -25,18 +28,25 @@ class BarChartSample3State extends State<BarChartSample3> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 2,
-      child: BarChart(
-        BarChartData(
-          barTouchData: barTouchData,
-          titlesData: titlesData,
-          borderData: borderData,
-          barGroups: _createBarGroups(widget.transactionsPerDay),
-          gridData: const FlGridData(show: false),
-          alignment: BarChartAlignment.spaceEvenly,
-          maxY: 15,
-          backgroundColor: const Color(0xFF2d4261),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        height: 200,
+        width: 2000,
+        child: AspectRatio(
+          aspectRatio: 10,
+          child: BarChart(
+            BarChartData(
+              barTouchData: barTouchData,
+              titlesData: titlesData,
+              borderData: borderData,
+              barGroups: _createBarGroups(widget.transactionsPerDay),
+              gridData: const FlGridData(show: false),
+              alignment: BarChartAlignment.spaceEvenly,
+              maxY: 15,
+              backgroundColor: const Color(0xFF2d4261),
+            ),
+          ),
         ),
       ),
     );
@@ -47,7 +57,7 @@ class BarChartSample3State extends State<BarChartSample3> {
         touchTooltipData: BarTouchTooltipData(
           tooltipBgColor: Colors.transparent,
           tooltipPadding: EdgeInsets.zero,
-          tooltipMargin: 8,
+          tooltipMargin: 5,
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
@@ -104,7 +114,7 @@ class BarChartSample3State extends State<BarChartSample3> {
       final transactionCount = entry.value;
 
       return BarChartGroupData(
-        x: dayIndex,
+        x: dayIndex, // Align with the actual day of the month
         barRods: [
           BarChartRodData(
             toY: transactionCount.toDouble(),
@@ -123,16 +133,22 @@ class BarChartSample3State extends State<BarChartSample3> {
       fontSize: 12,
     );
 
-    final List<String> dayNames = ['S', 'S', 'R', 'K', 'J', 'S', 'M'];
-
     final int intValue = value.toInt();
 
-    // Menggunakan modulo untuk looping nama hari
-    final String dayName = dayNames[(intValue - 1) % dayNames.length];
+    if (intValue < 0 || intValue >= widget.dates.length) {
+      // Instead of returning an empty container, you might return a placeholder or a message
+      return SideTitleWidget(
+        axisSide: meta.axisSide,
+        space: 4,
+        child: Text("-", style: style), // Placeholder for missing dates
+      );
+    }
+
+    final String dateTitle = widget.dates[intValue]; // Use the date string
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 4,
-      child: Text(dayName, style: style),
+      child: Text(dateTitle, style: style),
     );
   }
 }

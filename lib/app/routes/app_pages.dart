@@ -118,7 +118,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DASHBOARD_OWNER,
-      page: () => const DashboardOwnerView(),
+      page: () => DashboardOwnerView(),
       binding: DashboardOwnerBinding(),
     ),
   ];

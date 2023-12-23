@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/barChartSample3.dart';
@@ -7,7 +8,10 @@ import '../../../utils/bottom_navbar.dart';
 import '../controllers/dashboard_owner_controller.dart';
 
 class DashboardOwnerView extends GetView<DashboardOwnerController> {
-  const DashboardOwnerView({Key? key}) : super(key: key);
+  DashboardOwnerView({Key? key}) : super(key: key);
+  var selectedMonth = DateTime.now().obs;
+
+  List<int>? get newData => null;
 
   @override
   Widget build(BuildContext context) {
@@ -126,20 +130,61 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
   }
 
   Widget _buildMonthlyTransactionsGraph() {
-    return Obx(() {
-      final transactionsData = controller.monthlyTransactionData.value;
+    return Column(
+      children: [
+        monthSelectionDropdown(),
+        Obx(() {
+          final transactionsData = controller.monthlyTransactionData.value;
 
-      // Check if the data is available and not empty
-      if (transactionsData != null && transactionsData.isNotEmpty) {
-        return Container(
-          height: 200,
-          child: BarChartSample3(transactionsPerDay: transactionsData),
+          if (transactionsData != null && transactionsData.isNotEmpty) {
+            // Use the selected month and year
+            DateTime selectedMonth = controller.selectedMonth.value ?? DateTime.now();
+            DateTime firstDayOfSelectedMonth =
+                DateTime(selectedMonth.year, selectedMonth.month, 1);
+
+            List<String> dates = List.generate(transactionsData.length, (index) {
+              DateTime date = firstDayOfSelectedMonth.add(Duration(days: index));
+              return DateFormat('dd-MM').format(date); // Format as 'Day-Month'
+            });
+
+            return Container(
+              height: 200,
+              child: BarChartSample3(
+                transactionsPerDay: transactionsData,
+                dates: dates,
+              ),
+            );
+          } else {
+            return Container(
+                child:
+                    const Center(child: Text('Tidak ada data transaksi untuk ditampilkan.')));
+          }
+        }),
+      ],
+    );
+  }
+
+  Widget monthSelectionDropdown() {
+    // Extract only the year and month part
+    DateTime initialMonth =
+        DateTime(controller.selectedMonth.value.year, controller.selectedMonth.value.month);
+
+    return DropdownButton<DateTime>(
+      value: initialMonth,
+      onChanged: (DateTime? newValue) {
+        if (newValue != null) {
+          controller.selectedMonth.value = newValue;
+          controller.fetchMonthlyTransactionData(newValue);
+        }
+      },
+      items: List.generate(12, (index) {
+        DateTime month = DateTime(initialMonth.year, index + 1);
+        return DropdownMenuItem<DateTime>(
+          value: month,
+          child: Text(DateFormat('MMMM').format(month)),
         );
-      } else {
-        // You can display a loading indicator or an empty state here
-        return CircularProgressIndicator(); // Example loading indicator
-      }
-    });
+      }),
+    );
   }
 
   Widget _buildMonthlyIncomeGraph() {
