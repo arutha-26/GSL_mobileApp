@@ -25,28 +25,20 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
         title: const Text('Data Transaksi'),
         centerTitle: true,
       ),
-      body: FutureBuilder(
-        future: controller.fetchData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+      body: Obx(() {
+        if (controller.isLoading.isTrue) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
+        if (controller.data.isEmpty) {
+          return const Center(
+            child: Text('No data available.'),
+          );
+        }
 
-          if (controller.data.isEmpty) {
-            return const Center(
-              child: Text('No data available.'),
-            );
-          }
-
-          // Define the columns using the columnNames mapping
+        // Define the columns using the columnNames mapping
           List<DataColumn> columns = controller.data[0].keys.map((key) {
             return DataColumn(
               label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
@@ -77,37 +69,70 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             );
           }).toList();
 
-          return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: columns,
-                rows: rows,
-              ),
+        return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: columns,
+              rows: rows,
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
         onTap: (index) {
           // Handle navigation using Get
           switch (index) {
             case 0:
-              Get.offAllNamed(Routes.OWNERHOME); // Replace '/home' with your actual home route
+              Get.offAllNamed(Routes.OWNERHOME);
               break;
             case 1:
-              Get.offAllNamed(Routes
-                  .DASHBOARD_OWNER); // Replace '/dashboard' with your actual dashboard route
+              Get.offAllNamed(Routes.DASHBOARD_OWNER);
               break;
             case 2:
-              Get.offAllNamed(
-                  Routes.OWNERPROFILE); // Replace '/profile' with your actual profile route
+              Get.offAllNamed(Routes.OWNERPROFILE);
               break;
             default:
           }
         },
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              if (controller.currentPage.value > 1) {
+                controller.currentPage--;
+                await controller.fetchData(page: controller.currentPage.value);
+                // Update UI
+              }
+            },
+            child: const Icon(Icons.arrow_back),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () async {
+              controller.currentPage++;
+              await controller.fetchData(page: controller.currentPage.value);
+              // Update UI
+            },
+            child: const Icon(Icons.arrow_forward),
+          ),
+          const SizedBox(width: 20),
+          Obx(() {
+            return Row(
+              children: [
+                Text('Page: ${controller.currentPage}'),
+                const SizedBox(width: 20),
+                if (controller.isLoading.isTrue) ...{
+                  const CircularProgressIndicator(),
+                }
+              ],
+            );
+          }),
+        ],
       ),
     );
   }
