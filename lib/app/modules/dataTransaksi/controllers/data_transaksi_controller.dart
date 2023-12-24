@@ -9,37 +9,56 @@ class DataTransaksiController extends GetxController {
 
   RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
   RxInt currentPage = 1.obs;
+  Rx<DateTime> selectedDate = Rx(DateTime.now());
 
-  Future<void> fetchData({int page = 1}) async {
+  Rx<DateTime> startDate = Rx(DateTime.now());
+  Rx<DateTime> endDate = Rx(DateTime.now());
+  RxInt totalDataCount = 0.obs; // Variable to store the total data count
+
+  Future<void> fetchDataWithDateRange({int page = 1}) async {
     try {
-      isLoading.value = true; // Set loading to true
+      isLoading.value = true;
+
       final response = await client
           .from('transaksi')
           .select('*')
-          .limit(10)
-          .range((page - 1) * 10, page * 10 - 1) // Calculate range based on the page
-          .execute();
+          .gte('tanggal_datang', '${startDate.value.toLocal()}')
+          .lte('tanggal_datang',
+              '${endDate.value.toLocal().add(const Duration(days: 1))}') // Add one day to include all data for the end date
+          .execute(); // Fetch all data for the date range
 
       if (response != null && response.data != null && response.data is List) {
-        // Safely cast each item in the list to Map<String, dynamic>
         data.value = (response.data as List).map((item) {
           if (item is Map<String, dynamic>) {
             return item;
           } else {
-            // Handle cases where the item is not a Map<String, dynamic>
             return <String, dynamic>{};
           }
         }).toList();
+
+        // Update the totalDataCount variable
+        totalDataCount.value = data.length;
+
+        // Paginate the new data based on the specified page
+        final startIdx = (page - 1) * 10;
+        final endIdx = startIdx + 10;
+
+        if (startIdx < data.length) {
+          // Ensure that the start index is within the bounds of newData
+          data.value = data.sublist(startIdx, endIdx.clamp(startIdx, data.length));
+        } else {
+          // Handle the case where startIdx is beyond the length of newData
+          data.value = [];
+        }
 
         print('Fetched data: $data');
       } else {
         print('Error: Invalid data format');
       }
     } catch (error) {
-      // Handle other exceptions
       print('Error: $error');
     } finally {
-      isLoading.value = false; // Set loading to false after completion
+      isLoading.value = false;
     }
   }
 
