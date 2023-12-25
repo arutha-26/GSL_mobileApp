@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -141,27 +140,6 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
     );
   }
 
-  // int _getCurrentIndexForRole(int tabNow) {
-  //   switch (tabNow) {
-  //     case 0:
-  //       // if (kDebugMode) {
-  //       //   print(controller.selectedIndexOwner.value);
-  //       // }
-  //       // return controller.selectedIndexOwner.value;
-  //     case 1:
-  //       // if (kDebugMode) {
-  //       //   print(controller.selectedIndexKaryawan.value);
-  //       // }
-  //       // return controller.selectedIndexKaryawan.value;
-  //     case 2:
-  //       // if (kDebugMode) {
-  //       //   print(controller.selectedIndexPelanggan.value);
-  //       // }
-  //       // return controller.selectedIndexPelanggan.value;
-  //     default:
-  //       return 0;
-  //   }
-  // }
   void _handleNavigation(int index, String userRole) {
     controller.onPageChanged(index); // Pastikan onPageChanged dipanggil terlebih dahulu
     switch (userRole) {
@@ -177,19 +155,6 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
       default:
         Get.snackbar("ERROR", "Unknown user role");
         break;
-    }
-  }
-
-  int _getCurrentIndexForRole(String userRole) {
-    switch (userRole) {
-      case 'Owner':
-        return controller.selectedIndexOwner.value;
-      case 'Karyawan':
-        return controller.selectedIndexKaryawan.value;
-      case 'Pelanggan':
-        return controller.selectedIndexPelanggan.value;
-      default:
-        return 0;
     }
   }
 
@@ -214,7 +179,7 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
         Get.offAllNamed(Routes.KARYAWANHOME);
         break;
       case 1:
-        Get.offAllNamed(Routes.KARYAWANHOME);
+        Get.offAllNamed(Routes.KARYAWAN_DASHBOARD);
         break;
       case 2:
         Get.offAllNamed(Routes.KARYAWANPROFILE);
@@ -229,14 +194,10 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
         Get.offAllNamed(Routes.PELANGGANHOME);
         break;
       case 1:
-        Get.offAllNamed(Routes.PELANGGANHOME);
+        Get.offAllNamed(Routes.PELANGGAN_DASBOARD);
         break;
       case 2:
         Get.offAllNamed(Routes.PELANGGAN_PROFILE);
-        tabNow == 2;
-        if (kDebugMode) {
-          print('sekarang tab ke- $tabNow setelah berpindah');
-        }
         break;
       default:
     }

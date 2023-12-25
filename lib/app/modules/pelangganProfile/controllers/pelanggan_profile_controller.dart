@@ -107,30 +107,7 @@ class PelangganProfileController extends GetxController {
     }
   }
 
-  // Add this method to your controller
-
   void onPageChanged(int index) {
     selectedIndexPelanggan.value = index;
-  }
-
-  int getSelectedIndexPelanggan(int index) {
-    int currentIndex;
-
-    switch (index) {
-      case 0:
-        currentIndex = 0; // Sesuai dengan logika untuk halaman ke-0
-        break;
-      case 1:
-        currentIndex = 1; // Sesuai dengan logika untuk halaman ke-1
-        break;
-      case 2:
-        currentIndex = 2; // Sesuai dengan logika untuk halaman ke-2
-        break;
-      default:
-        currentIndex = 0; // Default jika tidak ada yang sesuai
-        break;
-    }
-
-    return currentIndex;
   }
 }

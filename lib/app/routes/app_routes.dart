@@ -25,6 +25,9 @@ abstract class Routes {
   static const DASHBOARD_OWNER = _Paths.DASHBOARD_OWNER;
   static const DATA_TRANSAKSI = _Paths.DATA_TRANSAKSI;
   static const PELANGGAN_PROFILE = _Paths.PELANGGAN_PROFILE;
+  static const PELANGGAN_DASBOARD = _Paths.PELANGGAN_DASBOARD;
+  static const KARYAWAN_DASHBOARD = _Paths.KARYAWAN_DASHBOARD;
+  static const PENGAMBILAN_LAUNDRY = _Paths.PENGAMBILAN_LAUNDRY;
 }
 
 abstract class _Paths {
@@ -51,4 +54,7 @@ abstract class _Paths {
   static const DASHBOARD_OWNER = '/dashboard-owner';
   static const DATA_TRANSAKSI = '/data-transaksi';
   static const PELANGGAN_PROFILE = '/pelanggan-profile';
+  static const PELANGGAN_DASBOARD = '/pelanggan-dasboard';
+  static const KARYAWAN_DASHBOARD = '/karyawan-dashboard';
+  static const PENGAMBILAN_LAUNDRY = '/pengambilan-laundry';
 }

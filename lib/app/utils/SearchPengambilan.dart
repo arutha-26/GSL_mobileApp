@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
 import 'package:gsl/app/utils/pelanggan.dart';
 
-import '../modules/addtransaksi/controllers/addtransaksi_controller.dart';
-
-class PelangganSearchWidget extends StatelessWidget {
+class SearchPengambilan extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController kategoriController;
+  final PengambilanLaundryController pengambilanLaundryController;
 
-  final AddtransaksiController addtransaksiController;
-
-  PelangganSearchWidget({
+  SearchPengambilan({
     Key? key,
     required this.nameController,
     required this.phoneController,
     required this.kategoriController,
-    required this.addtransaksiController,
+    required this.pengambilanLaundryController,
   }) : super(key: key);
 
   @override
@@ -25,7 +23,7 @@ class PelangganSearchWidget extends StatelessWidget {
         if (textEditingValue.text == '') {
           return const Iterable<Pengambilan>.empty();
         }
-        return await addtransaksiController.fetchdataPelanggan(textEditingValue.text);
+        return await pengambilanLaundryController.fetchdataPelanggan(textEditingValue.text);
       },
       displayStringForOption: (Pengambilan option) {
         if (option != null) {
@@ -48,7 +46,7 @@ class PelangganSearchWidget extends StatelessWidget {
           focusNode: focusNode,
           onEditingComplete: onEditingComplete,
           decoration: const InputDecoration(
-            labelText: "Cari Pelanggan",
+            labelText: "Cari Data Transaksi",
             border: OutlineInputBorder(),
           ),
         );

@@ -6,7 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../utils/pelanggan.dart';
 
-class AddtransaksiController extends GetxController {
+class PengambilanLaundryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
@@ -88,7 +88,9 @@ class AddtransaksiController extends GetxController {
         }).toList();
       }
     } catch (error) {
-      print('Exception during fetching data: $error');
+      if (kDebugMode) {
+        print('Exception during fetching data: $error');
+      }
     }
     return results;
   }
@@ -213,7 +215,9 @@ class AddtransaksiController extends GetxController {
       DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
       return DateFormat('yyyy-MM-dd').format(parsedDate); // Convert to YYYY-MM-DD format
     } catch (e) {
-      print("Error parsing date: $e");
+      if (kDebugMode) {
+        print("Error parsing date: $e");
+      }
       return "";
     }
   }

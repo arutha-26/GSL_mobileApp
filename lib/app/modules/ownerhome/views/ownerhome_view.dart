@@ -6,6 +6,8 @@ import 'package:gsl/app/modules/dataTransaksi/controllers/data_transaksi_control
 import 'package:gsl/app/modules/dataTransaksi/views/data_transaksi_view.dart';
 import 'package:gsl/app/modules/paneltransaksi/controllers/paneltransaksi_controller.dart';
 import 'package:gsl/app/modules/paneltransaksi/views/paneltransaksi_view.dart';
+import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
+import 'package:gsl/app/modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
@@ -66,6 +68,19 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 },
                 icon: const Icon(Icons.add),
                 label: const Text('Panel Transaksi'),
+              ),
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              width: 350,
+              height: 50,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Get.put(PengambilanLaundryController());
+                  Get.to(() => PengambilanLaundryView());
+                },
+                icon: const Icon(Icons.book_rounded),
+                label: const Text('Pengambilan Laundry'),
               ),
             ),
             const SizedBox(height: 15),

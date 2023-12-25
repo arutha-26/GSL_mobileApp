@@ -1,13 +1,14 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
-import '../controllers/pelangganhome_controller.dart';
+import '../controllers/pelanggan_dasboard_controller.dart';
 
-class PelangganhomeView extends GetView<PelangganhomeController> {
-  PelangganhomeView({super.key});
+class PelangganDasboardView extends GetView<PelangganDasboardController> {
+  PelangganDasboardView({super.key});
 
   final authC = Get.find<AuthController>();
 
@@ -33,8 +34,32 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                _buildStatusAndDebtsCard(),
-                _buildProfitAndTransactionCountCard(),
+                // Carousel Slider with Animated Images
+                CarouselSlider(
+                  items: [
+                    Image.asset('images/banner_1.png'),
+                    Image.asset('images/banner_4.png'),
+                  ],
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: true,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+                    viewportFraction: 1,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Selamat Datang di Green Spirit Laundry',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           );
@@ -47,21 +72,21 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
           switch (userRole) {
             case 'Owner':
               return BottomNavBar(
-                currentIndex: 0,
+                currentIndex: 1,
                 onTap: (index) {
                   _handleNavigationOwner(index);
                 },
               );
             case 'Karyawan':
               return BottomNavBar(
-                currentIndex: 0,
+                currentIndex: 1,
                 onTap: (index) {
                   _handleNavigationKaryawan(index);
                 },
               );
             case 'Pelanggan':
               return BottomNavBar(
-                currentIndex: 0,
+                currentIndex: 1,
                 onTap: (index) {
                   _handleNavigationPelanggan(index);
                 },
@@ -129,88 +154,5 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
         break;
       default:
     }
-  }
-
-  Widget buildRowCard(Widget card1, Widget card2) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Expanded(child: card1),
-        const SizedBox(width: 8),
-        Expanded(child: card2),
-      ],
-    );
-  }
-
-  Widget _buildStatusAndDebtsCard() {
-    return buildRowCard(
-      _buildPaidDebtsCard(),
-      _buildOutstandingDebtsCard(),
-    );
-  }
-
-  Widget _buildProfitAndTransactionCountCard() {
-    return buildRowCard(
-      _buildStatusCard(),
-      _buildTodayTransactionsCard(),
-    );
-  }
-
-  Widget _buildStatusCard() {
-    return InkWell(
-      onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
-      },
-      child: Card(
-        child: ListTile(
-          title: const Text('Status Cucian'),
-          subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOutstandingDebtsCard() {
-    return InkWell(
-      onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
-      },
-      child: Card(
-        color: Colors.redAccent,
-        child: ListTile(
-          title: const Text('Hutang Belum Dibayar'),
-          subtitle: Obx(() => Text('Rp. ${controller.formattedTotalDebt.value}')),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaidDebtsCard() {
-    return InkWell(
-      onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
-      },
-      child: Card(
-        color: Colors.green,
-        child: ListTile(
-          title: const Text('Total Transaksi Sudah Dibayar'),
-          subtitle: Obx(() => Text('Rp. ${controller.formattedTotalPaid.value}')),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTodayTransactionsCard() {
-    return InkWell(
-      onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
-      },
-      child: Card(
-        child: ListTile(
-          title: const Text('Transaksi Hari Ini'),
-          subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
-        ),
-      ),
-    );
   }
 }

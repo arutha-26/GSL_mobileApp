@@ -1,13 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gsl/app/utils/SearchPengambilan.dart';
 import 'package:intl/intl.dart';
 
-import '../../../utils/PelangganSearchWidget.dart';
-import '../controllers/addtransaksi_controller.dart';
+import '../controllers/pengambilan_laundry_controller.dart';
 
-class AddtransaksiView extends GetView<AddtransaksiController> {
-  AddtransaksiView({super.key});
+class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
+  PengambilanLaundryView({Key? key}) : super(key: key);
 
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
@@ -25,7 +25,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Tambah Data Transaksi'),
+          title: const Text('Pengambilan Laundry'),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -55,11 +55,11 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  PelangganSearchWidget(
+                  SearchPengambilan(
                     nameController: controller.nameController,
                     phoneController: controller.phoneController,
                     kategoriController: controller.kategoriController,
-                    addtransaksiController: controller,
+                    pengambilanLaundryController: controller,
                   ),
                   const SizedBox(
                     height: 20,
@@ -263,7 +263,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                          child: const Column(
+                              child: const Column(
                                 children: [
                                   Icon(Icons.payment, color: Colors.red),
                                   Text('Belum Dibayar'),

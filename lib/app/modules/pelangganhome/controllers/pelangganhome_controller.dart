@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../routes/app_pages.dart';
-
 // TODO
 /*
 REBUILT DATABASE
@@ -202,11 +200,6 @@ class PelangganhomeController extends GetxController {
         print('Exception during fetching data: $error');
       }
     }
-  }
-
-  Future<void> logout() async {
-    await client.auth.signOut();
-    Get.offAllNamed(Routes.LOGINPAGE);
   }
 
   RxString userRole = RxString('');

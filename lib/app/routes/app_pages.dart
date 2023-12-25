@@ -14,6 +14,8 @@ import '../modules/detailpaneltransaksi/bindings/detailpaneltransaksi_binding.da
 import '../modules/detailpaneltransaksi/views/detailpaneltransaksi_view.dart';
 import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
 import '../modules/detailpelanggan/views/detailpelanggan_view.dart';
+import '../modules/karyawanDashboard/bindings/karyawan_dashboard_binding.dart';
+import '../modules/karyawanDashboard/views/karyawan_dashboard_view.dart';
 import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
 import '../modules/karyawanhome/views/karyawanhome_view.dart';
 import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
@@ -30,10 +32,14 @@ import '../modules/ownerprofile/bindings/ownerprofile_binding.dart';
 import '../modules/ownerprofile/views/ownerprofile_view.dart';
 import '../modules/paneltransaksi/bindings/paneltransaksi_binding.dart';
 import '../modules/paneltransaksi/views/paneltransaksi_view.dart';
+import '../modules/pelangganDasboard/bindings/pelanggan_dasboard_binding.dart';
+import '../modules/pelangganDasboard/views/pelanggan_dasboard_view.dart';
 import '../modules/pelangganProfile/bindings/pelanggan_profile_binding.dart';
 import '../modules/pelangganProfile/views/pelanggan_profile_view.dart';
 import '../modules/pelangganhome/bindings/pelangganhome_binding.dart';
 import '../modules/pelangganhome/views/pelangganhome_view.dart';
+import '../modules/pengambilanLaundry/bindings/pengambilan_laundry_binding.dart';
+import '../modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
 
@@ -134,6 +140,21 @@ class AppPages {
       name: _Paths.PELANGGAN_PROFILE,
       page: () => PelangganProfileView(),
       binding: PelangganProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.PELANGGAN_DASBOARD,
+      page: () => PelangganDasboardView(),
+      binding: PelangganDasboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.KARYAWAN_DASHBOARD,
+      page: () => KaryawanDashboardView(),
+      binding: KaryawanDashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.PENGAMBILAN_LAUNDRY,
+      page: () => PengambilanLaundryView(),
+      binding: PengambilanLaundryBinding(),
     ),
   ];
 }
