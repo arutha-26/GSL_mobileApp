@@ -132,7 +132,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PELANGGAN_PROFILE,
-      page: () => const PelangganProfileView(),
+      page: () => PelangganProfileView(),
       binding: PelangganProfileBinding(),
     ),
   ];

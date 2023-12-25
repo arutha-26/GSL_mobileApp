@@ -210,6 +210,9 @@ class PelangganhomeController extends GetxController {
   }
 
   RxString userRole = RxString('');
+  RxInt selectedIndexOwner = 0.obs;
+  RxInt selectedIndexKaryawan = 0.obs;
+  RxInt selectedIndexPelanggan = 0.obs;
 
   Future<void> getUserRole() async {
     try {
@@ -227,6 +230,9 @@ class PelangganhomeController extends GetxController {
 
       if (response.data != null && response.data.isNotEmpty) {
         userRole.value = response.data['role'] as String? ?? '';
+        if (kDebugMode) {
+          print(response.data.toString());
+        }
       } else {
         if (kDebugMode) {
           print("No user found");

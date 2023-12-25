@@ -37,7 +37,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
               },
               child: const Text(
                 "LOGOUT",
-                style: TextStyle(color: Colors.redAccent),
+                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
               ))
         ],
       ),

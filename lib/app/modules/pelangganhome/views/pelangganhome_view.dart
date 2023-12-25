@@ -7,7 +7,7 @@ import '../../../utils/bottom_navbar.dart';
 import '../controllers/pelangganhome_controller.dart';
 
 class PelangganhomeView extends GetView<PelangganhomeController> {
-  PelangganhomeView({Key? key}) : super(key: key);
+  PelangganhomeView({super.key});
 
   final authC = Get.find<AuthController>();
 
@@ -47,44 +47,53 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
           switch (userRole) {
             case 'Owner':
               return BottomNavBar(
-                currentIndex: _getCurrentIndex(userRole),
+                currentIndex: _getCurrentIndexForRole(userRole),
                 onTap: (index) {
                   _handleNavigationOwner(index);
                 },
               );
             case 'Karyawan':
               return BottomNavBar(
-                currentIndex: _getCurrentIndex(userRole),
+                currentIndex: _getCurrentIndexForRole(userRole),
                 onTap: (index) {
                   _handleNavigationKaryawan(index);
                 },
               );
             case 'Pelanggan':
               return BottomNavBar(
-                currentIndex: _getCurrentIndex(userRole),
+                currentIndex: _getCurrentIndexForRole(userRole),
                 onTap: (index) {
                   _handleNavigationPelanggan(index);
                 },
               );
             default:
-              return Text("Unknown user role");
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    // SizedBox(height: 8), // Add some space between the loading indicator and text
+                    // Text("Loading data user"),
+                  ],
+                ),
+              );
           }
         } else {
           // Jika gagal mendapatkan peran pengguna, tampilkan widget alternatif atau pesan kesalahan
-          return Text("Failed to fetch user role");
+          return const Center(child: Text("Failed to fetch user role"));
         }
       }),
     );
   }
 
-  int _getCurrentIndex(String userRole) {
+  int _getCurrentIndexForRole(String userRole) {
     switch (userRole) {
       case 'Owner':
-        return 0;
+        return controller.selectedIndexOwner.value;
       case 'Karyawan':
-        return 1;
+        return controller.selectedIndexKaryawan.value;
       case 'Pelanggan':
-        return 2;
+        return controller.selectedIndexPelanggan.value;
       default:
         return 0;
     }
@@ -106,8 +115,18 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   }
 
   void _handleNavigationKaryawan(int index) {
-    // Handle navigation for Karyawan role
-    // ...
+    switch (index) {
+      case 0:
+        Get.offAllNamed(Routes.KARYAWANHOME);
+        break;
+      case 1:
+        Get.offAllNamed(Routes.KARYAWANHOME);
+        break;
+      case 2:
+        Get.offAllNamed(Routes.KARYAWANPROFILE);
+        break;
+      default:
+    }
   }
 
   void _handleNavigationPelanggan(int index) {
