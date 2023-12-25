@@ -60,7 +60,7 @@ class AdddataController extends GetxController {
           print('Alamat: ${alamatC.text}');
         }
         if (kDebugMode) {
-          print('Phone: ${nohpC.text}');
+          print('Phone: ${'+62${nohpC.text}'}');
         }
         if (kDebugMode) {
           print('Kategori: ${getSelectedKategori()}');

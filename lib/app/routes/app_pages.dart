@@ -30,6 +30,8 @@ import '../modules/ownerprofile/bindings/ownerprofile_binding.dart';
 import '../modules/ownerprofile/views/ownerprofile_view.dart';
 import '../modules/paneltransaksi/bindings/paneltransaksi_binding.dart';
 import '../modules/paneltransaksi/views/paneltransaksi_view.dart';
+import '../modules/pelangganProfile/bindings/pelanggan_profile_binding.dart';
+import '../modules/pelangganProfile/views/pelanggan_profile_view.dart';
 import '../modules/pelangganhome/bindings/pelangganhome_binding.dart';
 import '../modules/pelangganhome/views/pelangganhome_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
@@ -127,6 +129,11 @@ class AppPages {
       name: _Paths.DATA_TRANSAKSI,
       page: () => DataTransaksiView(),
       binding: DataTransaksiBinding(),
+    ),
+    GetPage(
+      name: _Paths.PELANGGAN_PROFILE,
+      page: () => const PelangganProfileView(),
+      binding: PelangganProfileBinding(),
     ),
   ];
 }

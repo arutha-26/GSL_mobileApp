@@ -8,10 +8,7 @@ import '../../../utils/bottom_navbar.dart';
 import '../controllers/dashboard_owner_controller.dart';
 
 class DashboardOwnerView extends GetView<DashboardOwnerController> {
-  DashboardOwnerView({super.key});
-  var selectedMonth = DateTime.now().obs;
-
-  List<int>? get newData => null;
+  const DashboardOwnerView({super.key});
 
   @override
   Widget build(BuildContext context) {

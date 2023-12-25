@@ -24,6 +24,7 @@ abstract class Routes {
   static const DETAILPANELTRANSAKSI = _Paths.DETAILPANELTRANSAKSI;
   static const DASHBOARD_OWNER = _Paths.DASHBOARD_OWNER;
   static const DATA_TRANSAKSI = _Paths.DATA_TRANSAKSI;
+  static const PELANGGAN_PROFILE = _Paths.PELANGGAN_PROFILE;
 }
 
 abstract class _Paths {
@@ -49,4 +50,5 @@ abstract class _Paths {
   static const DETAILPANELTRANSAKSI = '/detailpaneltransaksi';
   static const DASHBOARD_OWNER = '/dashboard-owner';
   static const DATA_TRANSAKSI = '/data-transaksi';
+  static const PELANGGAN_PROFILE = '/pelanggan-profile';
 }
