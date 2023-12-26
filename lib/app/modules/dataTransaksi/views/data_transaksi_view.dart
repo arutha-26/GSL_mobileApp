@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../controllers/data_transaksi_controller.dart';
 
 class DataTransaksiView extends GetView<DataTransaksiController> {
-  DataTransaksiView({Key? key}) : super(key: key);
-
-  final authC = Get.find<AuthController>();
+  DataTransaksiView({super.key});
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
@@ -32,6 +29,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Data Transaksi'),
         centerTitle: true,
@@ -51,7 +49,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
 
             if (controller.data.isEmpty) {
               return const Center(
-                child: Text('No data available.'),
+                child: Text('Tidak Ada Data!'),
               );
             }
 
@@ -145,7 +143,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             Obx(() {
               return Text(
                 'Page: ${controller.currentPage} / Total Data: ${controller.totalDataCount}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               );
             }),
           ],
