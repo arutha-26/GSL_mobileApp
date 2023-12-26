@@ -1,5 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+// TODO
+/*
+* BUATKAN FITUR UNTUK MENAMPILKAN DATA TRANSAKSI BERDASARKAN NAMA PELANGGAN DAN RENTANG TANGGAL, LALU FITUR UNTUK MENDOWNLOAD DATA YANG TAMPIL TERSEBUT KE PDF/CSV
+* */
 
 class DataTransaksiController extends GetxController {
   RxBool isLoading = false.obs;
@@ -24,7 +30,7 @@ class DataTransaksiController extends GetxController {
           .select('*')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
           .lte('tanggal_datang',
-              '${endDate.value.toLocal().add(const Duration(days: 1))}') // Add one day to include all data for the end date
+          '${endDate.value.toLocal().add(const Duration(days: 1))}') // Add one day to include all data for the end date
           .execute(); // Fetch all data for the date range
 
       if (response != null && response.data != null && response.data is List) {
@@ -51,12 +57,18 @@ class DataTransaksiController extends GetxController {
           data.value = [];
         }
 
-        print('Fetched data: $data');
+        if (kDebugMode) {
+          print('Fetched data: $data');
+        }
       } else {
-        print('Error: Invalid data format');
+        if (kDebugMode) {
+          print('Error: Invalid data format');
+        }
       }
     } catch (error) {
-      print('Error: $error');
+      if (kDebugMode) {
+        print('Error: $error');
+      }
     } finally {
       isLoading.value = false;
     }
