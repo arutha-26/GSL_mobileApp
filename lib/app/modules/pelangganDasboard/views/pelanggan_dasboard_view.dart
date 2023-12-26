@@ -27,44 +27,74 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
           ),
         ],
       ),
-      body: Obx(() {
-        if (controller.isLoading.isTrue) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                // Carousel Slider with Animated Images
-                CarouselSlider(
-                  items: [
-                    Image.asset('images/banner_1.png'),
-                    Image.asset('images/banner_4.png'),
-                  ],
-                  options: CarouselOptions(
-                    autoPlay: true,
-                    aspectRatio: 16 / 9,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: true,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-                    viewportFraction: 1,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Selamat Datang di Green Spirit Laundry',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+      body: Column(
+        children: [
+          CarouselSlider(
+            items: [
+              Image.asset('images/banner_1.png'),
+              Image.asset('images/banner_4.png'),
+              Image.asset('images/banner_7_edit.png'),
+              Image.asset('images/banner_5.png'),
+            ],
+            options: CarouselOptions(
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              enlargeCenterPage: true,
+              enableInfiniteScroll: true,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              autoPlayAnimationDuration: const Duration(milliseconds: 2000),
+              viewportFraction: 1,
             ),
-          );
-        }
-      }),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Selamat Datang di Green Spirit Laundry',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'History Transaksi',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: Obx(() {
+              if (controller.isLoading.isTrue) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (controller.transactionHistory.isEmpty) {
+                return const Center(child: Text('No Transaction History Found'));
+              } else {
+                return ListView.builder(
+                  itemCount: controller.transactionHistory.length,
+                  itemBuilder: (context, index) {
+                    final transaction = controller.transactionHistory[index];
+                    return Card(
+                      child: ListTile(
+                        onTap: () {
+                          // Handle tap
+                        },
+                        leading: Image.asset('images/history_icon.png'),
+                        // Replace with actual image URL
+                        title: Text('ID Transaksi: ${transaction['transaksi_id']}'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Tanggal Diambil: ${transaction['tanggal_diambil']}'),
+                            Text('Total Berat Laundry: ${transaction['berat_laundry']} kg'),
+                            Text('Total Biaya: Rp. ${transaction['total_biaya']}.000'),
+                            Text('Metode Pembayaran: ${transaction['metode_pembayaran']}'),
+                            Text('Status Pembayaran: ${transaction['status_pembayaran']}'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            }),
+          ),
+        ],
+      ),
       bottomNavigationBar: Obx(() {
         String? userRole = controller.userRole.value;
 

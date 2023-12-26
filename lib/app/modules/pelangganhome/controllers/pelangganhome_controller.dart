@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +30,7 @@ class PelangganhomeController extends GetxController {
     await fetchDataPaid();
     await fetchDataTodayTransactions();
     await getUserRole();
+    await getUserNama();
     isLoading.value = false;
   }
 
@@ -40,6 +42,7 @@ class PelangganhomeController extends GetxController {
     fetchDataPaid();
     fetchDataTodayTransactions();
     getUserRole();
+    getUserNama();
   }
 
   Future<void> fetchDataCucian() async {
@@ -57,8 +60,19 @@ class PelangganhomeController extends GetxController {
         count.value = response.data.length;
       }
     } catch (error) {
-      print('Exception during fetching data: $error');
+      if (kDebugMode) {
+        print('Exception during fetching data: $error');
+      }
     }
+  }
+
+  TextEditingController namaUser = TextEditingController();
+
+  Future<void> getUserNama() async {
+    List<dynamic> res =
+        await client.from("user").select().match({"uid": client.auth.currentUser!.id});
+    Map<String, dynamic> user = (res).first as Map<String, dynamic>;
+    namaUser.text = user["nama"];
   }
 
   final RxString formattedTotalDebt =
@@ -219,7 +233,7 @@ class PelangganhomeController extends GetxController {
       }
 
       var response =
-          await client.from('user').select('role').eq('uid', uid).single().execute();
+      await client.from('user').select('role').eq('uid', uid).single().execute();
 
       if (response.data != null && response.data.isNotEmpty) {
         userRole.value = response.data['role'] as String? ?? '';

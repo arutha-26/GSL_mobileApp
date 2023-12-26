@@ -15,7 +15,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard Pelanggan'),
+        title: const Text('Green Spirit Laundry'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -26,20 +26,33 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
           ),
         ],
       ),
-      body: Obx(() {
-        if (controller.isLoading.isTrue) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
+      body: FutureBuilder(
+        future: controller.getUserNama(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           return SingleChildScrollView(
             child: Column(
               children: [
+                Image.asset('images/banner_1.png'),
+                const SizedBox(height: 20),
+                Text(
+                  'Hallo Kakak ${controller.namaUser.text}',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
                 _buildStatusAndDebtsCard(),
+                const SizedBox(height: 5),
                 _buildProfitAndTransactionCountCard(),
+                const SizedBox(height: 20),
               ],
             ),
           );
-        }
-      }),
+        },
+      ),
       bottomNavigationBar: Obx(() {
         String? userRole = controller.userRole.value;
 

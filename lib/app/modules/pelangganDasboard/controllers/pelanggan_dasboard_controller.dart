@@ -16,6 +16,7 @@ class PelangganDasboardController extends GetxController {
   Future<void> refreshData() async {
     isLoading.value = true;
     await getUserRole();
+    fetchTransactionHistory();
     isLoading.value = false;
   }
 
@@ -23,6 +24,7 @@ class PelangganDasboardController extends GetxController {
   void onInit() {
     super.onInit();
     getUserRole();
+    fetchTransactionHistory();
   }
 
   RxString userRole = RxString('');
@@ -58,6 +60,62 @@ class PelangganDasboardController extends GetxController {
       if (kDebugMode) {
         print("Exception occurred: $e");
       }
+    }
+  }
+
+  Future<String?> getCurrentUserName() async {
+    try {
+      final response = await client
+          .from('user')
+          .select('nama')
+          .eq('uid', client.auth.currentUser?.id)
+          .single()
+          .execute();
+
+      if (response.status == 200 && response.data != null) {
+        return response.data['nama'] as String?;
+      } else {
+        if (kDebugMode) {
+          print('Error fetching user data: HTTP status ${response.status}');
+        }
+        return null;
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Exception during fetching user data: $error');
+      }
+      return null;
+    }
+  }
+
+  RxList<Map<String, dynamic>> transactionHistory = <Map<String, dynamic>>[].obs;
+
+  Future<void> fetchTransactionHistory() async {
+    isLoading.value = true;
+    try {
+      var namaPelanggan = await getCurrentUserName();
+
+      final response = await client
+          .from('transaksi')
+          .select('*')
+          .eq('nama_pelanggan', namaPelanggan)
+          .execute();
+
+      if (response.status == 200 && response.data != null) {
+        // Cast the response data to a list of maps
+        var dataList = List<Map<String, dynamic>>.from(response.data);
+        transactionHistory.assignAll(dataList);
+      } else {
+        if (kDebugMode) {
+          print('Error fetching transaction history: HTTP status ${response.status}');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Exception during fetching transaction history: $e');
+      }
+    } finally {
+      isLoading.value = false;
     }
   }
 }
