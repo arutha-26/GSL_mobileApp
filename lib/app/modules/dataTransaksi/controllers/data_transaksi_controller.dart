@@ -24,7 +24,7 @@ class DataTransaksiController extends GetxController {
           .select('*')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
           .lte('tanggal_datang',
-          '${endDate.value.toLocal().add(const Duration(days: 1))}') // Add one day to include all data for the end date
+              '${endDate.value.toLocal().add(const Duration(days: 1))}') // Add one day to include all data for the end date
           .execute(); // Fetch all data for the date range
 
       if (response != null && response.data != null && response.data is List) {
@@ -78,6 +78,6 @@ class DataTransaksiController extends GetxController {
     'tanggal_selesai': 'Tanggal Selesai',
     'status_cucian': 'Status Cucian',
     'is_hidden': 'Is Hidden',
-    'edit_at': 'Edit At'
+    'edit_at': 'Edit At'
   };
 }

@@ -22,6 +22,10 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
     if (picked != null) {
       controller.startDate.value = picked.start;
       controller.endDate.value = picked.end;
+
+      // Reset currentPage to 1 when selecting a new date
+      controller.currentPage.value = 1;
+
       await controller.fetchDataWithDateRange();
     }
   }
@@ -53,37 +57,68 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               );
             }
 
-            List<DataColumn> columns = controller.data[0].keys.map((key) {
-              return DataColumn(
-                label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
-              );
-            }).toList();
+            List<String> hiddenColumns = [
+              'transaksi_id',
+              'tanggal_selesai',
+              'created_at',
+              'is_hidden',
+              'tanggal_diambil',
+              'nama_karyawan_keluar'
+            ];
 
-            List<DataRow> rows = controller.data.asMap().entries.map((entry) {
-              int idx = entry.key;
-              Map<String, dynamic> row = entry.value;
+            List<DataColumn> columns = [
+              DataColumn(label: Text('No.')), // Add a column for row number
+              ...controller.data[0].keys
+                  .where((key) =>
+                      !hiddenColumns.contains(key) &&
+                      key != 'id') // Exclude 'id' from being displayed
+                  .map((key) => DataColumn(
+                        label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
+                      ))
+                  .toList(),
+            ];
 
-              return DataRow(
-                cells: row.keys.map((key) {
-                  return DataCell(
-                    Center(child: Text('${row[key]}')),
-                    onTap: () {
-                      if (controller.data[idx] != null) {
-                        print(
-                          'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: ${controller.data[idx]}',
-                        );
-                        Get.toNamed(
-                          Routes.DETAILPANELTRANSAKSI,
-                          arguments: controller.data[idx],
-                        );
-                      } else {
-                        print('Error: Data for index $idx is null');
-                      }
-                    },
+            List<DataRow> rows = controller.data
+                .asMap()
+                .map((idx, row) {
+                  // Filter out hidden columns
+                  Map<String, dynamic> filteredRow = Map.from(row)
+                    ..removeWhere((key, value) => hiddenColumns.contains(key));
+
+                  // Ensure the number of cells matches the number of columns
+                  assert(filteredRow.length + 1 == columns.length,
+                      'Mismatch in the number of cells and columns');
+
+                  return MapEntry(
+                    idx,
+                    DataRow(
+                      cells: [
+                        DataCell(Center(child: Text('${idx + 1}.'))),
+                        // Display the row number starting from 1
+                        ...filteredRow.keys.map((key) {
+                          return DataCell(
+                            Center(child: Text('${filteredRow[key]}')),
+                            onTap: () {
+                              if (row != null) {
+                                print(
+                                  'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: $row',
+                                );
+                                Get.toNamed(
+                                  Routes.DETAILPANELTRANSAKSI,
+                                  arguments: row,
+                                );
+                              } else {
+                                print('Error: Data for row is null');
+                              }
+                            },
+                          );
+                        }).toList(),
+                      ],
+                    ),
                   );
-                }).toList(),
-              );
-            }).toList();
+                })
+                .values
+                .toList();
 
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
