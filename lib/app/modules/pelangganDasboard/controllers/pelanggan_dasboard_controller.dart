@@ -104,6 +104,12 @@ class PelangganDasboardController extends GetxController {
       if (response.status == 200 && response.data != null) {
         // Cast the response data to a list of maps
         var dataList = List<Map<String, dynamic>>.from(response.data);
+
+        // Modify the STATUS_PEMBAYARAN here
+        for (var transaction in dataList) {
+          transaction['STATUS_PEMBAYARAN'] = 'BELUM DIBAYAR';
+        }
+
         transactionHistory.assignAll(dataList);
       } else {
         if (kDebugMode) {

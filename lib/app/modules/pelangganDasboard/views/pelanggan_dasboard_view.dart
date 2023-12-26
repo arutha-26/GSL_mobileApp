@@ -16,7 +16,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard Pelanggan'),
+        title: const Text('Dashboard'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -29,6 +29,10 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
       ),
       body: Column(
         children: [
+          const Text(
+            'Selamat Datang di Green Spirit Laundry',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           CarouselSlider(
             items: [
               Image.asset('images/banner_1.png'),
@@ -48,11 +52,6 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
           ),
           const SizedBox(height: 20),
           const Text(
-            'Selamat Datang di Green Spirit Laundry',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          const Text(
             'History Transaksi',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
@@ -68,22 +67,62 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                   itemCount: controller.transactionHistory.length,
                   itemBuilder: (context, index) {
                     final transaction = controller.transactionHistory[index];
+                    final statusPembayaran = transaction['status_pembayaran'];
+                    final isHidden = transaction['is_hidden'];
+
+                    // Determine card color based on IS_HIDDEN
+                    final cardColor = isHidden ? Colors.red : Colors.green;
+
                     return Card(
+                      color: cardColor, // Set card color
                       child: ListTile(
                         onTap: () {
                           // Handle tap
                         },
-                        leading: Image.asset('images/history_icon.png'),
-                        // Replace with actual image URL
+                        leading: Image.asset(
+                          'images/history_icon.png',
+                        ),
                         title: Text('ID Transaksi: ${transaction['transaksi_id']}'),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Tanggal Diambil: ${transaction['tanggal_diambil']}'),
-                            Text('Total Berat Laundry: ${transaction['berat_laundry']} kg'),
-                            Text('Total Biaya: Rp. ${transaction['total_biaya']}.000'),
-                            Text('Metode Pembayaran: ${transaction['metode_pembayaran']}'),
-                            Text('Status Pembayaran: ${transaction['status_pembayaran']}'),
+                            Text(
+                              'Tanggal Diambil: ${transaction['tanggal_diambil']}',
+                              style: TextStyle(
+                                  color: cardColor == Colors.green
+                                      ? Colors.black
+                                      : Colors.white), // Set text color based on card color
+                            ),
+                            Text(
+                              'Total Berat Laundry: ${transaction['berat_laundry']} kg',
+                              style: TextStyle(
+                                  color: cardColor == Colors.green
+                                      ? Colors.black
+                                      : Colors.white), // Set text color based on card color
+                            ),
+                            Text(
+                              'Total Biaya: Rp. ${transaction['total_biaya']}.000',
+                              style: TextStyle(
+                                  color: cardColor == Colors.green
+                                      ? Colors.black
+                                      : Colors.white), // Set text color based on card color
+                            ),
+                            Text(
+                              'Metode Pembayaran: $statusPembayaran',
+                              // Use statusPembayaran variable
+                              style: TextStyle(
+                                  color: cardColor == Colors.green
+                                      ? Colors.black
+                                      : Colors.white), // Set text color based on card color
+                            ),
+                            Text(
+                              'Status Pembayaran: $statusPembayaran',
+                              // Use statusPembayaran variable
+                              style: TextStyle(
+                                  color: cardColor == Colors.green
+                                      ? Colors.black
+                                      : Colors.white), // Set text color based on card color
+                            ),
                           ],
                         ),
                       ),
