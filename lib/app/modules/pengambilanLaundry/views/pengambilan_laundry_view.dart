@@ -58,7 +58,11 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   SearchPengambilan(
                     nameController: controller.nameController,
                     phoneController: controller.phoneController,
-                    kategoriController: controller.kategoriController,
+                    beratController: controller.beratController,
+                    totalHargaController: controller.totalHargaController,
+                    metodePembayaranController: controller.metodePembayaranController,
+                    statusPembayaranControlller: controller.statusPembayaranController,
+                    statusCucianController: controller.statusCucianController,
                     pengambilanLaundryController: controller,
                   ),
                   const SizedBox(
@@ -79,103 +83,16 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     keyboardType: TextInputType.none,
                     controller: controller.phoneController,
                     decoration: const InputDecoration(
-                      labelText: "No Pelanggan",
+                      labelText: "Nomor Pelanggan",
                       border: OutlineInputBorder(),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.none,
-                    controller: controller.kategoriController,
-                    decoration: const InputDecoration(
-                      labelText: "Kategori Pelanggan",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  DropdownSearch<String>(
-                    popupProps: const PopupProps.menu(
-                      constraints: BoxConstraints(maxHeight: 120),
-                      // 60 are per data height
-                      showSelectedItems: true,
-                    ),
-                    items: const ["Regular", "Express"],
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Metode Laundry",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    onChanged: (String? value) {
-                      controller.setSelectedMetode(value);
-                      controller.hitungTotalHarga(); // Tambahkan ini
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  DropdownSearch<String>(
-                    popupProps: const PopupProps.menu(
-                      constraints: BoxConstraints(maxHeight: 180),
-                      // 60 are per data height
-                      showSelectedItems: true,
-                    ),
-                    items: const ["Cuci Setrika", "Cuci Saja", "Setrika Saja"],
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Layanan Laundry",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    onChanged: (String? value) {
-                      controller.setSelectedLayanan(value);
-                      controller.hitungTotalHarga(); // Tambahkan ini
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: controller.tanggalDatangController,
-                    decoration: const InputDecoration(
-                      labelText: "Tanggal Datang",
-                      border: OutlineInputBorder(),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context)
-                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                      selectDate(
-                          context,
-                          controller
-                              .tanggalDatangController); // Call your date picker function
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: controller.tanggalSelesaiController,
-                    decoration: const InputDecoration(
-                      labelText: "Tanggal Selesai",
-                      border: OutlineInputBorder(),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context)
-                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                      selectDate(
-                          context,
-                          controller
-                              .tanggalSelesaiController); // Call your date picker function
-                    },
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextField(
                     autocorrect: false,
-                    controller: controller.beratLaundryController,
+                    controller: controller.beratController,
                     // controller diubah
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.number,
@@ -191,12 +108,30 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     autocorrect: false,
                     // enabled: false,
                     keyboardType: TextInputType.none,
-                    controller: controller.hargaTotalController,
+                    controller: controller.totalHargaController,
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       labelText: "Total Harga",
                       border: OutlineInputBorder(),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextField(
+                    controller: controller.tanggalDiambilController,
+                    decoration: const InputDecoration(
+                      labelText: "Tanggal Diambil",
+                      border: OutlineInputBorder(),
+                    ),
+                    onTap: () {
+                      FocusScope.of(context)
+                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                      selectDate(
+                          context,
+                          controller
+                              .tanggalDiambilController); // Call your date picker function
+                    },
                   ),
                   const SizedBox(height: 20),
                   DropdownSearch<String>(
@@ -213,7 +148,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                       ),
                     ),
                     onChanged: (String? value) {
-                      controller.setSelectedPembayaran(value);
+                      controller.metodePembayaranController;
                     },
                   ),
                   const SizedBox(
@@ -358,7 +293,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   Obx(() => ElevatedButton(
                         onPressed: () {
                           if (controller.isLoading.isFalse) {
-                            controller.addTransaksi();
+                            controller.updateTransaksi();
                           }
                         },
                         child: Text(

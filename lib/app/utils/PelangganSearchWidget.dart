@@ -20,14 +20,14 @@ class PelangganSearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Autocomplete<Pengambilan>(
+    return Autocomplete<Pelanggan>(
       optionsBuilder: (TextEditingValue textEditingValue) async {
         if (textEditingValue.text == '') {
-          return const Iterable<Pengambilan>.empty();
+          return const Iterable<Pelanggan>.empty();
         }
         return await addtransaksiController.fetchdataPelanggan(textEditingValue.text);
       },
-      displayStringForOption: (Pengambilan option) {
+      displayStringForOption: (Pelanggan option) {
         if (option != null) {
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
@@ -37,7 +37,7 @@ class PelangganSearchWidget extends StatelessWidget {
           return ''; // Return an empty string for null options
         }
       },
-      onSelected: (Pengambilan selection) {
+      onSelected: (Pelanggan selection) {
         nameController.text = selection.nama ?? '';
         phoneController.text = '+62${selection.phone}' ?? '';
         kategoriController.text = selection.kategori ?? '';

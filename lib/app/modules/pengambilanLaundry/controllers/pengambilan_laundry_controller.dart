@@ -4,29 +4,19 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../utils/pelanggan.dart';
+import '../../../utils/pengambilan.dart';
 
 class PengambilanLaundryController extends GetxController {
-  @override
-  void onInit() {
-    super.onInit();
-    beratLaundryController.addListener(() {
-      hitungTotalHarga();
-    });
-    // Anda bisa menambahkan listener lain di sini
-  }
 
   void clearInputs() {
     namaKaryawanC.clear();
-    tanggalDatangController.clear();
-    tanggalSelesaiController.clear();
+    tanggalDiambilController.clear();
     beratLaundryController.clear();
     hargaTotalController.clear();
     nameController.clear();
     phoneController.clear();
-    kategoriController.clear();
-    selectedMetode.value = "";
-    selectedLayanan.value = "";
+    beratController.clear();
+    totalHargaController.clear();
     selectedPembayaran.value = "-";
     statusCucian.value = 'diproses';
     statusPembayaran.value = 'belum_dibayar';
@@ -39,52 +29,63 @@ class PengambilanLaundryController extends GetxController {
 
     // Dispose of TextEditingControllers
     namaKaryawanC.dispose();
-    tanggalDatangController.dispose();
-    tanggalSelesaiController.dispose();
+    tanggalDiambilController.dispose();
     beratLaundryController.dispose();
     hargaTotalController.dispose();
     nameController.dispose();
-    phoneController.dispose();
-    kategoriController.dispose();
     beratLaundryController.removeListener(() {});
     // Hapus listener lain jika ada
     super.onClose();
   }
 
-  RxDouble numericTotalHarga = 0.0.obs; // Add this line
   RxString statusCucian = 'diproses'.obs;
   RxString statusPembayaran = 'belum_dibayar'.obs;
   RxBool isLoading = false.obs;
   TextEditingController namaKaryawanC = TextEditingController();
-  TextEditingController tanggalDatangController = TextEditingController();
-  TextEditingController tanggalSelesaiController = TextEditingController();
+  TextEditingController tanggalDiambilController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
   TextEditingController hargaTotalController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController kategoriController = TextEditingController();
+  TextEditingController beratController = TextEditingController();
+  TextEditingController totalHargaController = TextEditingController();
+  TextEditingController metodePembayaranController = TextEditingController();
+  TextEditingController statusPembayaranController = TextEditingController();
+  TextEditingController statusCucianController = TextEditingController();
 
   SupabaseClient client = Supabase.instance.client;
 
-  Future<List<Pengambilan>> fetchdataPelanggan(String query) async {
+  Future<List<Pengambilan>> fetchDataTransaksi(String query) async {
     List<Pengambilan> results = [];
     try {
       final response = await client
-          .from('user')
-          .select('nama, id, phone, kategori') // Include 'phone' in the select statement
-          .eq('role', 'Pelanggan')
-          .ilike('nama, phone, kategori', '%$query%')
+          .from('transaksi')
+          .select(
+              'nama_pelanggan, transaksi_id, nomor_pelanggan, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian') // Include 'phone' in the select statement
+          .ilike('nama_pelanggan, nomor_pelanggan', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
           // Ensure that 'nama', 'id', and 'phone' are treated as strings
-          final nama = item['nama']?.toString() ?? '';
-          final id = item['id']?.toString() ?? '';
-          final phone = item['phone']?.toString() ?? '';
-          final kategori = item['kategori']?.toString() ?? '';
+          final nama = item['nama_pelanggan']?.toString() ?? '';
+          final id = item['id_transaksi']?.toString() ?? '';
+          final phone = item['nomor_pelanggan']?.toString() ?? '';
+          final berat = item['berat_laundry']?.toString() ?? '';
+          final totalHarga = item['total_biaya']?.toString() ?? '';
+          final metodePembayaran = item['metode_pembayaran']?.toString() ?? '';
+          final statusPembayaran = item['status_pembayaran']?.toString() ?? '';
+          final statusCucian = item['status_cucian']?.toString() ?? '';
 
-          return Pengambilan(nama: nama, id: id, phone: phone, kategori: kategori);
+          return Pengambilan(
+              nama: nama,
+              id: id,
+              phone: phone,
+              berat: berat,
+              totalHarga: totalHarga,
+              metodePembayaran: metodePembayaran,
+              statusPembayaran: statusPembayaran,
+              statusCucian: statusCucian);
         }).toList();
       }
     } catch (error) {
@@ -102,29 +103,19 @@ class PengambilanLaundryController extends GetxController {
     namaKaryawanC.text = user["nama"];
   }
 
-  Future<void> addTransaksi() async {
+  Future<void> updateTransaksi() async {
     if (namaKaryawanC.text.isNotEmpty &&
         beratLaundryController.text.isNotEmpty &&
         hargaTotalController.text.isNotEmpty) {
       isLoading.value = true;
       try {
         var dataTransaksi = {
-          "nama_karyawan": namaKaryawanC.text,
-          "tanggal_datang": formatDate(tanggalDatangController.text),
-          "tanggal_selesai": formatDate(tanggalSelesaiController.text),
-          "tanggal_diambil": null,
-          "berat_laundry": double.tryParse(beratLaundryController.text),
-          "total_biaya": numericTotalHarga.value,
-          "nama_pelanggan": nameController.text,
-          "nomor_pelanggan": phoneController.text,
-          "kategori_pelanggan": kategoriController.text,
-          "metode_laundry": getSelectedMetode(),
-          "layanan_laundry": getSelectedLayanan(),
+          "nama_karyawan_keluar": namaKaryawanC.text,
+          "tanggal_diambil": formatDate(tanggalDiambilController.text),
           "metode_pembayaran": getSelectedPembayaran(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
-          "created_at": DateTime.now().toIso8601String(),
-          "is_hidden": false,
+          "is_active": false,
         };
 
         // Log the dataTransaksi to the console
@@ -159,27 +150,6 @@ class PengambilanLaundryController extends GetxController {
     refresh();
   }
 
-  RxString selectedMetode = "".obs;
-  List<String> metodeOptions = ["Regular", "Express"];
-
-  String getSelectedMetode() {
-    return selectedMetode.value;
-  }
-
-  void setSelectedMetode(String? value) {
-    selectedMetode.value = value ?? "-";
-  }
-
-  RxString selectedLayanan = "".obs;
-  List<String> layananOptions = ["Cuci Setrika", "Cuci Saja", "Setrika Saja"];
-
-  String getSelectedLayanan() {
-    return selectedLayanan.value;
-  }
-
-  void setSelectedLayanan(String? value) {
-    selectedLayanan.value = value ?? "";
-  }
 
   RxString selectedPembayaran = "".obs;
   List<String> pembayaranOptions = ["-", "Cash", "Transfer"];
@@ -190,23 +160,6 @@ class PengambilanLaundryController extends GetxController {
 
   void setSelectedPembayaran(String? value) {
     selectedPembayaran.value = value ?? "";
-  }
-
-  void hitungTotalHarga() async {
-    double berat = double.tryParse(beratLaundryController.text) ?? 0.0;
-    double hargaPerKg = await ambilHargaPerKg(
-        kategoriPelanggan: kategoriController.text,
-        metodeLaundry: selectedMetode.value,
-        layananLaundry: selectedLayanan.value);
-    double totalHarga = berat * hargaPerKg;
-
-    // Store numeric value
-    numericTotalHarga.value = totalHarga;
-
-    // Format and display
-    NumberFormat currencyFormatter =
-        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 3);
-    hargaTotalController.text = currencyFormatter.format(totalHarga);
   }
 
   String formatDate(String date) {
@@ -220,29 +173,6 @@ class PengambilanLaundryController extends GetxController {
       }
       return "";
     }
-  }
-
-  Future<double> ambilHargaPerKg(
-      {required String kategoriPelanggan,
-      required String metodeLaundry,
-      required String layananLaundry}) async {
-    double harga = 0.0;
-
-    final response = await client
-        .from('harga')
-        .select('harga_kilo')
-        .eq('kategori_pelanggan', kategoriPelanggan)
-        .eq('metode_laundry_id', metodeLaundry)
-        .eq('layanan_laundry_id', layananLaundry)
-        .single()
-        .execute();
-    if (response.status == 200 && response.data != null) {
-      var hargaKilo = response.data['harga_kilo'];
-      // Konversi hargaKilo menjadi double
-      harga = (hargaKilo is int) ? hargaKilo.toDouble() : hargaKilo;
-    }
-
-    return harga;
   }
 
   void setStatusCucian(String status) {

@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
-import 'package:gsl/app/utils/pelanggan.dart';
+import 'package:gsl/app/utils/pengambilan.dart';
 
 class SearchPengambilan extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
-  final TextEditingController kategoriController;
+  final TextEditingController beratController;
+  final TextEditingController totalHargaController;
+  final TextEditingController metodePembayaranController;
+  final TextEditingController statusPembayaranControlller;
+  final TextEditingController statusCucianController;
   final PengambilanLaundryController pengambilanLaundryController;
 
   SearchPengambilan({
     Key? key,
     required this.nameController,
     required this.phoneController,
-    required this.kategoriController,
+    required this.beratController,
+    required this.totalHargaController,
+    required this.metodePembayaranController,
+    required this.statusPembayaranControlller,
+    required this.statusCucianController,
     required this.pengambilanLaundryController,
   }) : super(key: key);
 
@@ -23,14 +31,18 @@ class SearchPengambilan extends StatelessWidget {
         if (textEditingValue.text == '') {
           return const Iterable<Pengambilan>.empty();
         }
-        return await pengambilanLaundryController.fetchdataPelanggan(textEditingValue.text);
+        return await pengambilanLaundryController.fetchDataTransaksi(textEditingValue.text);
       },
       displayStringForOption: (Pengambilan option) {
         if (option != null) {
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
-          final kategori = option.kategori ?? '';
-          return '$name - +62$phone - $kategori';
+          final berat = option.berat ?? '';
+          final totalHarga = option.totalHarga ?? '';
+          final metodePembayaran = option.metodePembayaran ?? '';
+          final statusPembayaran = option.statusPembayaran ?? '';
+          final statusCucian = option.statusCucian ?? '';
+          return '$name - +62$phone - $berat - $totalHarga - $metodePembayaran - $statusPembayaran - $statusCucian';
         } else {
           return ''; // Return an empty string for null options
         }
@@ -38,7 +50,11 @@ class SearchPengambilan extends StatelessWidget {
       onSelected: (Pengambilan selection) {
         nameController.text = selection.nama ?? '';
         phoneController.text = '+62${selection.phone}' ?? '';
-        kategoriController.text = selection.kategori ?? '';
+        beratController.text = selection.berat ?? '';
+        totalHargaController.text = selection.totalHarga ?? '';
+        metodePembayaranController.text = selection.metodePembayaran ?? '';
+        statusPembayaranControlller.text = selection.statusPembayaran ?? '';
+        statusCucianController.text = selection.statusCucian ?? '';
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
         return TextField(

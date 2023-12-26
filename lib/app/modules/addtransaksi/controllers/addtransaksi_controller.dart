@@ -66,8 +66,8 @@ class AddtransaksiController extends GetxController {
 
   SupabaseClient client = Supabase.instance.client;
 
-  Future<List<Pengambilan>> fetchdataPelanggan(String query) async {
-    List<Pengambilan> results = [];
+  Future<List<Pelanggan>> fetchdataPelanggan(String query) async {
+    List<Pelanggan> results = [];
     try {
       final response = await client
           .from('user')
@@ -84,7 +84,7 @@ class AddtransaksiController extends GetxController {
           final phone = item['phone']?.toString() ?? '';
           final kategori = item['kategori']?.toString() ?? '';
 
-          return Pengambilan(nama: nama, id: id, phone: phone, kategori: kategori);
+          return Pelanggan(nama: nama, id: id, phone: phone, kategori: kategori);
         }).toList();
       }
     } catch (error) {
