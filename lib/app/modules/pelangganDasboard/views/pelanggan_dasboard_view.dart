@@ -30,10 +30,10 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
       ),
       body: Column(
         children: [
-          const Text(
-            'Selamat Datang di Green Spirit Laundry',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+          // const Text(
+          //   'Selamat Datang di Green Spirit Laundry',
+          //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          // ),
           CarouselSlider(
             items: [
               Image.asset('images/banner_1.png'),
@@ -53,7 +53,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
           ),
           const SizedBox(height: 20),
           const Text(
-            'History Transaksi',
+            'Data Transaksi',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),

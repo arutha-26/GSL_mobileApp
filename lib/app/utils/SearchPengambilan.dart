@@ -3,6 +3,7 @@ import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laund
 import 'package:gsl/app/utils/pengambilan.dart';
 
 class SearchPengambilan extends StatelessWidget {
+  final TextEditingController idTransaksiController;
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController beratController;
@@ -14,6 +15,7 @@ class SearchPengambilan extends StatelessWidget {
 
   SearchPengambilan({
     Key? key,
+    required this.idTransaksiController,
     required this.nameController,
     required this.phoneController,
     required this.beratController,
@@ -35,6 +37,7 @@ class SearchPengambilan extends StatelessWidget {
       },
       displayStringForOption: (Pengambilan option) {
         if (option != null) {
+          final id = option.id ?? '';
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
           final berat = option.berat ?? '';
@@ -42,12 +45,13 @@ class SearchPengambilan extends StatelessWidget {
           final metodePembayaran = option.metodePembayaran ?? '';
           final statusPembayaran = option.statusPembayaran ?? '';
           final statusCucian = option.statusCucian ?? '';
-          return '$name - +62$phone - $berat - $totalHarga - $metodePembayaran - $statusPembayaran - $statusCucian';
+          return '$id - $name - +62$phone - $berat - $totalHarga - $metodePembayaran - $statusPembayaran - $statusCucian';
         } else {
           return ''; // Return an empty string for null options
         }
       },
       onSelected: (Pengambilan selection) {
+        idTransaksiController.text = selection.id ?? '';
         nameController.text = selection.nama ?? '';
         phoneController.text = '+62${selection.phone}' ?? '';
         beratController.text = selection.berat ?? '';

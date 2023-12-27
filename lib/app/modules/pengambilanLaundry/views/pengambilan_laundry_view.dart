@@ -56,6 +56,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     height: 20,
                   ),
                   SearchPengambilan(
+                    idTransaksiController: controller.idTransaksiController,
                     nameController: controller.nameController,
                     phoneController: controller.phoneController,
                     beratController: controller.beratController,
@@ -64,6 +65,17 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     statusPembayaranControlller: controller.statusPembayaranController,
                     statusCucianController: controller.statusCucianController,
                     pengambilanLaundryController: controller,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.none,
+                    controller: controller.idTransaksiController,
+                    decoration: const InputDecoration(
+                      labelText: "Id Transaksi",
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -119,6 +131,52 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     height: 20,
                   ),
                   TextField(
+                    autocorrect: false,
+                    // enabled: false,
+                    keyboardType: TextInputType.none,
+                    controller: controller.metodePembayaranController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: "Metode Pembayaran",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextField(
+                    autocorrect: false,
+                    // enabled: false,
+                    keyboardType: TextInputType.none,
+                    controller: controller.statusPembayaranController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: "Status Pembayaran",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextField(
+                    autocorrect: false,
+                    // enabled: false,
+                    keyboardType: TextInputType.none,
+                    controller: controller.statusCucianController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      labelText: "Status Cucian",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text('Update Data Dibawah ini!'),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextField(
                     controller: controller.tanggalDiambilController,
                     decoration: const InputDecoration(
                       labelText: "Tanggal Diambil",
@@ -148,7 +206,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                       ),
                     ),
                     onChanged: (String? value) {
-                      controller.metodePembayaranController;
+                      controller.setSelectedPembayaran(value);
                     },
                   ),
                   const SizedBox(
@@ -297,7 +355,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           }
                         },
                         child: Text(
-                          controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
+                          controller.isLoading.isFalse ? "Kirim" : "Loading...",
                         ),
                       )),
                 ],

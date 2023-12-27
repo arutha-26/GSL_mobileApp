@@ -9,8 +9,8 @@ class Pengambilan {
   final String statusCucian;
 
   Pengambilan({
-    required this.nama,
     required this.id,
+    required this.nama,
     required this.phone,
     required this.berat,
     required this.totalHarga,
@@ -21,10 +21,9 @@ class Pengambilan {
 
   factory Pengambilan.fromMap(Map<String, dynamic> map) {
     return Pengambilan(
+      id: map['transaksi_id'],
       nama: map['nama_pelanggan'] as String,
-      id: map['id_transaksi'] as String,
       phone: map['nomor_pelanggan'] as String,
-      // Map the phone number
       berat: map['berat_laundry'] as String,
       totalHarga: map['total_biaya'] as String,
       metodePembayaran: map['metode_pembayaran'] as String,

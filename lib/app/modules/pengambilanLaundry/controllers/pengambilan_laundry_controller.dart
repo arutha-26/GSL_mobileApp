@@ -7,9 +7,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../utils/pengambilan.dart';
 
 class PengambilanLaundryController extends GetxController {
-
   void clearInputs() {
     namaKaryawanC.clear();
+    idTransaksiController.clear();
     tanggalDiambilController.clear();
     beratLaundryController.clear();
     hargaTotalController.clear();
@@ -26,15 +26,15 @@ class PengambilanLaundryController extends GetxController {
   void onClose() {
     // Clear input fields
     clearInputs();
-
-    // Dispose of TextEditingControllers
     namaKaryawanC.dispose();
+    idTransaksiController.dispose();
+    nameController.dispose();
+    phoneController.dispose();
     tanggalDiambilController.dispose();
     beratLaundryController.dispose();
     hargaTotalController.dispose();
     nameController.dispose();
     beratLaundryController.removeListener(() {});
-    // Hapus listener lain jika ada
     super.onClose();
   }
 
@@ -45,6 +45,7 @@ class PengambilanLaundryController extends GetxController {
   TextEditingController tanggalDiambilController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
   TextEditingController hargaTotalController = TextEditingController();
+  TextEditingController idTransaksiController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController beratController = TextEditingController();
@@ -61,15 +62,15 @@ class PengambilanLaundryController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'nama_pelanggan, transaksi_id, nomor_pelanggan, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian') // Include 'phone' in the select statement
+              'nama_pelanggan, transaksi_id, nomor_pelanggan, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
+          .eq('status_cucian', 'selesai')
           .ilike('nama_pelanggan, nomor_pelanggan', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
-          // Ensure that 'nama', 'id', and 'phone' are treated as strings
           final nama = item['nama_pelanggan']?.toString() ?? '';
-          final id = item['id_transaksi']?.toString() ?? '';
+          final id = item['transaksi_id']?.toString() ?? '';
           final phone = item['nomor_pelanggan']?.toString() ?? '';
           final berat = item['berat_laundry']?.toString() ?? '';
           final totalHarga = item['total_biaya']?.toString() ?? '';
@@ -104,18 +105,17 @@ class PengambilanLaundryController extends GetxController {
   }
 
   Future<void> updateTransaksi() async {
-    if (namaKaryawanC.text.isNotEmpty &&
-        beratLaundryController.text.isNotEmpty &&
-        hargaTotalController.text.isNotEmpty) {
+    if (tanggalDiambilController.text.isNotEmpty) {
       isLoading.value = true;
       try {
         var dataTransaksi = {
+          // "id_transaksi": ,
           "nama_karyawan_keluar": namaKaryawanC.text,
           "tanggal_diambil": formatDate(tanggalDiambilController.text),
           "metode_pembayaran": getSelectedPembayaran(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
-          "is_active": false,
+          "is_hidden": true,
         };
 
         // Log the dataTransaksi to the console
@@ -123,14 +123,17 @@ class PengambilanLaundryController extends GetxController {
           print("Data to be inserted into transaksi: $dataTransaksi");
         }
 
-        await client.from("transaksi").insert(dataTransaksi).execute();
+        await client
+            .from("transaksi")
+            .update(dataTransaksi)
+            .match({"transaksi_id": idTransaksiController.text}).execute();
 
         clearInputs();
 
         Get.defaultDialog(
             barrierDismissible: false,
-            title: "Tambah Data Transaksi Berhasil",
-            middleText: "Transaksi berhasil ditambahkan.",
+            title: "Pembaharuan Data Transaksi Berhasil",
+            middleText: "Data berhasil diperbaharui.",
             actions: [
               OutlinedButton(
                   onPressed: () {
@@ -150,6 +153,11 @@ class PengambilanLaundryController extends GetxController {
     refresh();
   }
 
+  final RxString metodePembayaran = ''.obs;
+
+  void setMetodePembayaran(String? value) {
+    metodePembayaran.value = value ?? '';
+  }
 
   RxString selectedPembayaran = "".obs;
   List<String> pembayaranOptions = ["-", "Cash", "Transfer"];

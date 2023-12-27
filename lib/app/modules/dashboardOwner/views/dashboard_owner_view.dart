@@ -35,7 +35,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
                 _buildStatusAndDebtsCard(),
                 _buildProfitAndTransactionCountCard(),
                 _buildMonthlyTransactionsGraph(),
-                _buildMonthlyIncomeGraph(),
+                // _buildMonthlyIncomeGraph(),
               ],
             ),
           );
@@ -211,11 +211,11 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
     );
   }
 
-  Widget _buildMonthlyIncomeGraph() {
-    return Container(
-      height: 200,
-      color: Colors.green,
-      child: const Center(child: Text('Grafik Pendapatan Bulanan')),
-    );
-  }
+// Widget _buildMonthlyIncomeGraph() {
+//   return Container(
+//     height: 200,
+//     color: Colors.green,
+//     child: const Center(child: Text('Grafik Pendapatan Bulanan')),
+//   );
+// }
 }
