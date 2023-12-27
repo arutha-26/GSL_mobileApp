@@ -16,7 +16,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Green Spirit Laundry'),
+        title: const Text('Home'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -60,12 +60,12 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
                 ),
                 Image.asset('images/banner_1.png'),
                 const SizedBox(height: 20),
-                Text(
-                  'Hallo Kakak ${controller.namaUser.text}',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                _buildStatusAndDebtsCard(),
+                // Text(
+                //   'Hallo Kakak ${controller.namaUser.text}',
+                //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // ),
+                // const SizedBox(height: 10),
+                // _buildStatusAndDebtsCard(),
                 const SizedBox(height: 10),
                 _buildProfitAndTransactionCountCard(),
                 const SizedBox(height: 10),
@@ -256,7 +256,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildTodayTransactionsCard() {
     return InkWell(
       onTap: () {
-        Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
+        Get.toNamed(Routes.PELANGGAN_STATUS);
       },
       child: Card(
         child: ListTile(

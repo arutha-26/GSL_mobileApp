@@ -188,7 +188,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PELANGGAN_STATUS,
-      page: () => const PelangganStatusView(),
+      page: () => PelangganStatusView(),
       binding: PelangganStatusBinding(),
     ),
   ];

@@ -76,7 +76,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                             ? 'Lunas'
                             : 'Belum Lunas';
                     // Determine card color based on IS_HIDDEN
-                    final cardColor = isHidden ? Colors.red[400] : Colors.green[600];
+                    final cardColor = isHidden ? Colors.green[600] : Colors.red[400];
 
                     return Card(
                       color: cardColor,
@@ -88,10 +88,10 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                       child: InkWell(
                         onTap: () {
                           // Handle tap
-                          Get.toNamed(
-                            Routes.DETAIL_HISTORY_PELANGGAN,
-                            arguments: {'transaksi_id': transaction['transaksi_id']},
-                          );
+                          // Get.toNamed(
+                          //   Routes.DETAIL_HISTORY_PELANGGAN,
+                          //   arguments: {'transaksi_id': transaction['transaksi_id']},
+                          // );
                         },
                         borderRadius: BorderRadius.circular(12),
                         child: Padding(

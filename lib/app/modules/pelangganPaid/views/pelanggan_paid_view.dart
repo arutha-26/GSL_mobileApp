@@ -11,7 +11,7 @@ class PelangganPaidView extends GetView<PelangganPaidController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Transaksi Sukses'),
+          title: const Text('Data Transaksi'),
           centerTitle: true,
           actions: [
             IconButton(
