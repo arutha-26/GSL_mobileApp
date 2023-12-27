@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
@@ -112,7 +113,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Text(
-                                          'Tanggal Diambil: ${transaction['tanggal_diambil']}',
+                                          'Tanggal Diambil: ${transaction['tanggal_diambil'] != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(transaction['tanggal_diambil'])) : '-'}',
                                           style: TextStyle(
                                             color: cardColor == Colors.green
                                                 ? Colors.black
@@ -121,7 +122,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 5),
                                     Text(
                                       'ID Transaksi: ${transaction['transaksi_id']}',
                                       style: TextStyle(

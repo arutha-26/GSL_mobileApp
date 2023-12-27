@@ -30,6 +30,10 @@ abstract class Routes {
   static const PENGAMBILAN_LAUNDRY = _Paths.PENGAMBILAN_LAUNDRY;
   static const DETAIL_HISTORY = _Paths.DETAIL_HISTORY;
   static const DETAIL_HISTORY_PELANGGAN = _Paths.DETAIL_HISTORY_PELANGGAN;
+  static const PELANGGAN_PAID = _Paths.PELANGGAN_PAID;
+  static const PELANGGAN_DEBT = _Paths.PELANGGAN_DEBT;
+  static const PELANGGAN_TRANSAKSI = _Paths.PELANGGAN_TRANSAKSI;
+  static const PELANGGAN_STATUS = _Paths.PELANGGAN_STATUS;
 }
 
 abstract class _Paths {
@@ -61,4 +65,8 @@ abstract class _Paths {
   static const PENGAMBILAN_LAUNDRY = '/pengambilan-laundry';
   static const DETAIL_HISTORY = '/detail-history';
   static const DETAIL_HISTORY_PELANGGAN = '/detail-history-pelanggan';
+  static const PELANGGAN_PAID = '/pelanggan-paid';
+  static const PELANGGAN_DEBT = '/pelanggan-debt';
+  static const PELANGGAN_TRANSAKSI = '/pelanggan-transaksi';
+  static const PELANGGAN_STATUS = '/pelanggan-status';
 }

@@ -212,7 +212,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildStatusCard() {
     return InkWell(
       onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
+        Get.toNamed(Routes.PELANGGAN_STATUS);
       },
       child: Card(
         child: ListTile(
@@ -226,7 +226,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildOutstandingDebtsCard() {
     return InkWell(
       onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
+        Get.toNamed(Routes.PELANGGAN_DEBT);
       },
       child: Card(
         color: Colors.redAccent,
@@ -241,7 +241,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildPaidDebtsCard() {
     return InkWell(
       onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
+        Get.toNamed(Routes.PELANGGAN_PAID);
       },
       child: Card(
         color: Colors.green,
@@ -256,7 +256,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildTodayTransactionsCard() {
     return InkWell(
       onTap: () {
-        Get.offAllNamed(Routes.OWNERHOME);
+        Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
         child: ListTile(
