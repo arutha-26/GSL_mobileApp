@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,16 +38,55 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
           return SingleChildScrollView(
             child: Column(
               children: [
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0), // Menambahkan padding di sekitar teks
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Green Spirit Laundry',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10), // Menambahkan spasi vertikal
+                        Text(
+                          'Tempat kebersihan tanpa kompromi. Percayakan cucian Anda kepada kami.',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Image.asset('images/banner_1.png'),
                 const SizedBox(height: 20),
                 Text(
                   'Hallo Kakak ${controller.namaUser.text}',
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 _buildStatusAndDebtsCard(),
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 _buildProfitAndTransactionCountCard(),
+                const SizedBox(height: 10),
+                CarouselSlider(
+                  items: [
+                    Image.asset('images/banner_11.png'),
+                    Image.asset('images/banner_8.png'),
+                    Image.asset('images/banner_12.png'),
+                    Image.asset('images/banner_9.png'),
+                    Image.asset('images/banner_10.png'),
+                  ],
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: true,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayAnimationDuration: const Duration(milliseconds: 2000),
+                    viewportFraction: 1,
+                  ),
+                ),
                 const SizedBox(height: 20),
               ],
             ),
