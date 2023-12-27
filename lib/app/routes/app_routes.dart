@@ -28,6 +28,8 @@ abstract class Routes {
   static const PELANGGAN_DASBOARD = _Paths.PELANGGAN_DASBOARD;
   static const KARYAWAN_DASHBOARD = _Paths.KARYAWAN_DASHBOARD;
   static const PENGAMBILAN_LAUNDRY = _Paths.PENGAMBILAN_LAUNDRY;
+  static const DETAIL_HISTORY = _Paths.DETAIL_HISTORY;
+  static const DETAIL_HISTORY_PELANGGAN = _Paths.DETAIL_HISTORY_PELANGGAN;
 }
 
 abstract class _Paths {
@@ -57,4 +59,6 @@ abstract class _Paths {
   static const PELANGGAN_DASBOARD = '/pelanggan-dasboard';
   static const KARYAWAN_DASHBOARD = '/karyawan-dashboard';
   static const PENGAMBILAN_LAUNDRY = '/pengambilan-laundry';
+  static const DETAIL_HISTORY = '/detail-history';
+  static const DETAIL_HISTORY_PELANGGAN = '/detail-history-pelanggan';
 }

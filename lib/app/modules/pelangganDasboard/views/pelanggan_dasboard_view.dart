@@ -67,63 +67,107 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                   itemCount: controller.transactionHistory.length,
                   itemBuilder: (context, index) {
                     final transaction = controller.transactionHistory[index];
-                    final statusPembayaran = transaction['status_pembayaran'];
                     final isHidden = transaction['is_hidden'];
 
+                    // Mengubah nilai status_pembayaran
+                    final statusPembayaran =
+                        transaction['status_pembayaran'] == 'sudah_dibayar'
+                            ? 'Lunas'
+                            : 'Belum Lunas';
                     // Determine card color based on IS_HIDDEN
-                    final cardColor = isHidden ? Colors.red : Colors.green;
+                    final cardColor = isHidden ? Colors.red[400] : Colors.green[600];
 
                     return Card(
-                      color: cardColor, // Set card color
-                      child: ListTile(
+                      color: cardColor,
+                      elevation: 2,
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: InkWell(
                         onTap: () {
                           // Handle tap
+                          Get.toNamed(
+                            Routes.DETAIL_HISTORY_PELANGGAN,
+                            arguments: {'transaksi_id': transaction['transaksi_id']},
+                          );
                         },
-                        leading: Image.asset(
-                          'images/history_icon.png',
-                        ),
-                        title: Text('ID Transaksi: ${transaction['transaksi_id']}'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Tanggal Diambil: ${transaction['tanggal_diambil']}',
-                              style: TextStyle(
-                                  color: cardColor == Colors.green
-                                      ? Colors.black
-                                      : Colors.white), // Set text color based on card color
-                            ),
-                            Text(
-                              'Total Berat Laundry: ${transaction['berat_laundry']} kg',
-                              style: TextStyle(
-                                  color: cardColor == Colors.green
-                                      ? Colors.black
-                                      : Colors.white), // Set text color based on card color
-                            ),
-                            Text(
-                              'Total Biaya: Rp. ${transaction['total_biaya']}.000',
-                              style: TextStyle(
-                                  color: cardColor == Colors.green
-                                      ? Colors.black
-                                      : Colors.white), // Set text color based on card color
-                            ),
-                            Text(
-                              'Metode Pembayaran: $statusPembayaran',
-                              // Use statusPembayaran variable
-                              style: TextStyle(
-                                  color: cardColor == Colors.green
-                                      ? Colors.black
-                                      : Colors.white), // Set text color based on card color
-                            ),
-                            Text(
-                              'Status Pembayaran: $statusPembayaran',
-                              // Use statusPembayaran variable
-                              style: TextStyle(
-                                  color: cardColor == Colors.green
-                                      ? Colors.black
-                                      : Colors.white), // Set text color based on card color
-                            ),
-                          ],
+                        borderRadius: BorderRadius.circular(12),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'images/history_icon.png',
+                                width: 70,
+                                height: 150,
+                              ),
+                              const SizedBox(width: 15), // Add spacing between image and text
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          'Tanggal Diambil: ${transaction['tanggal_diambil']}',
+                                          style: TextStyle(
+                                            color: cardColor == Colors.green
+                                                ? Colors.black
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      'ID Transaksi: ${transaction['transaksi_id']}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: cardColor == Colors.green
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Total Berat Laundry: ${transaction['berat_laundry']} kg',
+                                      style: TextStyle(
+                                        color: cardColor == Colors.green
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Total Biaya: Rp. ${transaction['total_biaya']}.000',
+                                      style: TextStyle(
+                                        color: cardColor == Colors.green
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Metode Pembayaran: ${transaction['metode_pembayaran']}',
+                                      style: TextStyle(
+                                        color: cardColor == Colors.green
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Status Pembayaran: $statusPembayaran',
+                                      style: TextStyle(
+                                        color: cardColor == Colors.green
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

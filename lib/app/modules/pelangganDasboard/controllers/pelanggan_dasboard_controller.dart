@@ -99,6 +99,8 @@ class PelangganDasboardController extends GetxController {
           .from('transaksi')
           .select('*')
           .eq('nama_pelanggan', namaPelanggan)
+          .order('transaksi_id',
+              ascending: false) // Urutkan berdasarkan tanggal_diambil secara menurun
           .execute();
 
       if (response.status == 200 && response.data != null) {
@@ -106,9 +108,9 @@ class PelangganDasboardController extends GetxController {
         var dataList = List<Map<String, dynamic>>.from(response.data);
 
         // Modify the STATUS_PEMBAYARAN here
-        for (var transaction in dataList) {
-          transaction['STATUS_PEMBAYARAN'] = 'BELUM DIBAYAR';
-        }
+        // for (var transaction in dataList) {
+        //   transaction['status_pembayaran'] = 'Belum dibayar';
+        // }
 
         transactionHistory.assignAll(dataList);
       } else {
