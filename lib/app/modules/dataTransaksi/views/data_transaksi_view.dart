@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,7 +43,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
         children: [
           ElevatedButton(
             onPressed: () => _selectDate(context),
-            child: Text('Select Date Range'),
+            child: const Text('Select Date Range'),
           ),
           Obx(() {
             if (controller.isLoading.isTrue) {
@@ -64,10 +65,19 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               'is_hidden',
               'tanggal_diambil',
               'nama_karyawan_keluar'
+                  'status_cucian'
+                  'total_biaya'
+                  'status_pembayaran'
+                  'berat_laundry'
+                  'layanan_laundry'
+                  'metode_laundry'
+                  'kategori_pelanggan'
+                  'nama_karyawan_masuk'
+                  'nomor_pelanggan'
             ];
 
             List<DataColumn> columns = [
-              DataColumn(label: Text('No.')), // Add a column for row number
+              const DataColumn(label: Text('No.')), // Add a column for row number
               ...controller.data[0].keys
                   .where((key) =>
                       !hiddenColumns.contains(key) &&
@@ -100,15 +110,19 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                             Center(child: Text('${filteredRow[key]}')),
                             onTap: () {
                               if (row != null) {
-                                print(
-                                  'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: $row',
-                                );
+                                if (kDebugMode) {
+                                  print(
+                                    'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: $row',
+                                  );
+                                }
                                 Get.toNamed(
                                   Routes.DETAILPANELTRANSAKSI,
                                   arguments: row,
                                 );
                               } else {
-                                print('Error: Data for row is null');
+                                if (kDebugMode) {
+                                  print('Error: Data for row is null');
+                                }
                               }
                             },
                           );

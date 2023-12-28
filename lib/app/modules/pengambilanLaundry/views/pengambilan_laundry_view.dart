@@ -25,7 +25,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Pengambilan Laundry'),
+          title: const Text('Update Data'),
           centerTitle: true,
         ),
         body: FutureBuilder(

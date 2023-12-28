@@ -56,14 +56,26 @@ class PengambilanLaundryController extends GetxController {
 
   SupabaseClient client = Supabase.instance.client;
 
+  // Fungsi untuk mengonversi nilai status_pembayaran
+  String convertStatusPembayaran(String status) {
+    if (status == 'belum_dibayar') {
+      return 'Belum Dibayar';
+    } else if (status == 'sudah_dibayar') {
+      return 'Sudah Dibayar';
+    } else {
+      return 'Unknown'; // Tambahkan nilai default jika diperlukan
+    }
+  }
+
   Future<List<Pengambilan>> fetchDataTransaksi(String query) async {
     List<Pengambilan> results = [];
+
     try {
       final response = await client
           .from('transaksi')
           .select(
               'nama_pelanggan, transaksi_id, nomor_pelanggan, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
-          .eq('status_cucian', 'selesai')
+          .in_('status_cucian', ['diproses', 'selesai'])
           .ilike('nama_pelanggan, nomor_pelanggan', '%$query%')
           .execute();
 
@@ -79,14 +91,15 @@ class PengambilanLaundryController extends GetxController {
           final statusCucian = item['status_cucian']?.toString() ?? '';
 
           return Pengambilan(
-              nama: nama,
-              id: id,
-              phone: phone,
-              berat: berat,
-              totalHarga: totalHarga,
-              metodePembayaran: metodePembayaran,
-              statusPembayaran: statusPembayaran,
-              statusCucian: statusCucian);
+            nama: nama,
+            id: id,
+            phone: phone,
+            berat: '$berat Kg',
+            totalHarga: '$totalHarga.000',
+            metodePembayaran: metodePembayaran,
+            statusPembayaran: convertStatusPembayaran(statusPembayaran),
+            statusCucian: statusCucian.toUpperCase(),
+          );
         }).toList();
       }
     } catch (error) {
@@ -96,7 +109,6 @@ class PengambilanLaundryController extends GetxController {
     }
     return results;
   }
-
   Future<void> getDataKaryawan() async {
     List<dynamic> res =
         await client.from("user").select().match({"uid": client.auth.currentUser!.id});

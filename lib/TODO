@@ -1,5 +1,14 @@
 //TODO
+MAJOR FITUR:
+PDF TRANSAKSI
+CREATE PAGE PRINT TRANSAKSI:
+- fetch data pelanggan berdasarkan nama dan tanggal rentang, inputan tanggal jatuh tempo, denda, status pembayaran,
 
-menambahkan riwayat dari si user dihalaman detail pelanggan
-menyelesaikan transaksi page
+BUG:
+DASHBOARD OWNER :
+    - BAR CHART
+    - MONTH SELECT CHANGE TO INDONESIA
+    - UI CHANGE
+
+
 

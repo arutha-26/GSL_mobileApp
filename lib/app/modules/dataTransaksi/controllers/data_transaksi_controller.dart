@@ -35,8 +35,35 @@ class DataTransaksiController extends GetxController {
 
       if (response != null && response.data != null && response.data is List) {
         data.value = (response.data as List).map((item) {
+          final editAt = DateTime.parse(item['tanggal_datang'] as String);
+          final formattedDate = '${editAt.day}-${editAt.month}-${editAt.year}';
+          final berat = (item['berat_laundry'] as num);
+          final formattedBerat = '$berat Kg';
+          final harga = (item['total_biaya'] as num);
+          final formattedHarga = '$harga.000';
+          final nomor = (item['nomor_pelanggan'] as String);
+          final formattedNomor = '+62$nomor';
+          final cucian = (item['status_cucian'] as String);
+          final formattedCucian = cucian.capitalizeFirst;
+          final statusPembayaran = item['status_pembayaran'] as String;
+          final formattedStatusP =
+              statusPembayaran == 'sudah_dibayar' ? 'Sudah Dibayar' : 'Belum Dibayar';
+
           if (item is Map<String, dynamic>) {
-            return item;
+            return {
+              'transaksi_id': item['transaksi_id'],
+              'nama_pelanggan': item['nama_pelanggan'],
+              // 'nomor_pelanggan': formattedNomor,
+              // 'nama_karyawan_masuk': item['nama_karyawan_masuk'],
+              // 'kategori_pelanggan': item['kategori_pelanggan'],
+              // 'metode_laundry': item['metode_laundry'],
+              // 'layanan_laundry': item['layanan_laundry'],
+              // 'berat_laundry': formattedBerat,
+              // 'status_pembayaran': formattedStatusP,
+              // 'total_biaya': formattedHarga,
+              // 'status_cucian': formattedCucian,
+              'tanggal_datang': formattedDate,
+            };
           } else {
             return <String, dynamic>{};
           }
