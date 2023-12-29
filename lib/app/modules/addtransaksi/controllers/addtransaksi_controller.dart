@@ -127,6 +127,10 @@ class AddtransaksiController extends GetxController {
         beratLaundryController.text.isNotEmpty &&
         hargaTotalController.text.isNotEmpty) {
       isLoading.value = true;
+
+      String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+      cleanedInput = cleanedInput.replaceAll('.', '');
+
       try {
         var dataTransaksi = {
           "nama_karyawan_masuk": namaKaryawanC.text,
@@ -141,7 +145,7 @@ class AddtransaksiController extends GetxController {
           "metode_laundry": getSelectedMetode(),
           "layanan_laundry": getSelectedLayanan(),
           "metode_pembayaran": getSelectedPembayaran(),
-          "nominal_bayar": nominalBayarController.text,
+          "nominal_bayar": cleanedInput,
           "kembalian": getNumericValueFromKembalian(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
@@ -266,9 +270,8 @@ class AddtransaksiController extends GetxController {
     cleanedInput = cleanedInput.replaceAll('.', '');
 
     // Use the cleaned input for formatting Nominal Harga
-    final formattedNominal = "Rp" +
-        NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0)
-            .format(double.parse(cleanedInput));
+    final formattedNominal =
+        "Rp${NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(double.parse(cleanedInput))}";
 
     // Display the formatted Nominal Harga
     nominalBayarController.value = TextEditingValue(
