@@ -13,6 +13,10 @@ class AddtransaksiController extends GetxController {
     beratLaundryController.addListener(() {
       hitungTotalHarga();
     });
+    nominalBayarController.addListener(getKembalian);
+    nominalBayarController.addListener(() {
+      formattedNominal.value = formatNumber(nominalBayarController.text);
+    });
     // Anda bisa menambahkan listener lain di sini
   }
 
@@ -25,6 +29,8 @@ class AddtransaksiController extends GetxController {
     nameController.clear();
     phoneController.clear();
     kategoriController.clear();
+    nominalBayarController.clear();
+    kembalianController.clear();
     selectedMetode.value = "";
     selectedLayanan.value = "";
     selectedPembayaran.value = "-";
@@ -46,7 +52,10 @@ class AddtransaksiController extends GetxController {
     nameController.dispose();
     phoneController.dispose();
     kategoriController.dispose();
+    nominalBayarController.dispose();
+    kembalianController.dispose();
     beratLaundryController.removeListener(() {});
+    nominalBayarController.removeListener(getKembalian);
     // Hapus listener lain jika ada
     super.onClose();
   }
@@ -60,6 +69,8 @@ class AddtransaksiController extends GetxController {
   TextEditingController tanggalSelesaiController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
   TextEditingController hargaTotalController = TextEditingController();
+  TextEditingController nominalBayarController = TextEditingController();
+  TextEditingController kembalianController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController kategoriController = TextEditingController();
@@ -88,7 +99,9 @@ class AddtransaksiController extends GetxController {
         }).toList();
       }
     } catch (error) {
-      print('Exception during fetching data: $error');
+      if (kDebugMode) {
+        print('Exception during fetching data: $error');
+      }
     }
     return results;
   }
@@ -100,6 +113,11 @@ class AddtransaksiController extends GetxController {
     namaKaryawanC.text = user["nama"];
   }
 
+  int getNumericValueFromKembalian() {
+    String rawValue = kembalianController.text.replaceAll(RegExp(r'[^\d]'), '');
+    return int.tryParse(rawValue) ?? 0;
+  }
+
   Future<void> addTransaksi() async {
     if (namaKaryawanC.text.isNotEmpty &&
         beratLaundryController.text.isNotEmpty &&
@@ -107,7 +125,7 @@ class AddtransaksiController extends GetxController {
       isLoading.value = true;
       try {
         var dataTransaksi = {
-          "nama_karyawan": namaKaryawanC.text,
+          "nama_karyawan_masuk": namaKaryawanC.text,
           "tanggal_datang": formatDate(tanggalDatangController.text),
           "tanggal_selesai": formatDate(tanggalSelesaiController.text),
           "tanggal_diambil": null,
@@ -119,6 +137,8 @@ class AddtransaksiController extends GetxController {
           "metode_laundry": getSelectedMetode(),
           "layanan_laundry": getSelectedLayanan(),
           "metode_pembayaran": getSelectedPembayaran(),
+          "nominal_bayar": nominalBayarController.text,
+          "kembalian": getNumericValueFromKembalian(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
           "created_at": DateTime.now().toIso8601String(),
@@ -180,7 +200,7 @@ class AddtransaksiController extends GetxController {
   }
 
   RxString selectedPembayaran = "".obs;
-  List<String> pembayaranOptions = ["-", "Cash", "Transfer"];
+  List<String> pembayaranOptions = ["-", "Tunai", "Transfer"];
 
   String getSelectedPembayaran() {
     return selectedPembayaran.value;
@@ -207,13 +227,74 @@ class AddtransaksiController extends GetxController {
     hargaTotalController.text = currencyFormatter.format(totalHarga);
   }
 
+  RxString formattedNominalBayar = 'Rp. 0,000'.obs;
+
+  void updateFormattedNominalBayar(String value) {
+    formattedNominalBayar.value = formatCurrency(value);
+  }
+
+  String formatCurrency(String value) {
+    if (value.isEmpty) return 'Rp. 0,000';
+
+    // Assuming the input is a valid number
+    final number = int.tryParse(value) ?? 0;
+    final format = NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
+    return '${format.format(number)},000';
+  }
+
+  RxString formattedNominal = '0.000'.obs;
+
+  String get formatNominal {
+    final input = nominalBayarController.text;
+    return input.isEmpty ? '0.000' : '$input.000';
+  }
+
+  String formatNumber(String value) {
+    return value.isEmpty ? '0.000' : '$value.000';
+  }
+
+  void getKembalian() {
+    if (kDebugMode) {
+      print("getKembalian called");
+    } // Debugging log
+
+    // Strip non-numeric characters except the decimal point
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    double nominalHarga = double.tryParse(cleanedInput) ?? 0.0;
+
+    double totalBiaya = numericTotalHarga.value;
+    double kembalian = nominalHarga - totalBiaya;
+    double minus = totalBiaya - nominalHarga;
+
+    // Custom formatter for Indonesian Rupiah
+    final currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 3);
+
+    // Handle negative kembalian (underpayment)
+    if (kembalian < 0) {
+      // Update kembalianController with an error message
+      kembalianController.text = "Pembayaran Kurang: ${currencyFormatter.format(minus)}";
+      // Optionally, show a snackbar or dialog for user feedback
+      return;
+    }
+
+    // Format and display kembalian
+    kembalianController.text = currencyFormatter.format(kembalian);
+
+    if (kDebugMode) {
+      print("Nominal Harga: $nominalHarga, Total Biaya: $totalBiaya, Kembalian: $kembalian");
+    } // Debugging log
+  }
+
   String formatDate(String date) {
     try {
       // Assuming date is in DD-MM-YYYY format
       DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
       return DateFormat('yyyy-MM-dd').format(parsedDate); // Convert to YYYY-MM-DD format
     } catch (e) {
-      print("Error parsing date: $e");
+      if (kDebugMode) {
+        print("Error parsing date: $e");
+      }
       return "";
     }
   }

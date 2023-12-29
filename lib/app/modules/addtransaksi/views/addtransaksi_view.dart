@@ -205,7 +205,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       // 60 are per data height
                       showSelectedItems: true,
                     ),
-                    items: const ["-", "Cash", "Transfer"],
+                    items: const ["-", "Tunai", "Transfer"],
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
                         labelText: "Metode Pembayaran",
@@ -219,10 +219,28 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   const SizedBox(
                     height: 20,
                   ),
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    controller: controller.nominalBayarController,
+                    decoration: const InputDecoration(
+                      labelText: "Nominal Bayar",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  Obx(() => Text('Bayar: ${controller.formattedNominal.value}')),
+                  const SizedBox(height: 20),
+                  TextField(
+                    keyboardType: TextInputType.none,
+                    controller: controller.kembalianController,
+                    decoration: const InputDecoration(
+                      labelText: "Kembalian",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // Opsi "Sudah Dibayar"
                       Obx(() => GestureDetector(
                             onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
                             child: Container(
@@ -263,7 +281,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                          child: const Column(
+                              child: const Column(
                                 children: [
                                   Icon(Icons.payment, color: Colors.red),
                                   Text('Belum Dibayar'),
