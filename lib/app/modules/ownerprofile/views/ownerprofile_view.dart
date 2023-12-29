@@ -8,7 +8,7 @@ import '../../../utils/bottom_navbar.dart';
 import '../controllers/ownerprofile_controller.dart';
 
 class OwnerprofileView extends GetView<OwnerprofileController> {
-  OwnerprofileView({Key? key}) : super(key: key);
+  OwnerprofileView({super.key});
 
   final authC = Get.find<AuthController>();
 
@@ -73,8 +73,9 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                 ),
                 TextField(
                   autocorrect: false,
+                  enabled: false,
                   controller: controller.nameC2,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.none,
                   decoration: const InputDecoration(
                     labelText: "Nama",
                     border: OutlineInputBorder(),
@@ -88,7 +89,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                   controller: controller.passwordC,
                   textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
-                    labelText: "New password",
+                    labelText: "Password Baru",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -114,8 +115,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                           }
                         }
                       },
-                      child:
-                          Text(controller.isLoading.isFalse ? "UPDATE PROFILE" : "Loading..."),
+                      child: Text(controller.isLoading.isFalse ? "Update Data" : "Loading..."),
                     )),
               ],
             );
@@ -129,8 +129,8 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
               Get.offAllNamed(Routes.OWNERHOME); // Replace '/home' with your actual home route
               break;
             case 1:
-              Get.offAllNamed(
-                  '/dashboard'); // Replace '/dashboard' with your actual dashboard route
+              Get.offAllNamed(Routes
+                  .DASHBOARD_OWNER); // Replace '/dashboard' with your actual dashboard route
               break;
             case 2:
               Get.offAllNamed(

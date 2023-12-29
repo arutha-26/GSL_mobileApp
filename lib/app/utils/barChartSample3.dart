@@ -9,8 +9,7 @@ class BarChartSample3 extends StatefulWidget {
 
   final List<String> dates; // Add a list of dates
 
-  const BarChartSample3({Key? key, required this.transactionsPerDay, required this.dates})
-      : super(key: key);
+  const BarChartSample3({super.key, required this.transactionsPerDay, required this.dates});
 
   @override
   State<StatefulWidget> createState() => BarChartSample3State();
@@ -30,8 +29,8 @@ class BarChartSample3State extends State<BarChartSample3> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Container(
-        height: 200,
+      child: SizedBox(
+        height: 250,
         width: 2000,
         child: AspectRatio(
           aspectRatio: 10,
@@ -43,7 +42,7 @@ class BarChartSample3State extends State<BarChartSample3> {
               barGroups: _createBarGroups(widget.transactionsPerDay),
               gridData: const FlGridData(show: false),
               alignment: BarChartAlignment.spaceEvenly,
-              maxY: 15,
+              maxY: 200,
               backgroundColor: const Color(0xFF2d4261),
             ),
           ),

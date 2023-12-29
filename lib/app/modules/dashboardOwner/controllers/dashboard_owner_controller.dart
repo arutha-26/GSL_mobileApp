@@ -188,7 +188,9 @@ class DashboardOwnerController extends GetxController {
         monthlyTransactionData.value = transactionsPerDay;
 
         // Debugging: Print the transaction data
-        print('Monthly Transaction Data:');
+        if (kDebugMode) {
+          print('Monthly Transaction Data:');
+        }
         for (int day = 1; day <= lastDayOfMonth.day; day++) {
           if (kDebugMode) {
             print('Day $day: ${transactionsPerDay[day - 1]} transactions');

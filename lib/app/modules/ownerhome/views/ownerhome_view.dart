@@ -31,7 +31,6 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
       body: Center(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CarouselSlider(
                 items: [

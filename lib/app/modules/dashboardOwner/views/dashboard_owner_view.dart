@@ -32,8 +32,14 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
           return SingleChildScrollView(
             child: Column(
               children: [
+                Image.asset('images/banner_1.png'),
+                const SizedBox(height: 10),
                 _buildStatusAndDebtsCard(),
                 _buildProfitAndTransactionCountCard(),
+                const Text(
+                  'Grafik Transaksi Bulanan',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 _buildMonthlyTransactionsGraph(),
                 // _buildMonthlyIncomeGraph(),
               ],
@@ -174,7 +180,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
             });
 
             return SizedBox(
-              height: 200,
+              height: 250,
               child: BarChartSample3(
                 transactionsPerDay: transactionsData,
                 dates: dates,
@@ -189,6 +195,9 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
   }
 
   Widget monthSelectionDropdown() {
+    // // Initialize the localization for Indonesian language
+    // initializeDateFormatting('id_ID', null);
+
     // Extract only the year and month part
     DateTime initialMonth =
         DateTime(controller.selectedMonth.value.year, controller.selectedMonth.value.month);
@@ -205,7 +214,8 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
         DateTime month = DateTime(initialMonth.year, index + 1);
         return DropdownMenuItem<DateTime>(
           value: month,
-          child: Text(DateFormat('MMMM').format(month)),
+          child: Text(
+              DateFormat('MMMM').format(month)), // 'id' is the language code for Indonesian
         );
       }),
     );
