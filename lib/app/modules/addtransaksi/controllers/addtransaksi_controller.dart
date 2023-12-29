@@ -13,10 +13,14 @@ class AddtransaksiController extends GetxController {
     beratLaundryController.addListener(() {
       hitungTotalHarga();
     });
-    nominalBayarController.addListener(getKembalian);
+    formatNominal();
+    // nominalBayarController.addListener(getKembalian);
     nominalBayarController.addListener(() {
-      formattedNominal.value = formatNumber(nominalBayarController.text);
+      getKembalian();
     });
+    // nominalBayarController.addListener(() {
+    //   formattedNominal.value = formatNumber(nominalBayarController.text);
+    // });
     // Anda bisa menambahkan listener lain di sini
   }
 
@@ -178,7 +182,6 @@ class AddtransaksiController extends GetxController {
   }
 
   RxString selectedMetode = "".obs;
-  List<String> metodeOptions = ["Regular", "Express"];
 
   String getSelectedMetode() {
     return selectedMetode.value;
@@ -189,7 +192,6 @@ class AddtransaksiController extends GetxController {
   }
 
   RxString selectedLayanan = "".obs;
-  List<String> layananOptions = ["Cuci Setrika", "Cuci Saja", "Setrika Saja"];
 
   String getSelectedLayanan() {
     return selectedLayanan.value;
@@ -200,7 +202,6 @@ class AddtransaksiController extends GetxController {
   }
 
   RxString selectedPembayaran = "".obs;
-  List<String> pembayaranOptions = ["-", "Tunai", "Transfer"];
 
   String getSelectedPembayaran() {
     return selectedPembayaran.value;
@@ -223,67 +224,86 @@ class AddtransaksiController extends GetxController {
 
     // Format and display
     NumberFormat currencyFormatter =
-        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 3);
+        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
     hargaTotalController.text = currencyFormatter.format(totalHarga);
   }
 
-  RxString formattedNominalBayar = 'Rp. 0,000'.obs;
+  formatNominal() {
+    nominalBayarController.addListener(() {
+      final value = nominalBayarController.text;
 
-  void updateFormattedNominalBayar(String value) {
-    formattedNominalBayar.value = formatCurrency(value);
-  }
+      if (value.isEmpty) {
+        return; // Tidak perlu format jika nilai kosong
+      }
 
-  String formatCurrency(String value) {
-    if (value.isEmpty) return 'Rp. 0,000';
+      // Hapus semua karakter non-digit
+      final cleanedInput = value.replaceAll(RegExp(r'[^\d]'), '');
 
-    // Assuming the input is a valid number
-    final number = int.tryParse(value) ?? 0;
-    final format = NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
-    return '${format.format(number)},000';
-  }
+      // Periksa apakah nilai kosong setelah membersihkan karakter
+      if (cleanedInput.isEmpty) {
+        return; // Tidak perlu format jika nilai kosong setelah membersihkan karakter
+      }
 
-  RxString formattedNominal = '0.000'.obs;
+      final number = int.tryParse(cleanedInput); // Menggunakan int.tryParse
 
-  String get formatNominal {
-    final input = nominalBayarController.text;
-    return input.isEmpty ? '0.000' : '$input.000';
-  }
-
-  String formatNumber(String value) {
-    return value.isEmpty ? '0.000' : '$value.000';
+      if (number != null) {
+        final formattedValue =
+            NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(number);
+        if (value != formattedValue) {
+          nominalBayarController.value = TextEditingValue(
+            text: formattedValue,
+            selection: TextSelection.collapsed(offset: formattedValue.length),
+          );
+        }
+      }
+    });
   }
 
   void getKembalian() {
-    if (kDebugMode) {
-      print("getKembalian called");
-    } // Debugging log
-
-    // Strip non-numeric characters except the decimal point
     String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
-    double nominalHarga = double.tryParse(cleanedInput) ?? 0.0;
 
+    // Remove the dot from cleaned input
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    // Use the cleaned input for formatting Nominal Harga
+    final formattedNominal = "Rp" +
+        NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0)
+            .format(double.parse(cleanedInput));
+
+    // Display the formatted Nominal Harga
+    nominalBayarController.value = TextEditingValue(
+      text: formattedNominal,
+      selection: TextSelection.collapsed(offset: formattedNominal.length),
+    );
+
+    // Use the cleaned input for calculations
+    double nominalHarga = double.parse(cleanedInput) ?? 0.0;
     double totalBiaya = numericTotalHarga.value;
     double kembalian = nominalHarga - totalBiaya;
     double minus = totalBiaya - nominalHarga;
 
     // Custom formatter for Indonesian Rupiah
     final currencyFormatter =
-        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 3);
+        NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
 
     // Handle negative kembalian (underpayment)
     if (kembalian < 0) {
       // Update kembalianController with an error message
       kembalianController.text = "Pembayaran Kurang: ${currencyFormatter.format(minus)}";
       // Optionally, show a snackbar or dialog for user feedback
-      return;
+
+      // Set a constant Kembalian value
+      kembalian = -totalBiaya;
+    } else {
+      // Format and display kembalian
+      kembalianController.text = currencyFormatter.format(kembalian);
     }
 
-    // Format and display kembalian
-    kembalianController.text = currencyFormatter.format(kembalian);
-
+    // Debugging log
     if (kDebugMode) {
-      print("Nominal Harga: $nominalHarga, Total Biaya: $totalBiaya, Kembalian: $kembalian");
-    } // Debugging log
+      print(
+          "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian");
+    }
   }
 
   String formatDate(String date) {

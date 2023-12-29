@@ -227,7 +227,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  Obx(() => Text('Bayar: ${controller.formattedNominal.value}')),
                   const SizedBox(height: 20),
                   TextField(
                     keyboardType: TextInputType.none,
