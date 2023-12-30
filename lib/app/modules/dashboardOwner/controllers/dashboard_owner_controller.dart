@@ -69,7 +69,7 @@ class DashboardOwnerController extends GetxController {
         totalDebt.value = total; // Simpan nilai numerik
 
         // Format total biaya menjadi format uang dan simpan di formattedTotalDebt
-        final formatter = NumberFormat('#,##0.000', 'id_ID');
+        final formatter = NumberFormat('#,###', 'id_ID');
         formattedTotalDebt.value = formatter.format(total);
       } else {
         if (kDebugMode) {
@@ -105,7 +105,7 @@ class DashboardOwnerController extends GetxController {
         totalPaidDebt.value = total; // Simpan nilai numerik
 
         // Format total biaya menjadi format uang dan simpan di formattedTotalDebt
-        final formatter = NumberFormat('#,##0.000', 'id_ID');
+        final formatter = NumberFormat('#,###', 'id_ID');
         formattedTotalPaid.value = formatter.format(total);
       } else {
         if (kDebugMode) {

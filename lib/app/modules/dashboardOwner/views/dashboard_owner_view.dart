@@ -118,8 +118,8 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
       child: Card(
         color: Colors.redAccent,
         child: ListTile(
-          title: const Text('Hutang Belum Dibayar'),
-          subtitle: Obx(() => Text('Rp. ${controller.formattedTotalDebt.value}')),
+          title: const Text('Transaksi Belum Dibayar'),
+          subtitle: Obx(() => Text('Rp${controller.formattedTotalDebt.value}')),
         ),
       ),
     );
@@ -134,8 +134,8 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
       child: Card(
         color: Colors.green,
         child: ListTile(
-          title: const Text('Total Transaksi Sudah Dibayar'),
-          subtitle: Obx(() => Text('Rp. ${controller.formattedTotalPaid.value}')),
+          title: const Text('Transaksi Sudah Dibayar'),
+          subtitle: Obx(() => Text('Rp${controller.formattedTotalPaid.value}')),
         ),
       ),
     );
