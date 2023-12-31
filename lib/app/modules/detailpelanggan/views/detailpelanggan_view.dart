@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
-import '../../detailpaneltransaksi/views/detailpaneltransaksi_view.dart';
 import '../controllers/detailpelanggan_controller.dart';
 
 class DetailpelangganView extends GetView<DetailpelangganController> {
@@ -42,7 +41,7 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
             Map<String, dynamic> user = snapshot.data as Map<String, dynamic>;
 
             return Container(
-              height: 600,
+              height: 750,
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -50,6 +49,8 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: ListView(
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(5),
                 children: [
                   Image.asset(
@@ -67,56 +68,32 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                   TextRow(label: 'Nomor Pelanggan', value: '+62${user['phone']}' ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(
-                      label: 'Kategori Pelanggan', value: user['kategori']?.toString() ?? '-'),
+                    label: 'Kategori Pelanggan',
+                    value: user['kategori']?.toString() ?? '-',
+                  ),
                   const SizedBox(height: 5),
-                  TextRow(label: 'Alamat Pelanggan', value: '${user['alamat']}' ?? '-'),
+                  TextRow(
+                    label: 'Alamat Pelanggan',
+                    value: user['alamat']?.toString() ?? '-',
+                  ),
                   const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Check if user data is not null before navigating
-                          if (user != null) {
-                            // Add your update logic here
-                            // For example, navigate to the update page
-                            Get.toNamed(Routes.UPDATE_DATA_PELANGGAN, arguments: user);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.lightBlue,
-                          minimumSize: const Size(150, 48),
-                        ),
-                        child: Text(
-                          'Update',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (user != null) {
+                        Get.offAndToNamed(Routes.UPDATE_DATA_PELANGGAN, arguments: user);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.lightBlue,
+                      minimumSize: const Size(150, 48),
+                    ),
+                    child: const Text(
+                      'Update Data',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Check if user data is not null before showing the confirmation dialog
-                          if (user != null) {
-                            // Add your delete logic here
-                            // For example, show a confirmation dialog
-                            // showDeleteConfirmationDialog(context, user['id']);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          minimumSize: const Size(150, 48),
-                        ),
-                        child: Text(
-                          'Hapus',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -128,6 +105,30 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
           }
         },
       ),
+    );
+  }
+}
+
+class TextRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const TextRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(value),
+      ],
     );
   }
 }

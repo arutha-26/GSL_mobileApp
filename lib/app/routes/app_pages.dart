@@ -6,12 +6,16 @@ import '../modules/addtransaksi/bindings/addtransaksi_binding.dart';
 import '../modules/addtransaksi/views/addtransaksi_view.dart';
 import '../modules/dashboardOwner/bindings/dashboard_owner_binding.dart';
 import '../modules/dashboardOwner/views/dashboard_owner_view.dart';
+import '../modules/dataKaryawan/bindings/data_karyawan_binding.dart';
+import '../modules/dataKaryawan/views/data_karyawan_view.dart';
 import '../modules/dataTransaksi/bindings/data_transaksi_binding.dart';
 import '../modules/dataTransaksi/views/data_transaksi_view.dart';
 import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
 import '../modules/datapelanggan/views/datapelanggan_view.dart';
 import '../modules/detailHistoryPelanggan/bindings/detail_history_pelanggan_binding.dart';
 import '../modules/detailHistoryPelanggan/views/detail_history_pelanggan_view.dart';
+import '../modules/detailKaryawan/bindings/detail_karyawan_binding.dart';
+import '../modules/detailKaryawan/views/detail_karyawan_view.dart';
 import '../modules/detailpaneltransaksi/bindings/detailpaneltransaksi_binding.dart';
 import '../modules/detailpaneltransaksi/views/detailpaneltransaksi_view.dart';
 import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
@@ -54,6 +58,8 @@ import '../modules/pengambilanLaundry/bindings/pengambilan_laundry_binding.dart'
 import '../modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
+import '../modules/updateDataKaryawan/bindings/update_data_karyawan_binding.dart';
+import '../modules/updateDataKaryawan/views/update_data_karyawan_view.dart';
 import '../modules/updateDataPelanggan/bindings/update_data_pelanggan_binding.dart';
 import '../modules/updateDataPelanggan/views/update_data_pelanggan_view.dart';
 
@@ -204,6 +210,21 @@ class AppPages {
       name: _Paths.UPDATE_DATA_PELANGGAN,
       page: () => UpdateDataPelangganView(),
       binding: UpdateDataPelangganBinding(),
+    ),
+    GetPage(
+      name: _Paths.DATA_KARYAWAN,
+      page: () => DataKaryawanView(),
+      binding: DataKaryawanBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_KARYAWAN,
+      page: () => DetailKaryawanView(),
+      binding: DetailKaryawanBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_DATA_KARYAWAN,
+      page: () => UpdateDataKaryawanView(),
+      binding: UpdateDataKaryawanBinding(),
     ),
   ];
 }

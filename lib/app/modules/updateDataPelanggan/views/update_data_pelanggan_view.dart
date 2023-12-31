@@ -42,6 +42,8 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
                 const SizedBox(height: 15),
                 _buildTextField('Alamat Pelanggan', 'alamat', userData),
                 const SizedBox(height: 25),
+                _buildDropdownStatus('Status Pelanggan', 'is_active', userData),
+                const SizedBox(height: 25),
                 ElevatedButton(
                   onPressed: () {
                     // if (_formKey.currentState?.validate() ?? false) {
@@ -93,6 +95,31 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
     );
   }
 
+  Widget _buildDropdownStatus(String label, String field, Map<String, dynamic> userData) {
+    return DropdownButtonFormField<bool>(
+      value: userData[field] ?? false,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      items: [
+        DropdownMenuItem<bool>(
+          value: true,
+          child: Text('Aktif'),
+        ),
+        DropdownMenuItem<bool>(
+          value: false,
+          child: Text('Tidak Aktif'),
+        ),
+      ],
+      onChanged: (value) {
+        controller.updatedUserData[field] = value;
+      },
+    );
+  }
+
   Widget _buildTextField(String label, String field, Map<String, dynamic> userData) {
     return TextFormField(
       enabled: ['phone', 'kategori', 'alamat'].contains(field),
@@ -110,7 +137,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
         return null;
       },
       onChanged: (value) {
-        if (['phone', 'kategori', 'alamat'].contains(field)) {
+        if (['phone', 'kategori', 'alamat', 'is_active'].contains(field)) {
           controller.updatedUserData[field] = value;
         }
       },

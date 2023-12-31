@@ -17,10 +17,17 @@ class DatapelangganController extends GetxController {
     super.onInit();
   }
 
+  Future<void> refreshData() async {
+    isLoading.value = true;
+    await fetchData();
+    isLoading.value = false;
+  }
+
   Future<void> fetchData() async {
     try {
-      final response =
-          await client.from('user').select('nama, kategori, id').eq('role', 'Pelanggan');
+      isLoading.value = true;
+      final response = await client.from('user').select('*').eq('role', 'Pelanggan');
+      isLoading.value = false;
 
       if (response != null && response is List) {
         // Convert each item in the list to a Map<String, dynamic>

@@ -37,30 +37,19 @@ class UpdateDataPelangganController extends GetxController {
   final formKey = GlobalKey<FormState>(); // Use this key consistently
 
   Future<void> updateUserData(Map<String, dynamic> userData) async {
-    if (kDebugMode) {
-      print('Update button pressed');
-    }
+    print('Update button pressed');
     try {
       if (userData['id'] != null) {
         isLoading.value = true;
 
         // Prepare the update fields
         Map<String, dynamic> updateFields = {
-          "phone": updatedUserData['phone'],
-          "kategori": updatedUserData['kategori'],
-          "alamat": updatedUserData['alamat'],
+          "phone": updatedUserData['phone'] ?? userData['phone'],
+          "kategori": updatedUserData['kategori'] ?? userData['kategori'],
+          "alamat": updatedUserData['alamat'] ?? userData['alamat'],
+          "is_active": updatedUserData['is_active'] ?? userData['is_active'],
           "edit_at": DateTime.now().toString(),
         };
-        if (kDebugMode) {
-          print("data update$updatedUserData");
-        }
-
-        // Replace empty fields with the corresponding values from userData
-        updateFields.forEach((key, value) {
-          if (value == null || value.isEmpty) {
-            updateFields[key] = userData[key];
-          }
-        });
 
         var response = await client
             .from("user")
@@ -68,10 +57,7 @@ class UpdateDataPelangganController extends GetxController {
             .match({"id": userData['id']}).execute();
 
         isLoading.value = false; // Reset the loading state
-        // Debugging: Print the response status code
-        if (kDebugMode) {
-          print('Response status code: ${response.status}');
-        }
+
         if (response.status == 200 || response.status == 201 || response.status == 204) {
           Get.snackbar(
             'Success',
@@ -80,12 +66,11 @@ class UpdateDataPelangganController extends GetxController {
           );
 
           // Log the updated data to the console
-          if (kDebugMode) {
-            print('Updated data: $updatedUserData');
-          }
+          print('Updated data: $updatedUserData');
 
           // Navigate back to the data pelanggan page
           Get.offAndToNamed(Routes.DATAPELANGGAN);
+          refresh();
         } else {
           Get.snackbar(
             'Error',
@@ -98,12 +83,7 @@ class UpdateDataPelangganController extends GetxController {
       }
     } catch (error) {
       isLoading.value = false; // Reset the loading state in case of an error
-
-      if (kDebugMode) {
-        print('Error updating user data: $error');
-      }
-
-      // Print the specific error message for further investigation
+      print('Error updating user data: $error');
     }
   }
 }

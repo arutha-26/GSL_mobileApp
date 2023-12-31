@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:gsl/app/modules/dataKaryawan/controllers/data_karyawan_controller.dart';
+import 'package:gsl/app/modules/dataKaryawan/views/data_karyawan_view.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
@@ -65,7 +67,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                     Get.put(AdddataController());
                     Get.to(() => AdddataView());
                   },
-                  label: 'Data Karyawan/Pelanggan',
+                  label: 'Data Pengguna',
                   color: Colors.blue,
                   iconPath: 'images/plus.png',
                 ),
@@ -102,6 +104,15 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                     Get.to(() => DatapelangganView());
                   },
                   label: 'Data Pelanggan',
+                  color: Colors.purple,
+                  iconPath: 'images/document.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(DataKaryawanController());
+                    Get.to(() => DataKaryawanView());
+                  },
+                  label: 'Data Karyawan',
                   color: Colors.purple,
                   iconPath: 'images/document.png',
                 ),
