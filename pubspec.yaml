@@ -21,6 +21,9 @@ dependencies:
   fl_chart: ^0.65.0
   custom_date_range_picker: ^1.0.10
   carousel_slider: ^4.2.1
+  pdf: ^3.10.4
+  path_provider: ^2.1.1
+  open_file: ^3.3.2
 
 dev_dependencies:
   flutter_lints: ^3.0.1

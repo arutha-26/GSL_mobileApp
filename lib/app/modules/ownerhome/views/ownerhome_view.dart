@@ -5,6 +5,8 @@ import 'package:gsl/app/modules/addtransaksi/controllers/addtransaksi_controller
 import 'package:gsl/app/modules/addtransaksi/views/addtransaksi_view.dart';
 import 'package:gsl/app/modules/dataTransaksi/controllers/data_transaksi_controller.dart';
 import 'package:gsl/app/modules/dataTransaksi/views/data_transaksi_view.dart';
+import 'package:gsl/app/modules/invoiceTransaksi/controllers/invoice_transaksi_controller.dart';
+import 'package:gsl/app/modules/invoiceTransaksi/views/invoice_transaksi_view.dart';
 import 'package:gsl/app/modules/paneltransaksi/controllers/paneltransaksi_controller.dart';
 import 'package:gsl/app/modules/paneltransaksi/views/paneltransaksi_view.dart';
 import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
@@ -118,6 +120,15 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                     },
                     imagePath: 'images/document.png', // Replace with your image path
                     label: 'Data Transaksi',
+                    color: Colors.teal,
+                  ),
+                  ElevatedButtonIcon(
+                    onPressed: () {
+                      Get.put(InvoiceTransaksiController());
+                      Get.to(() => InvoiceTransaksiView());
+                    },
+                    imagePath: 'images/document.png', // Replace with your image path
+                    label: 'Invoice Transaksi',
                     color: Colors.teal,
                   ),
                 ],

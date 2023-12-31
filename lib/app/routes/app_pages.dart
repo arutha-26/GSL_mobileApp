@@ -16,6 +16,8 @@ import '../modules/detailpaneltransaksi/bindings/detailpaneltransaksi_binding.da
 import '../modules/detailpaneltransaksi/views/detailpaneltransaksi_view.dart';
 import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
 import '../modules/detailpelanggan/views/detailpelanggan_view.dart';
+import '../modules/invoiceTransaksi/bindings/invoice_transaksi_binding.dart';
+import '../modules/invoiceTransaksi/views/invoice_transaksi_view.dart';
 import '../modules/karyawanDashboard/bindings/karyawan_dashboard_binding.dart';
 import '../modules/karyawanDashboard/views/karyawan_dashboard_view.dart';
 import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
@@ -190,6 +192,11 @@ class AppPages {
       name: _Paths.PELANGGAN_STATUS,
       page: () => PelangganStatusView(),
       binding: PelangganStatusBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_TRANSAKSI,
+      page: () => InvoiceTransaksiView(),
+      binding: InvoiceTransaksiBinding(),
     ),
   ];
 }

@@ -34,6 +34,7 @@ abstract class Routes {
   static const PELANGGAN_DEBT = _Paths.PELANGGAN_DEBT;
   static const PELANGGAN_TRANSAKSI = _Paths.PELANGGAN_TRANSAKSI;
   static const PELANGGAN_STATUS = _Paths.PELANGGAN_STATUS;
+  static const INVOICE_TRANSAKSI = _Paths.INVOICE_TRANSAKSI;
 }
 
 abstract class _Paths {
@@ -69,4 +70,5 @@ abstract class _Paths {
   static const PELANGGAN_DEBT = '/pelanggan-debt';
   static const PELANGGAN_TRANSAKSI = '/pelanggan-transaksi';
   static const PELANGGAN_STATUS = '/pelanggan-status';
+  static const INVOICE_TRANSAKSI = '/invoice-transaksi';
 }
