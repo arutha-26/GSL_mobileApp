@@ -54,6 +54,8 @@ import '../modules/pengambilanLaundry/bindings/pengambilan_laundry_binding.dart'
 import '../modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
+import '../modules/updateDataPelanggan/bindings/update_data_pelanggan_binding.dart';
+import '../modules/updateDataPelanggan/views/update_data_pelanggan_view.dart';
 
 part 'app_routes.dart';
 
@@ -197,6 +199,11 @@ class AppPages {
       name: _Paths.INVOICE_TRANSAKSI,
       page: () => InvoiceTransaksiView(),
       binding: InvoiceTransaksiBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_DATA_PELANGGAN,
+      page: () => UpdateDataPelangganView(),
+      binding: UpdateDataPelangganBinding(),
     ),
   ];
 }

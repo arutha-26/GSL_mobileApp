@@ -1,141 +1,132 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gsl/app/modules/addtransaksi/controllers/addtransaksi_controller.dart';
-import 'package:gsl/app/modules/addtransaksi/views/addtransaksi_view.dart';
-import 'package:gsl/app/modules/dataTransaksi/controllers/data_transaksi_controller.dart';
-import 'package:gsl/app/modules/dataTransaksi/views/data_transaksi_view.dart';
-import 'package:gsl/app/modules/invoiceTransaksi/controllers/invoice_transaksi_controller.dart';
-import 'package:gsl/app/modules/invoiceTransaksi/views/invoice_transaksi_view.dart';
-import 'package:gsl/app/modules/paneltransaksi/controllers/paneltransaksi_controller.dart';
-import 'package:gsl/app/modules/paneltransaksi/views/paneltransaksi_view.dart';
-import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
-import 'package:gsl/app/modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../../adddatauser/controllers/adddata_controller.dart';
 import '../../adddatauser/views/adddata_view.dart';
+import '../../addtransaksi/controllers/addtransaksi_controller.dart';
+import '../../addtransaksi/views/addtransaksi_view.dart';
+import '../../dataTransaksi/controllers/data_transaksi_controller.dart';
+import '../../dataTransaksi/views/data_transaksi_view.dart';
 import '../../datapelanggan/controllers/datapelanggan_controller.dart';
 import '../../datapelanggan/views/datapelanggan_view.dart';
+import '../../invoiceTransaksi/controllers/invoice_transaksi_controller.dart';
+import '../../invoiceTransaksi/views/invoice_transaksi_view.dart';
+import '../../paneltransaksi/controllers/paneltransaksi_controller.dart';
+import '../../paneltransaksi/views/paneltransaksi_view.dart';
+import '../../pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
+import '../../pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../controllers/ownerhome_controller.dart';
 
 class OwnerhomeView extends GetView<OwnerhomeController> {
-  const OwnerhomeView({super.key});
+  const OwnerhomeView({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 253, 253, 253),
       appBar: AppBar(
         title: const Text('Green Spirit Laundry'),
         centerTitle: true,
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CarouselSlider(
-                items: [
-                  Image.asset('images/banner_1.png'),
-                  Image.asset('images/banner_4.png'),
-                  Image.asset('images/banner_7.png'),
-                  Image.asset('images/banner_5.png'),
-                ],
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 15 / 9,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: true,
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  autoPlayAnimationDuration: const Duration(milliseconds: 2000),
-                  viewportFraction: 1,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CarouselSlider(
+              items: [
+                Image.asset('images/banner_1.png'),
+                Image.asset('images/banner_4.png'),
+                Image.asset('images/banner_7.png'),
+                Image.asset('images/banner_5.png'),
+              ],
+              options: CarouselOptions(
+                autoPlay: true,
+                aspectRatio: 16 / 9,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: true,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                autoPlayAnimationDuration: const Duration(milliseconds: 2500),
+                viewportFraction: 1,
+              ),
+            ),
+            const SizedBox(height: 10),
+            GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: const EdgeInsets.all(16.0),
+              shrinkWrap: true,
+              children: [
+                GlassButton(
+                  onPressed: () {
+                    Get.put(AdddataController());
+                    Get.to(() => AdddataView());
+                  },
+                  label: 'Data Karyawan/Pelanggan',
+                  color: Colors.blue,
+                  iconPath: 'images/plus.png',
                 ),
-              ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  'Keberhasilan Green Spirit Laundry adalah hasil dari kerja keras dan semangat kalian.\n Mari kita terus tingkatkan kualitas layanan dan tunjukkan kepada semua bahwa kita adalah yang terbaik!',
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.center,
+                GlassButton(
+                  onPressed: () {
+                    Get.put(AddtransaksiController());
+                    Get.to(() => AddtransaksiView());
+                  },
+                  label: 'Data Transaksi',
+                  color: Colors.green,
+                  iconPath: 'images/plus.png',
                 ),
-              ),
-              const SizedBox(height: 10),
-              GridView.count(
-                crossAxisCount: 3,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                padding: const EdgeInsets.all(16.0),
-                shrinkWrap: true,
-                children: [
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(AdddataController());
-                      Get.to(() => AdddataView());
-                    },
-                    imagePath: 'images/plus.png', // Replace with your image path
-                    label: 'Data Karyawan/Pelanggan',
-                    color: Colors.blue,
-                  ),
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(AddtransaksiController());
-                      Get.to(() => AddtransaksiView());
-                    },
-                    imagePath: 'images/plus.png', // Replace with your image path
-                    label: 'Data Transaksi',
-                    color: Colors.green,
-                  ),
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(PaneltransaksiController());
-                      Get.to(() => PaneltransaksiView());
-                    },
-                    imagePath: 'images/settings.png', // Replace with your image path
-                    label: 'Panel Transaksi',
-                    color: Colors.orange,
-                  ),
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(PengambilanLaundryController());
-                      Get.to(() => PengambilanLaundryView());
-                    },
-                    imagePath: 'images/edit.png', // Replace with your image path
-                    label: 'Update Data Laundry',
-                    color: Colors.red,
-                  ),
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(DatapelangganController());
-                      Get.to(() => DatapelangganView());
-                    },
-                    imagePath: 'images/document.png', // Replace with your image path
-                    label: 'Data Pelanggan',
-                    color: Colors.purple,
-                  ),
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(DataTransaksiController());
-                      Get.to(() => DataTransaksiView());
-                    },
-                    imagePath: 'images/document.png', // Replace with your image path
-                    label: 'Data Transaksi',
-                    color: Colors.teal,
-                  ),
-                  ElevatedButtonIcon(
-                    onPressed: () {
-                      Get.put(InvoiceTransaksiController());
-                      Get.to(() => InvoiceTransaksiView());
-                    },
-                    imagePath: 'images/document.png', // Replace with your image path
-                    label: 'Invoice Transaksi',
-                    color: Colors.teal,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(PaneltransaksiController());
+                    Get.to(() => PaneltransaksiView());
+                  },
+                  label: 'Panel Transaksi',
+                  color: Colors.orange,
+                  iconPath: 'images/settings.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(PengambilanLaundryController());
+                    Get.to(() => PengambilanLaundryView());
+                  },
+                  label: 'Update Data Laundry',
+                  color: Colors.red,
+                  iconPath: 'images/edit.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(DatapelangganController());
+                    Get.to(() => DatapelangganView());
+                  },
+                  label: 'Data Pelanggan',
+                  color: Colors.purple,
+                  iconPath: 'images/document.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(DataTransaksiController());
+                    Get.to(() => DataTransaksiView());
+                  },
+                  label: 'Data Transaksi',
+                  color: Colors.teal,
+                  iconPath: 'images/document.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(InvoiceTransaksiController());
+                    Get.to(() => InvoiceTransaksiView());
+                  },
+                  label: 'Invoice Transaksi',
+                  color: Colors.teal,
+                  iconPath: 'images/document.png',
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavBar(
@@ -160,28 +151,49 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
   }
 }
 
-class ElevatedButtonIcon extends StatelessWidget {
+class GlassButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final String imagePath;
   final String label;
   final Color color;
+  final String iconPath;
 
-  ElevatedButtonIcon({
+  GlassButton({
     required this.onPressed,
-    required this.imagePath,
     required this.label,
     required this.color,
+    required this.iconPath,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
+    return GlassmorphicContainer(
+      width: double.infinity,
+      height: double.infinity,
+      borderRadius: 10,
+      blur: 10,
+      alignment: Alignment.center,
+      border: 2,
+      linearGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color(0x000891b2).withOpacity(0.1),
+          const Color(0x004ade80).withOpacity(0.4),
+        ],
+      ),
+      borderGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.greenAccent.withOpacity(0.1),
+          Colors.black12.withOpacity(0.4),
+        ],
+      ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: color,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -190,13 +202,13 @@ class ElevatedButtonIcon extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              imagePath,
-              height: 32, // Adjust the height of the image
+              iconPath,
+              height: 30,
             ),
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12, color: Colors.black),
               textAlign: TextAlign.center,
             ),
           ],
