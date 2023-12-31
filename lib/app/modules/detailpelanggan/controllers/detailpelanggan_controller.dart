@@ -8,12 +8,6 @@ class DetailpelangganController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  // Future<void> refreshData() async {
-  //   isLoading.value = true;
-  //   await getdatapelanggan(Map.identity());
-  //   isLoading.value = false;
-  // }
-
   Future<Map<String, dynamic>> getdatapelanggan(Map<String, dynamic> userData) async {
     try {
       if (userData['id'] != null) {

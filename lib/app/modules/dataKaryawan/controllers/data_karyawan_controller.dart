@@ -1,24 +1,61 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DataKaryawanController extends GetxController {
-  //TODO: Implement DataKaryawanController
+  RxBool isLoading = false.obs;
+  SupabaseClient client = Supabase.instance.client;
 
-  final count = 0.obs;
+  RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> filteredData = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
+    fetchData();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> refreshData() async {
+    isLoading.value = true;
+    await fetchData();
+    isLoading.value = false;
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  Future<void> fetchData() async {
+    try {
+      isLoading.value = true;
+      final response = await client.from('user').select('*').neq('role', 'Pelanggan');
+      isLoading.value = false;
+
+      if (response != null && response is List) {
+        // Convert each item in the list to a Map<String, dynamic>
+        data.value = response.map((item) => item as Map<String, dynamic>).toList();
+        filteredData.value = List.from(data);
+        if (kDebugMode) {
+          print('Fetched data: $data');
+        }
+      } else {
+        if (kDebugMode) {
+          print('Error: Invalid data format');
+        }
+      }
+    } catch (error) {
+      // Handle other exceptions
+      if (kDebugMode) {
+        print('Error: $error');
+      }
+    }
   }
 
-  void increment() => count.value++;
+  void searchByName(String query) {
+    if (query.isEmpty) {
+      filteredData.assignAll(data);
+      return;
+    }
+
+    filteredData.assignAll(
+      data.where(
+          (user) => user['nama'].toString().toLowerCase().contains(query.toLowerCase())),
+    );
+  }
 }

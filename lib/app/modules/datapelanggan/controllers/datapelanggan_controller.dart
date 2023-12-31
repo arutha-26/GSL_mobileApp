@@ -4,8 +4,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DatapelangganController extends GetxController {
   RxBool isLoading = false.obs;
-  RxBool isHidden = true.obs;
-
   SupabaseClient client = Supabase.instance.client;
 
   RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;

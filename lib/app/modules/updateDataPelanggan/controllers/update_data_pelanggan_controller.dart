@@ -6,38 +6,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class UpdateDataPelangganController extends GetxController {
-  static UpdateDataPelangganController get to => Get.find();
 
   RxBool isLoading = false.obs;
   RxMap<String, dynamic> updatedUserData = <String, dynamic>{}.obs;
   SupabaseClient client = Supabase.instance.client;
 
-  Future<Map<String, dynamic>> getdatapelanggan(Map<String, dynamic> userData) async {
-    try {
-      var response = await client
-          .from("user")
-          .select()
-          .match({"id": userData['id']}) // Use the correct key from userData
-          .execute();
-
-      if (response.status == 200 && response.data != null) {
-        List<dynamic> data = response.data as List<dynamic>;
-        if (data.isNotEmpty) {
-          return data.first as Map<String, dynamic>;
-        }
-      }
-    } catch (error) {
-      if (kDebugMode) {
-        print('Error fetching user data: $error');
-      }
-    }
-    return {};
-  }
-
-  final formKey = GlobalKey<FormState>(); // Use this key consistently
-
   Future<void> updateUserData(Map<String, dynamic> userData) async {
-    print('Update button pressed');
+    if (kDebugMode) {
+      print('Update button pressed');
+    }
     try {
       if (userData['id'] != null) {
         isLoading.value = true;
@@ -83,7 +60,9 @@ class UpdateDataPelangganController extends GetxController {
       }
     } catch (error) {
       isLoading.value = false; // Reset the loading state in case of an error
-      print('Error updating user data: $error');
+      if (kDebugMode) {
+        print('Error updating user data: $error');
+      }
     }
   }
 }

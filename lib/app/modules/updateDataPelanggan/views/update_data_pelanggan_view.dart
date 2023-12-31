@@ -104,7 +104,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      items: [
+      items: const [
         DropdownMenuItem<bool>(
           value: true,
           child: Text('Aktif'),
