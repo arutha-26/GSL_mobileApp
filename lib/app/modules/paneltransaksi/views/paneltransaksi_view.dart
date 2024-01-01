@@ -6,7 +6,7 @@ import '../controllers/paneltransaksi_controller.dart';
 
 class PaneltransaksiView extends GetView<PaneltransaksiController> {
   PaneltransaksiView({Key? key}) : super(key: key);
-
+  // TODO UBAH DATA HARGA MENJADI FORMAT RP
   @override
   Widget build(BuildContext context) {
     return Scaffold(

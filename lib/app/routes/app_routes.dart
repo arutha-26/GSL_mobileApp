@@ -41,6 +41,7 @@ abstract class Routes {
   static const UPDATE_DATA_KARYAWAN = _Paths.UPDATE_DATA_KARYAWAN;
   static const DETAIL_DATA_TRANSAKSI = _Paths.DETAIL_DATA_TRANSAKSI;
   static const UPDATE_DATA_HARGA = _Paths.UPDATE_DATA_HARGA;
+  static const INVOICE_TRANSAKSI_DATA = _Paths.INVOICE_TRANSAKSI_DATA;
 }
 
 abstract class _Paths {
@@ -83,4 +84,5 @@ abstract class _Paths {
   static const UPDATE_DATA_KARYAWAN = '/update-data-karyawan';
   static const DETAIL_DATA_TRANSAKSI = '/detail-data-transaksi';
   static const UPDATE_DATA_HARGA = '/update-data-harga';
+  static const INVOICE_TRANSAKSI_DATA = '/invoice-transaksi-data';
 }

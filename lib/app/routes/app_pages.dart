@@ -22,6 +22,8 @@ import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
 import '../modules/detailpelanggan/views/detailpelanggan_view.dart';
 import '../modules/invoiceTransaksi/bindings/invoice_transaksi_binding.dart';
 import '../modules/invoiceTransaksi/views/invoice_transaksi_view.dart';
+import '../modules/invoiceTransaksiData/bindings/invoice_transaksi_data_binding.dart';
+import '../modules/invoiceTransaksiData/views/invoice_transaksi_data_view.dart';
 import '../modules/karyawanDashboard/bindings/karyawan_dashboard_binding.dart';
 import '../modules/karyawanDashboard/views/karyawan_dashboard_view.dart';
 import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
@@ -60,6 +62,7 @@ import '../modules/updateDataKaryawan/bindings/update_data_karyawan_binding.dart
 import '../modules/updateDataKaryawan/views/update_data_karyawan_view.dart';
 import '../modules/updateDataPelanggan/bindings/update_data_pelanggan_binding.dart';
 import '../modules/updateDataPelanggan/views/update_data_pelanggan_view.dart';
+import '../utils/invoiceData.dart';
 
 part 'app_routes.dart';
 
@@ -218,6 +221,11 @@ class AppPages {
       name: _Paths.UPDATE_DATA_HARGA,
       page: () => UpdateDataHargaView(),
       binding: UpdateDataHargaBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_TRANSAKSI_DATA,
+      page: () => InvoiceTransaksiDataView(invoiceData: RxList<InvoiceData>.empty()),
+      binding: InvoiceTransaksiDataBinding(),
     ),
   ];
 }

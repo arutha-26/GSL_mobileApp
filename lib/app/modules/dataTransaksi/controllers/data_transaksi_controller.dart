@@ -15,7 +15,6 @@ class DataTransaksiController extends GetxController {
 
   RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
   RxInt currentPage = 1.obs;
-  Rx<DateTime> selectedDate = Rx(DateTime.now());
 
   Rx<DateTime> startDate = Rx(DateTime.now());
   Rx<DateTime> endDate = Rx(DateTime.now());
@@ -29,8 +28,7 @@ class DataTransaksiController extends GetxController {
           .from('transaksi')
           .select('*')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
-          .lte('tanggal_datang',
-          '${endDate.value.toLocal().add(const Duration(days: 1))}') // Add one day to include all data for the end date
+          .lte('tanggal_datang', '${endDate.value.toLocal().add(const Duration(days: 1))}')
           .execute(); // Fetch all data for the date range
 
       if (response != null && response.data != null && response.data is List) {
