@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/paneltransaksi_controller.dart';
 
 class PaneltransaksiView extends GetView<PaneltransaksiController> {
   PaneltransaksiView({Key? key}) : super(key: key);
-  // TODO UBAH DATA HARGA MENJADI FORMAT RP
+
+  String formatCurrency(int? value) {
+    if (value != null) {
+      final currencyFormat = NumberFormat.currency(
+        locale: 'id',
+        symbol: 'Rp',
+        decimalDigits: 0,
+      ).format(value);
+      return currencyFormat;
+    }
+    return '';
+  }
+
+  String formatDate(String? dateString) {
+    if (dateString != null) {
+      final date = DateTime.parse(dateString);
+      final formattedDate = '${date.day}-${date.month}-${date.year}';
+      return formattedDate;
+    }
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +75,12 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                 itemCount: controller.filteredData.length,
                 itemBuilder: (context, index) {
                   var userData = controller.filteredData[index];
+                  bool isPaid = userData['status_pembayaran'] == 'sudah_dibayar';
+
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                     child: Card(
-                      color: Colors.greenAccent,
+                      color: isPaid ? Colors.greenAccent : Colors.redAccent,
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(8.0),
                         title: Row(
@@ -89,23 +113,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                                     ),
                                   ),
                                   Text(
-                                    'Metode: ${userData['metode_laundry_id']}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Layanan: ${userData['layanan_laundry_id']}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Harga/Kg: ${userData['harga_kilo']}',
+                                    'Harga/Kg: ${formatCurrency(userData['harga_kilo'] is int ? userData['harga_kilo'] as int : int.tryParse(userData['harga_kilo'] ?? '') ?? 0)}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -138,11 +146,5 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
         ],
       ),
     );
-  }
-
-  String formatDate(String dateString) {
-    final date = DateTime.parse(dateString);
-    final formattedDate = '${date.day}-${date.month}-${date.year}';
-    return formattedDate;
   }
 }

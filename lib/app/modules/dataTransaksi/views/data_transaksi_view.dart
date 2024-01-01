@@ -42,7 +42,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
         children: [
           ElevatedButton(
             onPressed: () => _selectDate(context),
-            child: const Text('Select Date Range'),
+            child: const Text('Pilih Tanggal'),
           ),
           Obx(() {
             if (controller.isLoading.isTrue) {
@@ -173,7 +173,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             const SizedBox(width: 10),
             Obx(() {
               return Text(
-                'Page: ${controller.currentPage} / Total Data: ${controller.totalDataCount}',
+                'Halaman: ${controller.currentPage} / Total Data: ${controller.totalDataCount}',
                 style: const TextStyle(fontSize: 16),
               );
             }),
