@@ -2,14 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar.dart';
 import '../controllers/paneltransaksi_controller.dart';
-
-// TODO
-/*
-MENGUBAH DATA TERAKHIR DIUPDATE KE FORMAT JAM DAN TGL SIMPLE
-
-* */
 
 class PaneltransaksiView extends GetView<PaneltransaksiController> {
   PaneltransaksiView({Key? key}) : super(key: key);
@@ -18,93 +11,138 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel Transaksi'),
+        title: const Text('Panel Harga'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              controller.refreshData();
+            },
+          ),
+        ],
       ),
-      body: FutureBuilder(
-        future: controller.fetchData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
-
-          if (controller.data.isEmpty) {
-            return const Center(
-              child: Text('No data available.'),
-            );
-          }
-
-          // Define the columns using the columnNames mapping
-          List<DataColumn> columns = controller.data[0].keys.map((key) {
-            return DataColumn(
-              label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
-            );
-          }).toList();
-
-          // Define the rows based on the data
-          List<DataRow> rows = controller.data.asMap().entries.map((entry) {
-            int idx = entry.key;
-            Map<String, dynamic> row = entry.value;
-
-            return DataRow(
-              cells: row.keys.map((key) {
-                return DataCell(
-                  Center(child: Text('${row[key]}')),
-                  onTap: () {
-                    if (controller.data[idx] != null) {
-                      print(
-                          'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: ${controller.data[idx]}');
-                      Get.toNamed(Routes.DETAILPANELTRANSAKSI,
-                          arguments: controller.data[idx]);
-                    } else {
-                      print('Error: Data for index $idx is null');
-                    }
-                  },
-                );
-              }).toList(),
-            );
-          }).toList();
-
-          return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: columns,
-                rows: rows,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: TextField(
+              onChanged: (value) {
+                // Trigger search based on the entered value
+                controller.searchByName(value);
+              },
+              decoration: InputDecoration(
+                labelText: 'Cari Data Berdasarkan Metode',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: 0,
-        onTap: (index) {
-          // Handle navigation using Get
-          switch (index) {
-            case 0:
-              Get.offAllNamed(Routes.OWNERHOME); // Replace '/home' with your actual home route
-              break;
-            case 1:
-              Get.offAllNamed(
-                  '/dashboard'); // Replace '/dashboard' with your actual dashboard route
-              break;
-            case 2:
-              Get.offAllNamed(
-                  Routes.OWNERPROFILE); // Replace '/profile' with your actual profile route
-              break;
-            default:
-          }
-        },
+          ),
+          Expanded(
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                // Display a loading indicator while loading data
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: controller.filteredData.length,
+                itemBuilder: (context, index) {
+                  var userData = controller.filteredData[index];
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: Card(
+                      color: Colors.greenAccent,
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(8.0),
+                        title: Row(
+                          children: [
+                            Image.asset(
+                              'images/settings.png',
+                              width: 70,
+                              height: 70,
+                            ),
+                            const SizedBox(width: 10),
+                            // Add some space between the image and text
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Id Harga: ${userData['id']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Kategori: ${userData['kategori_pelanggan']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Metode: ${userData['metode_laundry_id']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Layanan: ${userData['layanan_laundry_id']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Harga/Kg: ${userData['harga_kilo']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Di Perbaharui Pada: ${formatDate(userData['edit_at'] as String)}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Get.toNamed(Routes.UPDATE_DATA_HARGA, arguments: userData);
+                        },
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
+          ),
+        ],
       ),
     );
+  }
+
+  String formatDate(String dateString) {
+    final date = DateTime.parse(dateString);
+    final formattedDate = '${date.day}-${date.month}-${date.year}';
+    return formattedDate;
   }
 }

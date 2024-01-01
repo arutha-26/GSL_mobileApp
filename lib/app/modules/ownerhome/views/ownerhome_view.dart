@@ -24,7 +24,9 @@ import '../../pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../controllers/ownerhome_controller.dart';
 
 class OwnerhomeView extends GetView<OwnerhomeController> {
-  const OwnerhomeView({Key? key});
+  const OwnerhomeView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

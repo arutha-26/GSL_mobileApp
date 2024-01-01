@@ -12,12 +12,12 @@ import '../modules/dataTransaksi/bindings/data_transaksi_binding.dart';
 import '../modules/dataTransaksi/views/data_transaksi_view.dart';
 import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
 import '../modules/datapelanggan/views/datapelanggan_view.dart';
+import '../modules/detailDataTransaksi/bindings/detail_data_transaksi_binding.dart';
+import '../modules/detailDataTransaksi/views/detail_data_transaksi_view.dart';
 import '../modules/detailHistoryPelanggan/bindings/detail_history_pelanggan_binding.dart';
 import '../modules/detailHistoryPelanggan/views/detail_history_pelanggan_view.dart';
 import '../modules/detailKaryawan/bindings/detail_karyawan_binding.dart';
 import '../modules/detailKaryawan/views/detail_karyawan_view.dart';
-import '../modules/detailpaneltransaksi/bindings/detailpaneltransaksi_binding.dart';
-import '../modules/detailpaneltransaksi/views/detailpaneltransaksi_view.dart';
 import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
 import '../modules/detailpelanggan/views/detailpelanggan_view.dart';
 import '../modules/invoiceTransaksi/bindings/invoice_transaksi_binding.dart';
@@ -26,16 +26,12 @@ import '../modules/karyawanDashboard/bindings/karyawan_dashboard_binding.dart';
 import '../modules/karyawanDashboard/views/karyawan_dashboard_view.dart';
 import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
 import '../modules/karyawanhome/views/karyawanhome_view.dart';
-import '../modules/karyawanlogin/bindings/karyawanlogin_binding.dart';
-import '../modules/karyawanlogin/views/karyawanlogin_view.dart';
 import '../modules/karyawanprofile/bindings/karyawanprofile_binding.dart';
 import '../modules/karyawanprofile/views/karyawanprofile_view.dart';
 import '../modules/loginpage/bindings/loginpage_binding.dart';
 import '../modules/loginpage/views/loginpage_view.dart';
 import '../modules/ownerhome/bindings/ownerhome_binding.dart';
 import '../modules/ownerhome/views/ownerhome_view.dart';
-import '../modules/ownerlogin/bindings/ownerlogin_binding.dart';
-import '../modules/ownerlogin/views/ownerlogin_view.dart';
 import '../modules/ownerprofile/bindings/ownerprofile_binding.dart';
 import '../modules/ownerprofile/views/ownerprofile_view.dart';
 import '../modules/paneltransaksi/bindings/paneltransaksi_binding.dart';
@@ -58,6 +54,8 @@ import '../modules/pengambilanLaundry/bindings/pengambilan_laundry_binding.dart'
 import '../modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
+import '../modules/updateDataHarga/bindings/update_data_harga_binding.dart';
+import '../modules/updateDataHarga/views/update_data_harga_view.dart';
 import '../modules/updateDataKaryawan/bindings/update_data_karyawan_binding.dart';
 import '../modules/updateDataKaryawan/views/update_data_karyawan_view.dart';
 import '../modules/updateDataPelanggan/bindings/update_data_pelanggan_binding.dart';
@@ -72,23 +70,13 @@ class AppPages {
 
   static final routes = [
     GetPage(
-      name: _Paths.OWNERLOGIN,
-      page: () => OwnerloginView(),
-      binding: OwnerloginBinding(),
-    ),
-    GetPage(
       name: _Paths.SPLASHSCREEN,
-      page: () => SplashscreenView(),
+      page: () => const SplashscreenView(),
       binding: SplashscreenBinding(),
     ),
     GetPage(
-      name: _Paths.KARYAWANLOGIN,
-      page: () => KaryawanloginView(),
-      binding: KaryawanloginBinding(),
-    ),
-    GetPage(
       name: _Paths.OWNERHOME,
-      page: () => OwnerhomeView(),
+      page: () => const OwnerhomeView(),
       binding: OwnerhomeBinding(),
     ),
     GetPage(
@@ -142,13 +130,8 @@ class AppPages {
       binding: PaneltransaksiBinding(),
     ),
     GetPage(
-      name: _Paths.DETAILPANELTRANSAKSI,
-      page: () => DetailpaneltransaksiView(),
-      binding: DetailpaneltransaksiBinding(),
-    ),
-    GetPage(
       name: _Paths.DASHBOARD_OWNER,
-      page: () => DashboardOwnerView(),
+      page: () => const DashboardOwnerView(),
       binding: DashboardOwnerBinding(),
     ),
     GetPage(
@@ -225,6 +208,16 @@ class AppPages {
       name: _Paths.UPDATE_DATA_KARYAWAN,
       page: () => UpdateDataKaryawanView(),
       binding: UpdateDataKaryawanBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_DATA_TRANSAKSI,
+      page: () => DetailDataTransaksiView(),
+      binding: DetailDataTransaksiBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPDATE_DATA_HARGA,
+      page: () => UpdateDataHargaView(),
+      binding: UpdateDataHargaBinding(),
     ),
   ];
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar.dart';
 import '../controllers/data_transaksi_controller.dart';
 
 class DataTransaksiView extends GetView<DataTransaksiController> {
@@ -112,11 +111,11 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                               if (row != null) {
                                 if (kDebugMode) {
                                   print(
-                                    'Navigating to: ${Routes.DETAILPANELTRANSAKSI}, with data: $row',
+                                    'Navigating to: ${Routes.DETAIL_DATA_TRANSAKSI}, with data: $row',
                                   );
                                 }
                                 Get.toNamed(
-                                  Routes.DETAILPANELTRANSAKSI,
+                                  Routes.DETAIL_DATA_TRANSAKSI,
                                   arguments: row,
                                 );
                               } else {
@@ -146,23 +145,6 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             );
           }),
         ],
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: 0,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Get.offAllNamed(Routes.OWNERHOME);
-              break;
-            case 1:
-              Get.offAllNamed(Routes.DASHBOARD_OWNER);
-              break;
-            case 2:
-              Get.offAllNamed(Routes.OWNERPROFILE);
-              break;
-            default:
-          }
-        },
       ),
       floatingActionButton: SingleChildScrollView(
         scrollDirection: Axis.horizontal,

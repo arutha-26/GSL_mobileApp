@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DetailpaneltransaksiController extends GetxController {
+class DetailDataTransaksiController extends GetxController {
   SupabaseClient client = Supabase.instance.client;
   RxBool isLoading = false.obs;
 
@@ -22,5 +22,4 @@ class DetailpaneltransaksiController extends GetxController {
     }
     return {}; // Return an empty map in case of failure
   }
-
 }

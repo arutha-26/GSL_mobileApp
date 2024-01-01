@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/detailpaneltransaksi_controller.dart';
+import '../controllers/detail_data_transaksi_controller.dart';
 
-class DetailpaneltransaksiView extends GetView<DetailpaneltransaksiController> {
-  DetailpaneltransaksiView({super.key});
+class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
+  DetailDataTransaksiView({super.key});
+
   final TextEditingController _harga = TextEditingController();
 
   @override
