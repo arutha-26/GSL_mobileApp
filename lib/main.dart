@@ -39,7 +39,7 @@ void main() async {
       Locale('id', 'ID'), // Bahasa Indonesia
     ],
     onInit: () async {
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 3));
 
       AuthenticationService authService = AuthenticationService(supaProvider.client);
 

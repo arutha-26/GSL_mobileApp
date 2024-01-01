@@ -54,19 +54,34 @@ class LoginpageView extends GetView<LoginpageController> {
                     ),
                   )),
               const SizedBox(height: 24),
-              Obx(() => ElevatedButton(
-                    onPressed: () async {
-                      if (controller.isLoading.isFalse) {
-                        bool? cekAutoLogout = await controller.login();
-                        if (cekAutoLogout != null && cekAutoLogout == true) {
-                          await authC.autoLogout();
+              Obx(() => Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16.0), // Optional: Set margin for spacing
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(const Color(0xFF00FFA6)),
+                      ),
+                      onPressed: () async {
+                        if (controller.isLoading.isFalse) {
+                          bool? cekAutoLogout = await controller.login();
+                          if (cekAutoLogout != null && cekAutoLogout == true) {
+                            await authC.autoLogout();
+                          }
                         }
-                      }
-                    },
-                    child: Text(controller.isLoading.isFalse ? "LOGIN" : "Loading..."),
+                      },
+                      child: Text(
+                        controller.isLoading.isFalse ? "LOGIN" : "Loading...",
+                        style: const TextStyle(
+                          color: Colors.black, // Set the text color to white
+                          fontWeight: FontWeight.bold, // Set the text to bold
+                        ),
+                      ),
+                    ),
                   )),
               const SizedBox(
-                height: 100,
+                height: 25,
               ),
             ],
           ),

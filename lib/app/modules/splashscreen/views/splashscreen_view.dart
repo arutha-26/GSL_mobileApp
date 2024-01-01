@@ -6,7 +6,6 @@ import '../controllers/splashscreen_controller.dart';
 class SplashscreenView extends GetView<SplashscreenController> {
   const SplashscreenView({super.key});
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -26,6 +25,21 @@ class SplashscreenView extends GetView<SplashscreenController> {
             child: const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF044526)),
+              ),
+            ),
+          ),
+          const Positioned(
+            bottom: 16.0, // Adjust the bottom spacing as needed
+            left: 0.0,
+            right: 0.0,
+            child: Center(
+              child: Text(
+                'Created by Pake-H©',
+                style: TextStyle(
+                  color: Colors.brown, // Set the text color to white
+                  fontSize: 14.0, // Adjust the font size as needed
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
