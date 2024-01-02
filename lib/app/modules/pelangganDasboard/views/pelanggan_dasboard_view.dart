@@ -141,7 +141,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       ),
                                     ),
                                     Text(
-                                      'Total Biaya: Rp. ${transaction['total_biaya']}.000',
+                                      'Total Biaya: Rp${NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(transaction['total_biaya'] as int)}',
                                       style: TextStyle(
                                         color: cardColor == Colors.green
                                             ? Colors.black
