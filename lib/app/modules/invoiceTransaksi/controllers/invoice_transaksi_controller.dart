@@ -8,11 +8,6 @@ import '../../../utils/invoiceData.dart';
 import '../../../utils/pelanggan.dart';
 
 class InvoiceTransaksiController extends GetxController {
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
-
   void clearInputs() {
     namaKaryawanC.clear();
     nameController.clear();
@@ -37,9 +32,11 @@ class InvoiceTransaksiController extends GetxController {
   RxBool isLoading = false.obs;
   TextEditingController namaKaryawanC = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController alamatPelangganController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController kategoriController = TextEditingController();
   TextEditingController tanggalDatangController = TextEditingController();
+  TextEditingController jatuhTempoController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
   SupabaseClient client = Supabase.instance.client;
@@ -95,27 +92,46 @@ class InvoiceTransaksiController extends GetxController {
     DateTime endDateFormatted = parseDate(endDateText);
 
     try {
-      // Perform data fetching
-      final response = await client
-          .from('transaksi') // replace with your actual transaction table name
+      // Perform data fetching for transaksi
+      final transaksiResponse = await client
+          .from('transaksi')
           .select()
           .eq('nama_pelanggan', namaPelanggan)
           .gte('tanggal_datang', formatDatetwo(startDateFormatted)) // Adjust as needed
           .lte('tanggal_datang', formatDatetwo(endDateFormatted)) // Adjust as needed
           .execute();
 
+      // Perform data fetching for user
+      final userResponse =
+          await client.from('user').select('alamat').eq('nama', namaPelanggan).execute();
+
+      if (userResponse.status == 200 &&
+          userResponse.data != null &&
+          userResponse.data is List) {
+        // Set the alamatPelangganController value
+        alamatPelangganController.text = (userResponse.data?.first['alamat'] as String?) ?? '';
+      } else {
+        // Handle the case where user data is not available
+        alamatPelangganController.text = '';
+      }
+
       if (kDebugMode) {
         print('Start Date: $startDateFormatted');
         print('End Date: $endDateFormatted');
         print('Start Date: $startDateController.value');
         print('End Date: $endDateController.value');
+        print('user data nih:$alamatPelangganController');
       }
 
-      if (response.status == 200 && response.data != null && response.data is List) {
-        // Handle the fetched data
-        invoiceData.assignAll((response.data as List).map((item) {
-          // Process data as needed
-          return InvoiceData.fromMap(item);
+      if (transaksiResponse.status == 200 &&
+          transaksiResponse.data != null &&
+          transaksiResponse.data is List) {
+        // Handle the fetched transaksi data
+        invoiceData.assignAll((transaksiResponse.data as List).map((transaksiItem) {
+          // Process transaksi data as needed
+          // Combine transaksi data with user data
+          final userData = userResponse.data?.first ?? {};
+          return InvoiceData.fromMap(transaksiItem);
         }).toList());
 
         if (invoiceData.isNotEmpty) {
@@ -134,7 +150,7 @@ class InvoiceTransaksiController extends GetxController {
         }
       } else {
         if (kDebugMode) {
-          print('Error fetching data. Response status: ${response.status}');
+          print('Error fetching transaksi data. Response status: ${transaksiResponse.status}');
         }
       }
     } catch (error) {

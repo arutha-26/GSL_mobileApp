@@ -1,7 +1,7 @@
 class InvoiceData {
   final String namaPelanggan;
   final String nomorPelanggan;
-  final String alamatPelanggan;
+  // final String alamatPelanggan;
   final int idTransaksi;
   final String tanggalDatang;
   final String metodeLaundry;
@@ -14,7 +14,7 @@ class InvoiceData {
   InvoiceData({
     required this.namaPelanggan,
     required this.nomorPelanggan,
-    required this.alamatPelanggan,
+    // required this.alamatPelanggan,
     required this.idTransaksi,
     required this.tanggalDatang,
     required this.metodeLaundry,
@@ -29,7 +29,7 @@ class InvoiceData {
     return InvoiceData(
       namaPelanggan: map['nama_pelanggan'] as String? ?? '',
       nomorPelanggan: map['nomor_pelanggan'] as String? ?? '',
-      alamatPelanggan: map['alamat'] as String? ?? '',
+      // alamatPelanggan: map['alamat'] as String? ?? '',
       idTransaksi: map['transaksi_id'] as int? ?? 0,
       tanggalDatang: map['tanggal_datang'] as String? ?? '',
       metodeLaundry: map['metode_laundry'] as String? ?? '',

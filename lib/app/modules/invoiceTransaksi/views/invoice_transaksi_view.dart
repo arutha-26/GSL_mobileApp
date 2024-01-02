@@ -38,15 +38,33 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
     }
   }
 
+  // Fungsi untuk menampilkan DatePicker
+  Future<DateTime?> selectSingleDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Colors.indigo[400], // Header background color
+            hintColor: Colors.blue, // Selected day color
+            colorScheme: const ColorScheme.light(primary: Colors.blue),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    return picked;
+  }
+
   Future<void> generateAndOpenInvoicePDF() async {
     final randomInvoiceNumber = Random().nextInt(99999) + 10000;
     // Generate PDF
     final pdf = pw.Document();
-
-    // Set the paper size and orientation
-    final pdfTheme = pw.PageTheme(
-      pageFormat: PdfPageFormat.a4.landscape,
-    );
 
     // Add header with company information and invoice number
     pdf.addPage(
@@ -68,15 +86,6 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                 ],
               ),
               pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Header(
-                    level: 0,
-                    child: pw.Text('Invoice'),
-                  ),
-                ],
-              ),
-              pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
                   pw.Header(
@@ -87,39 +96,29 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               ),
             ],
           ),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.end,
+            crossAxisAlignment: pw.CrossAxisAlignment.end,
+            children: [
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                children: [
+                  pw.Text(
+                      'Nama Pelanggan: ${controller.invoiceData.isNotEmpty ? controller.invoiceData[0].namaPelanggan : ''}'),
+                  pw.Text(
+                    'Alamat Pelanggan: ${controller.alamatPelangganController.text}',
+                  ),
+                  pw.Text(
+                    'Telp (+62${controller.invoiceData.isNotEmpty ? controller.invoiceData[0].nomorPelanggan : ''})',
+                  ),
+                ],
+              ),
+            ],
+          ),
+          pw.SizedBox(height: 20),
           pw.Table(
             border: pw.TableBorder.all(), // Add borders to the table
             children: [
-              pw.TableRow(
-                children: [
-                  pw.Text('Nama Pelanggan',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Alamat Pelanggan',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('No. Telp Pelanggan',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                ],
-              ),
-              // Customer information row with merged cells
-              pw.TableRow(
-                children: [
-                  pw.Text(
-                    controller.invoiceData.isNotEmpty
-                        ? controller.invoiceData[0].namaPelanggan
-                        : '',
-                  ),
-                  pw.Text(
-                    controller.invoiceData.isNotEmpty
-                        ? controller.invoiceData[0].alamatPelanggan
-                        : '',
-                  ),
-                  pw.Text(
-                    controller.invoiceData.isNotEmpty
-                        ? controller.invoiceData[0].nomorPelanggan
-                        : '',
-                  ),
-                ],
-              ),
               pw.TableRow(
                 children: [
                   pw.Text('Id Transaksi', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
@@ -142,7 +141,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                 pw.TableRow(
                   // Apply red color for unpaid rows
                   decoration: (data.statusPembayaran == 'belum_dibayar')
-                      ? pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
+                      ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
                       : null,
                   children: [
                     pw.Text('${data.idTransaksi}'),
@@ -154,26 +153,26 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                     pw.Text(data.statusPembayaran == 'sudah_dibayar'
                         ? 'Sudah Dibayar'
                         : 'Belum Dibayar'),
-                    pw.Text(formatCurrency(
-                        double.tryParse(data.totalBiaya.toString() ?? '0.0') ?? 0.0)),
+                    pw.Text(
+                        formatCurrency(double.tryParse(data.totalBiaya.toString()) ?? 0.0)),
                   ],
                 ),
               // Footer row for total amount of unpaid transactions
               pw.TableRow(
-                decoration: pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC)),
+                decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC)),
                 children: [
+                  pw.Container(),
+                  pw.Container(),
+                  pw.Container(),
+                  pw.Container(),
+                  pw.Container(),
+                  pw.Container(),
                   pw.Container(
-                    alignment: pw.Alignment.centerRight,
-                    child: pw.Text('Total (Belum Dibayar)',
+                    alignment: pw.Alignment.center,
+                    child: pw.Text('Total\n(Belum Dibayar)',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    width: 6, // Merge cells for the total label
+                    width: 50, // Merge cells for the total label
                   ),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
                   pw.Text(
                     formatCurrency(
                       controller.invoiceData
@@ -181,8 +180,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                           .fold<double>(
                             0.0,
                             (total, data) =>
-                                total +
-                                (double.tryParse(data.totalBiaya.toString() ?? '0.0') ?? 0.0),
+                                total + (double.tryParse(data.totalBiaya.toString()) ?? 0.0),
                           ),
                     ),
                   ),
@@ -190,6 +188,33 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               ),
             ],
           ),
+          pw.SizedBox(height: 20),
+          pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Jatuh Tempo: ${controller.jatuhTempoController.text}',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    pw.Text(
+                      'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+                      '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
+                      'CP: Green Spirit Laundry - +62897913414121121',
+                    ),
+                  ],
+                ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text('Tanggal: ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
+                    pw.Text(controller.namaKaryawanC.text),
+                    pw.SizedBox(height: 50),
+                    pw.Text('Karyawan Green Spirit Laundry'),
+                  ],
+                )
+              ]),
         ],
       ),
     );
@@ -293,6 +318,21 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                 },
               ),
               const SizedBox(height: 20),
+              TextField(
+                controller: controller.jatuhTempoController,
+                decoration: const InputDecoration(
+                  labelText: "Tanggal Jatuh Tempo",
+                  border: OutlineInputBorder(),
+                ),
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  final selectedDate = await selectSingleDate(context);
+                  if (selectedDate != null) {
+                    controller.jatuhTempoController.text = formatDatetwo(selectedDate);
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
               Obx(
                 () => ElevatedButton(
                   onPressed: () async {
@@ -375,12 +415,18 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Nama Pelanggan: ${data.namaPelanggan}"),
+            Text("Alamat: ${controller.alamatPelangganController.text}"),
             Text("Tanggal Datang: ${formatDate(data.tanggalDatang)}"),
             // Add more ListTile widgets for other data fields
           ],
         ),
       ),
     );
+  }
+
+  // Fungsi untuk memformat tanggal menjadi string
+  String formatDatetwo(DateTime date) {
+    return DateFormat('dd-MM-yyyy').format(date);
   }
 
   String formatDate(String date) {
