@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/pelanggan.dart';
 
@@ -65,6 +68,7 @@ class AddtransaksiController extends GetxController {
   }
 
   RxDouble numericTotalHarga = 0.0.obs; // Add this line
+  RxDouble numericHargaKilo = 0.0.obs; // Add this line
   RxString statusCucian = 'diproses'.obs;
   RxString statusPembayaran = 'belum_dibayar'.obs;
   RxBool isLoading = false.obs;
@@ -73,6 +77,7 @@ class AddtransaksiController extends GetxController {
   TextEditingController tanggalSelesaiController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
   TextEditingController hargaTotalController = TextEditingController();
+  TextEditingController hargaKiloController = TextEditingController();
   TextEditingController nominalBayarController = TextEditingController();
   TextEditingController kembalianController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -160,6 +165,12 @@ class AddtransaksiController extends GetxController {
 
         await client.from("transaksi").insert(dataTransaksi).execute();
 
+        // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
+        String nomorPelanggan = phoneController.text;
+        String pesan = '';
+
+        await kirimPesanWhatsApp(nomorPelanggan, pesan);
+
         clearInputs();
 
         Get.defaultDialog(
@@ -225,11 +236,14 @@ class AddtransaksiController extends GetxController {
 
     // Store numeric value
     numericTotalHarga.value = totalHarga;
+    numericHargaKilo.value = hargaPerKg;
 
     // Format and display
     NumberFormat currencyFormatter =
         NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
     hargaTotalController.text = currencyFormatter.format(totalHarga);
+    // Display the numeric value in hargaKiloController
+    hargaKiloController.text = hargaPerKg.toString();
   }
 
   formatNominal() {
@@ -351,5 +365,103 @@ class AddtransaksiController extends GetxController {
 
   void setStatusPembayaran(String status) {
     statusPembayaran.value = status;
+  }
+
+  Future<void> kirimPesanWhatsApp(String nomorPelanggan, String pesan) async {
+    String whatsappNumber = nomorPelanggan; // Replace with the actual WhatsApp number
+
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    // Format numericHargaKilo.value as "Rp x.xxx"
+    NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
+    String formattedHargaKilo = currencyFormatter.format(numericHargaKilo.value);
+    String generateRandomNotaNumber() {
+      // Generate a random 12-digit number
+      Random random = Random();
+      int randomNumber = random.nextInt(10000);
+
+      // Format the random number as a string with leading zeros if necessary
+      String formattedNumber = randomNumber.toString().padLeft(8, '0');
+
+      return formattedNumber;
+    }
+
+    String message = '''
+FAKTUR ELEKTRONIK
+
+GREEN SPIRIT LAUNDRY
+Jl. UNGASAN
+089788786564
+
+Pelanggan Yth,
+${nameController.text}
+
+Nomor Nota:
+${generateRandomNotaNumber()}
+
+Terima:
+${tanggalDatangController.text}
+Selesai:
+${tanggalSelesaiController.text}
+
+=================
+Detail pesanan:
+Kiloan, ${beratLaundryController.text}KG X $formattedHargaKilo = ${hargaTotalController.text}
+
+Ket: 
+=================
+Detail biaya :
+Total tagihan : ${hargaTotalController.text}
+Metode Laundry : ${selectedMetode.value}
+Layanan Laundry : ${selectedLayanan.value}
+Grand total : ${hargaTotalController.text}
+Nominal Bayar : ${nominalBayarController.text}
+Kembalian : ${kembalianController.text}
+Status Pembayaran: ${statusPembayaran.value = (statusPembayaran.value == "sudah_dibayar") ? "Sudah Dibayar" : "Belum Dibayar"}
+Sisa Tagihan : Rp0
+
+Status Cucian: ${statusCucian.value = (statusCucian.value = (statusCucian.value == "diproses") ? "Diproses" : (statusCucian.value == "selesai") ? "Selesai" : (statusCucian.value == "diambil") ? "Diambil" : "Status Tidak Valid")}
+
+Costumer Care : https://wa.me/6281933072799
+=================
+Syarat & ketentuan:
+PERHATIAN :
+1. Pengambilan barang harap disertai Nota.
+2. Barang yang tidak diambil selama 1 Minggu, hilang / rusak bukan tanggung jawab laundry.
+3. Barang hilang/rusak karena proses pengerjaan diganti rugi maksimal 5x dari biaya jasa cuci barang yang rusak/hilang.
+4. Pakaian luntur bukan menjadi tanggung jawab kami.
+5. Cek kelengkapan Laundry-an anda terlebih dahulu sebelum meninggalkan outlet, karena setelah meninggalkan outlet kami tidak menerima komplain.
+6. Setiap konsumen dianggap setuju dengan isi syarat & peraturan laundry kami.
+=================
+
+Terima kasih
+''';
+
+// Convert the URL string to a Uri object
+    Uri uri = Uri.parse("https://wa.me/$whatsappNumber/?text=${Uri.encodeComponent(message)}");
+
+    try {
+      await launchUrl(uri);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error launching URL: $e');
+      }
+    }
+
+// Check if the URL can be launched
+    if (await canLaunchUrl(uri)) {
+      if (kDebugMode) {
+        print("TERKIRIM KOK $uri");
+      }
+      // Launch the URL
+      await launchUrl(uri);
+    } else {
+      // If unable to launch, display an error message
+      if (kDebugMode) {
+        print("Could not launch $uri");
+      }
+    }
   }
 }
