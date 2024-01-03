@@ -45,7 +45,7 @@ class SearchPengambilan extends StatelessWidget {
           final metodePembayaran = option.metodePembayaran ?? '';
           final statusPembayaran = option.statusPembayaran ?? '';
           final statusCucian = option.statusCucian ?? '';
-          return '$id - $name - +62$phone - $berat - $totalHarga - $metodePembayaran - $statusPembayaran - $statusCucian';
+          return '$id - $name - $phone - $berat - $totalHarga - $metodePembayaran - $statusPembayaran - $statusCucian';
         } else {
           return ''; // Return an empty string for null options
         }
@@ -53,7 +53,7 @@ class SearchPengambilan extends StatelessWidget {
       onSelected: (Pengambilan selection) {
         idTransaksiController.text = selection.id ?? '';
         nameController.text = selection.nama ?? '';
-        phoneController.text = '+62${selection.phone}' ?? '';
+        phoneController.text = selection.phone ?? '';
         beratController.text = selection.berat ?? '';
         totalHargaController.text = selection.totalHarga ?? '';
         metodePembayaranController.text = selection.metodePembayaran ?? '';

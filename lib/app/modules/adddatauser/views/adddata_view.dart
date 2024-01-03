@@ -5,12 +5,6 @@ import 'package:get/get.dart';
 
 import '../controllers/adddata_controller.dart';
 
-// TODO
-/*
-BUG PADA SETELAH CLOSE DATA INPUTAN RANDOM TIDAK MAU HILANG,
-SAAT SETELAH INPUT DATA SELESAI TAMBAHKAN FUNC UNTUK KE HALAMAN HOME SESUAI ROLE APAKAH OWNER ATAU KARYAWAN
- */
-
 class AdddataView extends GetView<AdddataController> {
   AdddataView({Key? key}) : super(key: key);
 

@@ -176,7 +176,7 @@ class AddtransaksiController extends GetxController {
         Get.defaultDialog(
             barrierDismissible: false,
             title: "Tambah Data Transaksi Berhasil",
-            middleText: "Transaksi berhasil ditambahkan.",
+            middleText: "Transaksi berhasil ditambahkan\n Faktur Berhasil Terkirim",
             actions: [
               OutlinedButton(
                   onPressed: () {

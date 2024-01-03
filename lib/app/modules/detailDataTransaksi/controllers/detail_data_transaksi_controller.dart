@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -15,7 +16,9 @@ class DetailDataTransaksiController extends GetxController {
       if (response.status == 200 && response.data != null && response.data.isNotEmpty) {
         return response.data.first;
       } else {
-        print('No data found or bad response');
+        if (kDebugMode) {
+          print('No data found or bad response');
+        }
       }
     } catch (error) {
       print('Error fetching data: $error');

@@ -2,11 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// TODO
-/*
-* BUATKAN FITUR UNTUK MENAMPILKAN DATA TRANSAKSI BERDASARKAN NAMA PELANGGAN DAN RENTANG TANGGAL, LALU FITUR UNTUK MENDOWNLOAD DATA YANG TAMPIL TERSEBUT KE PDF/CSV
-* */
-
 class DataTransaksiController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isHidden = true.obs;

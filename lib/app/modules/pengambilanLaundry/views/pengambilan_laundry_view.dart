@@ -198,7 +198,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                       // 60 are per data height
                       showSelectedItems: true,
                     ),
-                    items: const ["-", "Cash", "Transfer"],
+                    items: const ["-", "Tunai", "Transfer"],
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
                         labelText: "Metode Pembayaran",

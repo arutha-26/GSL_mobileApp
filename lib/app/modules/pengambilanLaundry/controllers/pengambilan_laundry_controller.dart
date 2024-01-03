@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/pengambilan.dart';
 
@@ -67,6 +70,19 @@ class PengambilanLaundryController extends GetxController {
     }
   }
 
+  String formatTotalHarga(String totalHarga) {
+    // Menghapus tanda dollar ('$') dari string totalHarga
+    totalHarga = totalHarga.replaceAll('\$', '');
+
+    // Mengonversi totalHarga menjadi bilangan bulat
+    double hargaAngka = double.parse(totalHarga);
+
+    // Mengonversi hargaAngka ke format mata uang Rupiah
+    String hargaRupiah = 'Rp${NumberFormat('#,###').format(hargaAngka)}';
+
+    return hargaRupiah;
+  }
+
   Future<List<Pengambilan>> fetchDataTransaksi(String query) async {
     List<Pengambilan> results = [];
 
@@ -90,15 +106,18 @@ class PengambilanLaundryController extends GetxController {
           final statusPembayaran = item['status_pembayaran']?.toString() ?? '';
           final statusCucian = item['status_cucian']?.toString() ?? '';
 
+          // Menggunakan fungsi formatTotalHarga untuk mengonversi totalHarga
+          final formattedTotalHarga = formatTotalHarga(totalHarga);
+
           return Pengambilan(
             nama: nama,
             id: id,
             phone: phone,
             berat: '$berat Kg',
-            totalHarga: '$totalHarga.000',
+            totalHarga: formattedTotalHarga,
             metodePembayaran: metodePembayaran,
             statusPembayaran: convertStatusPembayaran(statusPembayaran),
-            statusCucian: statusCucian.toUpperCase(),
+            statusCucian: statusCucian.toString().capitalizeFirst as String,
           );
         }).toList();
       }
@@ -109,6 +128,7 @@ class PengambilanLaundryController extends GetxController {
     }
     return results;
   }
+
   Future<void> getDataKaryawan() async {
     List<dynamic> res =
         await client.from("user").select().match({"uid": client.auth.currentUser!.id});
@@ -117,18 +137,25 @@ class PengambilanLaundryController extends GetxController {
   }
 
   Future<void> updateTransaksi() async {
-    if (tanggalDiambilController.text.isNotEmpty) {
+    if (namaKaryawanC.text.isNotEmpty) {
       isLoading.value = true;
       try {
-        var dataTransaksi = {
-          // "id_transaksi": ,
-          "nama_karyawan_keluar": namaKaryawanC.text,
-          "tanggal_diambil": formatDate(tanggalDiambilController.text),
-          "metode_pembayaran": getSelectedPembayaran(),
-          "status_pembayaran": statusPembayaran.value,
-          "status_cucian": statusCucian.value,
-          "is_hidden": true,
-        };
+        var dataTransaksi = {};
+
+        if (statusCucian.value == 'diambil') {
+          dataTransaksi["nama_karyawan_keluar"] = namaKaryawanC.text;
+          dataTransaksi["tanggal_diambil"] = formatDate(tanggalDiambilController.text);
+          dataTransaksi["metode_pembayaran"] = getSelectedPembayaran();
+          dataTransaksi["status_pembayaran"] = statusPembayaran.value;
+          // Jika status_cucian == diambil, update semua data
+          dataTransaksi["status_cucian"] = statusCucian.value;
+          dataTransaksi["is_hidden"] = true;
+          dataTransaksi["edit_at"] = DateTime.now().toString();
+        } else {
+          // Jika status_cucian != diambil, hanya update status_cucian
+          dataTransaksi["status_cucian"] = statusCucian.value;
+          dataTransaksi["edit_at"] = DateTime.now().toString();
+        }
 
         // Log the dataTransaksi to the console
         if (kDebugMode) {
@@ -140,20 +167,28 @@ class PengambilanLaundryController extends GetxController {
             .update(dataTransaksi)
             .match({"transaksi_id": idTransaksiController.text}).execute();
 
+        // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
+        String nomorPelanggan = phoneController.text;
+        String pesan = '';
+
+        await kirimPesanWhatsApp(nomorPelanggan, pesan);
+
         clearInputs();
 
         Get.defaultDialog(
-            barrierDismissible: false,
-            title: "Pembaharuan Data Transaksi Berhasil",
-            middleText: "Data berhasil diperbaharui.",
-            actions: [
-              OutlinedButton(
-                  onPressed: () {
-                    Get.back();
-                    Get.back();
-                  },
-                  child: const Text("OK"))
-            ]);
+          barrierDismissible: false,
+          title: "Pembaharuan Data Transaksi Berhasil",
+          middleText: "Data berhasil diperbaharui.",
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Get.back();
+                Get.back();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
       } catch (e) {
         isLoading.value = false;
         Get.snackbar("ERROR", e.toString());
@@ -165,6 +200,78 @@ class PengambilanLaundryController extends GetxController {
     refresh();
   }
 
+  Future<void> kirimPesanWhatsApp(String nomorPelanggan, String pesan) async {
+    String whatsappNumber = nomorPelanggan; // Replace with the actual WhatsApp number
+
+    String generateRandomNotaNumber() {
+      // Generate a random 12-digit number
+      Random random = Random();
+      int randomNumber = random.nextInt(10000);
+
+      // Format the random number as a string with leading zeros if necessary
+      String formattedNumber = randomNumber.toString().padLeft(8, '0');
+
+      return formattedNumber;
+    }
+
+    String convertStatusPembayaranToString(String statusPembayaran) =>
+        statusPembayaran == 'belum_dibayar' ? 'Belum Dibayar' : 'Sudah Dibayar';
+
+    String message = '''
+FAKTUR ELEKTRONIK
+
+GREEN SPIRIT LAUNDRY
+Jl. UNGASAN
+089788786564
+
+Pelanggan Yth,
+${nameController.text}
+
+Kami informasikan untuk nomor nota ${idTransaksiController.text.toString()} telah selesai kami kerjakan.
+
+Silakan datang untuk melakukan pengambilan DAN TUNJUKKAN NOTA TRANSAKSI SEBAGAI BUKTI KEPEMILIKAN
+
+Berikut detail penagihannya:
+Total Biaya: ${totalHargaController.text.toString()}
+Status: ${convertStatusPembayaranToString(statusPembayaran.value)}
+
+JAM OPERATIONAL LAUNDRY 07.00-22.00 WITA
+
+Kami ucapkan terima kasih, dan selamat beraktivitas. 
+
+Costumer Care : https://wa.me/6289788786564
+
+Salam hormat, management
+GREEN SPIRIT LAUNDRY
+
+''';
+
+// Convert the URL string to a Uri object
+    Uri uri = Uri.parse("https://wa.me/$whatsappNumber/?text=${Uri.encodeComponent(message)}");
+
+    try {
+      await launchUrl(uri);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error launching URL: $e');
+      }
+    }
+
+// Check if the URL can be launched
+    if (await canLaunchUrl(uri)) {
+      if (kDebugMode) {
+        print("TERKIRIM KOK $uri");
+      }
+      // Launch the URL
+      await launchUrl(uri);
+    } else {
+      // If unable to launch, display an error message
+      if (kDebugMode) {
+        print("Could not launch $uri");
+      }
+    }
+  }
+
   final RxString metodePembayaran = ''.obs;
 
   void setMetodePembayaran(String? value) {
@@ -172,7 +279,6 @@ class PengambilanLaundryController extends GetxController {
   }
 
   RxString selectedPembayaran = "".obs;
-  List<String> pembayaranOptions = ["-", "Cash", "Transfer"];
 
   String getSelectedPembayaran() {
     return selectedPembayaran.value;
