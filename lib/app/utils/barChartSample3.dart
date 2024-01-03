@@ -1,8 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:gsl/app/utils/color_extensions.dart';
-
-import 'appColors.dart';
 
 class BarChartSample3 extends StatefulWidget {
   final List<int> transactionsPerDay;
@@ -42,8 +39,8 @@ class BarChartSample3State extends State<BarChartSample3> {
               barGroups: _createBarGroups(widget.transactionsPerDay),
               gridData: const FlGridData(show: false),
               alignment: BarChartAlignment.spaceEvenly,
-              maxY: 200,
-              backgroundColor: const Color(0xFF2d4261),
+              maxY: 50,
+              backgroundColor: const Color(0xFF34d899),
             ),
           ),
         ),
@@ -100,8 +97,8 @@ class BarChartSample3State extends State<BarChartSample3> {
 
   LinearGradient get _barsGradient => const LinearGradient(
         colors: [
-          Colors.blue, // Customize the gradient colors here
-          Colors.cyan,
+          Colors.indigoAccent, // Customize the gradient colors here
+          Colors.redAccent,
         ],
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
@@ -126,8 +123,8 @@ class BarChartSample3State extends State<BarChartSample3> {
   }
 
   Widget _getTitles(double value, TitleMeta meta) {
-    final style = TextStyle(
-      color: AppColors.contentColorBlue.darken(20),
+    const style = TextStyle(
+      color: Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 12,
     );
@@ -139,14 +136,14 @@ class BarChartSample3State extends State<BarChartSample3> {
       return SideTitleWidget(
         axisSide: meta.axisSide,
         space: 4,
-        child: Text("-", style: style), // Placeholder for missing dates
+        child: const Text("-", style: style), // Placeholder for missing dates
       );
     }
 
     final String dateTitle = widget.dates[intValue]; // Use the date string
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 4,
+      space: 5,
       child: Text(dateTitle, style: style),
     );
   }

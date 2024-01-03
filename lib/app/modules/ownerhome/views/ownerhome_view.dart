@@ -7,6 +7,7 @@ import 'package:gsl/app/modules/dataKaryawan/views/data_karyawan_view.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar.dart';
+import '../../../utils/quote_carousel.dart';
 import '../../adddatauser/controllers/adddata_controller.dart';
 import '../../adddatauser/views/adddata_view.dart';
 import '../../addtransaksi/controllers/addtransaksi_controller.dart';
@@ -56,120 +57,133 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 viewportFraction: 1,
               ),
             ),
-            // const SizedBox(height: 10),
             SizedBox(
               width: 1000, // Set the width to the screen width
               height: 300.0, // Adjust the height based on your needs
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xFFC6FFEE),
-                              // spreadRadius: 60.0, // Color of the shadow
-                              // blurRadius: 50.0, // Spread of the shadow
-                              // offset: Offset(-8, 6), // Offset of the shadow (x, y)
-                            ),
-                          ],
-                          // Other decoration properties if needed
-                        ),
-                        width: 590,
-                        child: GridView.count(
-                          scrollDirection: Axis.horizontal,
-                          crossAxisSpacing: 20.0,
-                          mainAxisSpacing: 20.0,
-                          padding: const EdgeInsets.all(16.0),
-                          shrinkWrap: true,
-                          // physics:
-                          //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
-                          crossAxisCount: 2,
-                          children: [
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(AdddataController());
-                                Get.to(() => AdddataView());
-                              },
-                              label: 'Data Pengguna',
-                              color: Colors.blue,
-                              iconPath: 'images/plus.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(AddtransaksiController());
-                                Get.to(() => AddtransaksiView());
-                              },
-                              label: 'Data Transaksi',
-                              color: Colors.green,
-                              iconPath: 'images/plus.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(PaneltransaksiController());
-                                Get.to(() => PaneltransaksiView());
-                              },
-                              label: 'Panel Transaksi',
-                              color: Colors.orange,
-                              iconPath: 'images/settings.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(PengambilanLaundryController());
-                                Get.to(() => PengambilanLaundryView());
-                              },
-                              label: 'Update Data Laundry',
-                              color: Colors.red,
-                              iconPath: 'images/edit.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(DatapelangganController());
-                                Get.to(() => DatapelangganView());
-                              },
-                              label: 'Data Pelanggan',
-                              color: Colors.purple,
-                              iconPath: 'images/document.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(DataKaryawanController());
-                                Get.to(() => DataKaryawanView());
-                              },
-                              label: 'Data Karyawan',
-                              color: Colors.purple,
-                              iconPath: 'images/document.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(DataTransaksiController());
-                                Get.to(() => DataTransaksiView());
-                              },
-                              label: 'Data Transaksi',
-                              color: Colors.teal,
-                              iconPath: 'images/document.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(InvoiceTransaksiController());
-                                Get.to(() => InvoiceTransaksiView());
-                              },
-                              label: 'Invoice Transaksi',
-                              color: Colors.teal,
-                              iconPath: 'images/document.png',
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                },
+              child: Scrollbar(
+                thickness: 2,
+                radius: const Radius.circular(20),
+                scrollbarOrientation: ScrollbarOrientation.bottom,
+                thumbVisibility: true,
+                trackVisibility: true,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xFFFFFFFF),
+                                // spreadRadius: 60.0, // Color of the shadow
+                                // blurRadius: 50.0, // Spread of the shadow
+                                // offset: Offset(-8, 6), // Offset of the shadow (x, y)
+                              ),
+                            ],
+                            // Other decoration properties if needed
+                          ),
+                          width: 590,
+                          child: GridView.count(
+                            scrollDirection: Axis.horizontal,
+                            crossAxisSpacing: 20.0,
+                            mainAxisSpacing: 20.0,
+                            padding: const EdgeInsets.all(16.0),
+                            shrinkWrap: true,
+                            // physics:
+                            //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
+                            crossAxisCount: 2,
+                            children: [
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(AdddataController());
+                                  Get.to(() => AdddataView());
+                                },
+                                label: 'Data Pengguna',
+                                color: Colors.blue,
+                                iconPath: 'images/plus.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(AddtransaksiController());
+                                  Get.to(() => AddtransaksiView());
+                                },
+                                label: 'Data Transaksi',
+                                color: Colors.green,
+                                iconPath: 'images/plus.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(PaneltransaksiController());
+                                  Get.to(() => PaneltransaksiView());
+                                },
+                                label: 'Panel Transaksi',
+                                color: Colors.orange,
+                                iconPath: 'images/settings.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(PengambilanLaundryController());
+                                  Get.to(() => PengambilanLaundryView());
+                                },
+                                label: 'Update Data Laundry',
+                                color: Colors.red,
+                                iconPath: 'images/edit.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(DatapelangganController());
+                                  Get.to(() => DatapelangganView());
+                                },
+                                label: 'Data Pelanggan',
+                                color: Colors.purple,
+                                iconPath: 'images/document.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(DataKaryawanController());
+                                  Get.to(() => DataKaryawanView());
+                                },
+                                label: 'Data Karyawan',
+                                color: Colors.purple,
+                                iconPath: 'images/document.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(DataTransaksiController());
+                                  Get.to(() => DataTransaksiView());
+                                },
+                                label: 'Data Transaksi',
+                                color: Colors.teal,
+                                iconPath: 'images/document.png',
+                              ),
+                              GlassButton(
+                                onPressed: () {
+                                  Get.put(InvoiceTransaksiController());
+                                  Get.to(() => InvoiceTransaksiView());
+                                },
+                                label: 'Invoice Transaksi',
+                                color: Colors.teal,
+                                iconPath: 'images/document.png',
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(
+              height: 5,
+            ),
+            // TERAPKAN DISINI
+            QuoteCarousel(),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

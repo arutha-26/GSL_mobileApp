@@ -75,12 +75,11 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                 itemCount: controller.filteredData.length,
                 itemBuilder: (context, index) {
                   var userData = controller.filteredData[index];
-                  bool isPaid = userData['status_pembayaran'] == 'sudah_dibayar';
 
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                     child: Card(
-                      color: isPaid ? Colors.greenAccent : Colors.redAccent,
+                      color: Colors.greenAccent,
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(8.0),
                         title: Row(
