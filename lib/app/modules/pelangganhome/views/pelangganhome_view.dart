@@ -59,14 +59,14 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
                   ),
                 ),
                 Image.asset('images/banner_1.png'),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 // Text(
                 //   'Hallo Kakak ${controller.namaUser.text}',
                 //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 // ),
                 // const SizedBox(height: 10),
                 // _buildStatusAndDebtsCard(),
-                const SizedBox(height: 10),
+                // const SizedBox(height: 10),
                 _buildProfitAndTransactionCountCard(),
                 const SizedBox(height: 10),
                 CarouselSlider(
@@ -79,7 +79,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
                   ],
                   options: CarouselOptions(
                     autoPlay: true,
-                    aspectRatio: 16 / 9,
+                    aspectRatio: 15 / 9,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: true,
                     autoPlayCurve: Curves.fastOutSlowIn,
@@ -212,7 +212,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildStatusCard() {
     return InkWell(
       onTap: () {
-        Get.toNamed(Routes.PELANGGAN_STATUS);
+        Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
         child: ListTile(
@@ -226,7 +226,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildOutstandingDebtsCard() {
     return InkWell(
       onTap: () {
-        Get.toNamed(Routes.PELANGGAN_DEBT);
+        Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
         color: Colors.redAccent,
@@ -241,7 +241,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildPaidDebtsCard() {
     return InkWell(
       onTap: () {
-        Get.toNamed(Routes.PELANGGAN_PAID);
+        Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
         color: Colors.green,
@@ -256,7 +256,7 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
   Widget _buildTodayTransactionsCard() {
     return InkWell(
       onTap: () {
-        Get.toNamed(Routes.PELANGGAN_STATUS);
+        Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
         child: ListTile(

@@ -33,12 +33,12 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
             child: Column(
               children: [
                 Image.asset('images/banner_1.png'),
-                const SizedBox(height: 10),
                 _buildStatusAndDebtsCard(),
                 _buildProfitAndTransactionCountCard(),
+                const SizedBox(height: 10),
                 const Text(
                   'Grafik Transaksi Bulanan',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 _buildMonthlyTransactionsGraph(),
                 // _buildMonthlyIncomeGraph(),
@@ -74,7 +74,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(child: card1),
-        const SizedBox(width: 8), // Adding some space between the cards
+        const SizedBox(width: 8),
         Expanded(child: card2),
       ],
     );
@@ -118,7 +118,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
       child: Card(
         color: Colors.redAccent,
         child: ListTile(
-          title: const Text('Transaksi Belum Dibayar'),
+          title: const Text('Transaksi\nBelum Lunas'),
           subtitle: Obx(() => Text('Rp${controller.formattedTotalDebt.value}')),
         ),
       ),
@@ -132,9 +132,9 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
         Get.offAllNamed(Routes.OWNERHOME);
       },
       child: Card(
-        color: Colors.green,
+        color: Colors.greenAccent,
         child: ListTile(
-          title: const Text('Transaksi Sudah Dibayar'),
+          title: const Text('Transaksi\nLunas'),
           subtitle: Obx(() => Text('Rp${controller.formattedTotalPaid.value}')),
         ),
       ),
@@ -176,7 +176,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
 
             List<String> dates = List.generate(transactionsData.length, (index) {
               DateTime date = firstDayOfSelectedMonth.add(Duration(days: index));
-              return DateFormat('dd-MM').format(date); // Format as 'Day-Month'
+              return DateFormat('dd-MM-yy').format(date); // Format as 'Day-Month'
             });
 
             return SizedBox(
@@ -195,37 +195,46 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
   }
 
   Widget monthSelectionDropdown() {
-    // // Initialize the localization for Indonesian language
-    // initializeDateFormatting('id_ID', null);
+    DateTime initialMonth = controller.selectedMonth.value;
 
-    // Extract only the year and month part
-    DateTime initialMonth =
-        DateTime(controller.selectedMonth.value.year, controller.selectedMonth.value.month);
-
-    return DropdownButton<DateTime>(
-      value: initialMonth,
-      onChanged: (DateTime? newValue) {
-        if (newValue != null) {
-          controller.selectedMonth.value = newValue;
-          controller.fetchMonthlyTransactionData(newValue);
-        }
-      },
-      items: List.generate(12, (index) {
-        DateTime month = DateTime(initialMonth.year, index + 1);
-        return DropdownMenuItem<DateTime>(
-          value: month,
-          child: Text(
-              DateFormat('MMMM').format(month)), // 'id' is the language code for Indonesian
-        );
-      }),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DropdownButton<int>(
+          value: initialMonth.month,
+          onChanged: (int? newValue) {
+            if (newValue != null) {
+              controller.selectedMonth.value = DateTime(initialMonth.year, newValue);
+              controller.fetchMonthlyTransactionData(
+                  controller.selectedMonth.value.year, controller.selectedMonth.value.month);
+            }
+          },
+          items: List.generate(12, (index) {
+            return DropdownMenuItem<int>(
+              value: index + 1,
+              child: Text(DateFormat('MMMM').format(DateTime(initialMonth.year, index + 1))),
+            );
+          }),
+        ),
+        const SizedBox(width: 16), // Menambahk
+        DropdownButton<int>(
+          value: initialMonth.year,
+          onChanged: (int? newValue) {
+            if (newValue != null) {
+              controller.selectedMonth.value = DateTime(newValue, initialMonth.month);
+              controller.fetchMonthlyTransactionData(
+                  controller.selectedMonth.value.year, controller.selectedMonth.value.month);
+            }
+          },
+          items: List.generate(5, (index) {
+            int year = DateTime.now().year - index;
+            return DropdownMenuItem<int>(
+              value: year,
+              child: Text(year.toString()),
+            );
+          }),
+        ),
+      ],
     );
   }
-
-// Widget _buildMonthlyIncomeGraph() {
-//   return Container(
-//     height: 200,
-//     color: Colors.green,
-//     child: const Center(child: Text('Grafik Pendapatan Bulanan')),
-//   );
-// }
 }

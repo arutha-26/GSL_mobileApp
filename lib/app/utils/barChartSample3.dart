@@ -28,7 +28,7 @@ class BarChartSample3State extends State<BarChartSample3> {
       scrollDirection: Axis.horizontal,
       child: SizedBox(
         height: 250,
-        width: 2000,
+        width: 2500,
         child: AspectRatio(
           aspectRatio: 10,
           child: BarChart(
@@ -38,9 +38,9 @@ class BarChartSample3State extends State<BarChartSample3> {
               borderData: borderData,
               barGroups: _createBarGroups(widget.transactionsPerDay),
               gridData: const FlGridData(show: false),
-              alignment: BarChartAlignment.spaceEvenly,
-              maxY: 50,
-              backgroundColor: const Color(0xFF34d899),
+              alignment: BarChartAlignment.spaceAround,
+              maxY: 35,
+              backgroundColor: const Color(0xffc6ded1),
             ),
           ),
         ),
@@ -76,7 +76,7 @@ class BarChartSample3State extends State<BarChartSample3> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
+            reservedSize: 25,
             getTitlesWidget: _getTitles,
           ),
         ),
@@ -135,7 +135,7 @@ class BarChartSample3State extends State<BarChartSample3> {
       // Instead of returning an empty container, you might return a placeholder or a message
       return SideTitleWidget(
         axisSide: meta.axisSide,
-        space: 4,
+        space: 5,
         child: const Text("-", style: style), // Placeholder for missing dates
       );
     }

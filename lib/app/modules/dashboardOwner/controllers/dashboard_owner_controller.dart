@@ -20,7 +20,8 @@ class DashboardOwnerController extends GetxController {
     await fetchDataCucian();
     await fetchDataPaid();
     await fetchDataTodayTransactions();
-    await fetchMonthlyTransactionData(DateTime.now());
+    DateTime now = DateTime.now();
+    await fetchMonthlyTransactionData(now.year, now.month);
     isLoading.value = false;
   }
 
@@ -31,7 +32,8 @@ class DashboardOwnerController extends GetxController {
     fetchDataCucian();
     fetchDataPaid();
     fetchDataTodayTransactions();
-    fetchMonthlyTransactionData(DateTime.now());
+    DateTime now = DateTime.now();
+    fetchMonthlyTransactionData(now.year, now.month);
   }
 
   Future<void> fetchDataCucian() async {
@@ -43,7 +45,9 @@ class DashboardOwnerController extends GetxController {
         count.value = response.data.length;
       }
     } catch (error) {
-      print('Exception during fetching data: $error');
+      if (kDebugMode) {
+        print('Exception during fetching data: $error');
+      }
     }
   }
 
@@ -157,11 +161,11 @@ class DashboardOwnerController extends GetxController {
   var selectedMonth = DateTime.now().obs; // Menambahkan variable untuk bulan terpilih
 
   // Modifikasi fungsi fetchMonthlyTransactionData untuk menerima parameter DateTime
-  Future<void> fetchMonthlyTransactionData(DateTime month) async {
+  Future<void> fetchMonthlyTransactionData(int year, int month) async {
     try {
       // Define the first and last day of the selected month
-      DateTime firstDayOfMonth = DateTime(month.year, month.month, 1);
-      DateTime lastDayOfMonth = DateTime(month.year, month.month + 1, 0);
+      DateTime firstDayOfMonth = DateTime(year, month, 1);
+      DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
 
       // Fetch transactions for the selected month
       final response = await client

@@ -40,14 +40,10 @@ import '../modules/paneltransaksi/bindings/paneltransaksi_binding.dart';
 import '../modules/paneltransaksi/views/paneltransaksi_view.dart';
 import '../modules/pelangganDasboard/bindings/pelanggan_dasboard_binding.dart';
 import '../modules/pelangganDasboard/views/pelanggan_dasboard_view.dart';
-import '../modules/pelangganDebt/bindings/pelanggan_debt_binding.dart';
-import '../modules/pelangganDebt/views/pelanggan_debt_view.dart';
 import '../modules/pelangganPaid/bindings/pelanggan_paid_binding.dart';
 import '../modules/pelangganPaid/views/pelanggan_paid_view.dart';
 import '../modules/pelangganProfile/bindings/pelanggan_profile_binding.dart';
 import '../modules/pelangganProfile/views/pelanggan_profile_view.dart';
-import '../modules/pelangganStatus/bindings/pelanggan_status_binding.dart';
-import '../modules/pelangganStatus/views/pelanggan_status_view.dart';
 import '../modules/pelangganTransaksi/bindings/pelanggan_transaksi_binding.dart';
 import '../modules/pelangganTransaksi/views/pelanggan_transaksi_view.dart';
 import '../modules/pelangganhome/bindings/pelangganhome_binding.dart';
@@ -173,19 +169,9 @@ class AppPages {
       binding: PelangganPaidBinding(),
     ),
     GetPage(
-      name: _Paths.PELANGGAN_DEBT,
-      page: () => const PelangganDebtView(),
-      binding: PelangganDebtBinding(),
-    ),
-    GetPage(
       name: _Paths.PELANGGAN_TRANSAKSI,
       page: () => const PelangganTransaksiView(),
       binding: PelangganTransaksiBinding(),
-    ),
-    GetPage(
-      name: _Paths.PELANGGAN_STATUS,
-      page: () => PelangganStatusView(),
-      binding: PelangganStatusBinding(),
     ),
     GetPage(
       name: _Paths.INVOICE_TRANSAKSI,

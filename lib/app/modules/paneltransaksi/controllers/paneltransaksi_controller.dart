@@ -30,6 +30,10 @@ class PaneltransaksiController extends GetxController {
       if (response != null && response is List) {
         // Convert each item in the list to a Map<String, dynamic>
         data.value = response.map((item) => item as Map<String, dynamic>).toList();
+
+        // Sort data based on 'id' in ascending order
+        data.value.sort((a, b) => a['id'].compareTo(b['id']));
+
         filteredData.value = List.from(data);
         if (kDebugMode) {
           print('Fetched data: $data');

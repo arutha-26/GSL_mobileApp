@@ -20,15 +20,24 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
         centerTitle: true,
         actions: [
           TextButton(
-              onPressed: () async {
-                await controller.logout();
-                await authC.resetTimer();
-                Get.offAllNamed(Routes.LOGINPAGE);
-              },
-              child: const Text(
-                "LOGOUT",
-                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
-              ))
+            onPressed: () async {
+              await controller.logout();
+              await authC.resetTimer();
+              Get.offAllNamed(Routes.LOGINPAGE);
+            },
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0), // Sesuaikan dengan kebutuhan
+                  side: const BorderSide(color: Colors.redAccent), // Warna dan lebar border
+                ),
+              ),
+            ),
+            child: const Text(
+              "LOGOUT",
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
       body: FutureBuilder(
@@ -73,7 +82,7 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
                 ),
                 TextField(
                   autocorrect: false,
-                  // enabled: false,
+                  enabled: false,
                   controller: controller.emailC,
                   textInputAction: TextInputAction.none,
                   decoration: const InputDecoration(
@@ -96,110 +105,58 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
                 const SizedBox(
                   height: 20,
                 ),
-                Obx(() => ElevatedButton(
-                      onPressed: () async {
-                        if (controller.isLoading.isFalse) {
-                          if (controller.nameC.text == controller.nameC2.text &&
-                              controller.passwordC.text.isEmpty) {
-                            // Check if user have same name and not want to change password but they click the button
-                            Get.snackbar("Info", "There is no data to update",
-                                borderWidth: 1, borderColor: Colors.white, barBlur: 100);
-                            return;
-                          }
-                          await controller.updateProfile();
-                          if (controller.passwordC.text.isNotEmpty &&
-                              controller.passwordC.text.length >= 6) {
-                            await controller.logout();
-                            await authC.resetTimer();
-                            Get.offAllNamed(Routes.HOME);
-                          }
+                Obx(
+                  () => ElevatedButton(
+                    onPressed: () async {
+                      if (controller.isLoading.isFalse) {
+                        if (controller.nameC.text == controller.nameC2.text &&
+                            controller.passwordC.text.isEmpty) {
+                          // Check if user has the same name and does not want to change the password but clicks the button
+                          Get.snackbar("Info", "There is no data to update",
+                              borderWidth: 1, borderColor: Colors.white, barBlur: 100);
+                          return;
                         }
-                      },
-                      child:
-                          Text(controller.isLoading.isFalse ? "UPDATE PROFILE" : "Loading..."),
-                    )),
+                        await controller.updateProfile();
+                        if (controller.passwordC.text.isNotEmpty &&
+                            controller.passwordC.text.length >= 6) {
+                          await controller.logout();
+                          await authC.resetTimer();
+                          Get.offAllNamed(Routes.HOME);
+                        }
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.green), // Warna latar belakang tombol
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black), // Warna teks tombol
+                    ),
+                    child: Text(controller.isLoading.isFalse ? "Update Data" : "Loading..."),
+                  ),
+                ),
               ],
             );
           }),
-      bottomNavigationBar: Obx(() {
-        String? userRole = controller.userRole.value;
-
-        if (userRole != null) {
-          return BottomNavBar(
-            currentIndex: 2,
-            onTap: (index) {
-              controller.onPageChanged(index);
-              _handleNavigation(index, userRole);
-            },
-          );
-        } else {
-          // Jika gagal mendapatkan peran pengguna, tampilkan widget alternatif atau pesan kesalahan
-          return const Center(child: Text("Failed to fetch user role"));
-        }
-      }),
+      bottomNavigationBar: BottomNavBar(
+          currentIndex: 2,
+          onTap: (index) {
+            // Handle navigation using Get
+            switch (index) {
+              case 0:
+                Get.offAllNamed(
+                    Routes.PELANGGANHOME); // Replace '/home' with your actual home route
+                break;
+              case 1:
+                Get.offAllNamed(Routes
+                    .PELANGGAN_DASBOARD); // Replace '/dashboard' with your actual dashboard route
+                break;
+              case 2:
+                Get.offAllNamed(Routes
+                    .PELANGGAN_PROFILE); // Replace '/profile' with your actual profile route
+                break;
+              default:
+            }
+          }),
     );
-  }
-
-  void _handleNavigation(int index, String userRole) {
-    controller.onPageChanged(index); // Pastikan onPageChanged dipanggil terlebih dahulu
-    switch (userRole) {
-      case 'Owner':
-        _handleNavigationOwner(index);
-        break;
-      case 'Karyawan':
-        _handleNavigationKaryawan(index);
-        break;
-      case 'Pelanggan':
-        _handleNavigationPelanggan(index);
-        break;
-      default:
-        Get.snackbar("ERROR", "Unknown user role");
-        break;
-    }
-  }
-
-  void _handleNavigationOwner(int index) {
-    switch (index) {
-      case 0:
-        Get.offAllNamed(Routes.OWNERHOME);
-        break;
-      case 1:
-        Get.offAllNamed(Routes.DASHBOARD_OWNER);
-        break;
-      case 2:
-        Get.offAllNamed(Routes.OWNERPROFILE);
-        break;
-      default:
-    }
-  }
-
-  void _handleNavigationKaryawan(int index) {
-    switch (index) {
-      case 0:
-        Get.offAllNamed(Routes.KARYAWANHOME);
-        break;
-      case 1:
-        Get.offAllNamed(Routes.KARYAWAN_DASHBOARD);
-        break;
-      case 2:
-        Get.offAllNamed(Routes.KARYAWANPROFILE);
-        break;
-      default:
-    }
-  }
-
-  void _handleNavigationPelanggan(int index) {
-    switch (index) {
-      case 0:
-        Get.offAllNamed(Routes.PELANGGANHOME);
-        break;
-      case 1:
-        Get.offAllNamed(Routes.PELANGGAN_DASBOARD);
-        break;
-      case 2:
-        Get.offAllNamed(Routes.PELANGGAN_PROFILE);
-        break;
-      default:
-    }
   }
 }

@@ -110,8 +110,8 @@ class LoginpageController extends GetxController {
                 'Berhasil Login',
                 'Selamat Datang Owner',
                 snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.white,
-                backgroundColor: Colors.greenAccent,
+                colorText: Colors.black87,
+                backgroundColor: const Color(0xFFC6DDD8),
               );
               break;
             case 'Karyawan':
@@ -120,8 +120,8 @@ class LoginpageController extends GetxController {
                 'Berhasil Login',
                 'Selamat Datang Karyawan',
                 snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.white,
-                backgroundColor: Colors.greenAccent,
+                colorText: Colors.black87,
+                backgroundColor: const Color(0xFFC6DDD8),
               );
               break;
             case 'Pelanggan':
@@ -130,8 +130,8 @@ class LoginpageController extends GetxController {
                 'Berhasil Login',
                 'Selamat Datang Pelanggan',
                 snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.white,
-                backgroundColor: Colors.greenAccent,
+                colorText: Colors.black87,
+                backgroundColor: const Color(0xFFC6DDD8),
               );
               break;
             default:

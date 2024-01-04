@@ -82,6 +82,7 @@ class AdddataController extends GetxController {
           "kategori": getSelectedKategori(),
           "created_at": DateTime.now().toIso8601String(),
           "uid": res.user!.id,
+          "is_active": true,
         });
 
         // Clear the session manually

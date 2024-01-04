@@ -30,15 +30,24 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
         centerTitle: true,
         actions: [
           TextButton(
-              onPressed: () async {
-                await controller.logout();
-                await authC.resetTimer();
-                Get.offAllNamed(Routes.LOGINPAGE);
-              },
-              child: const Text(
-                "LOGOUT",
-                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
-              ))
+            onPressed: () async {
+              await controller.logout();
+              await authC.resetTimer();
+              Get.offAllNamed(Routes.LOGINPAGE);
+            },
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0), // Sesuaikan dengan kebutuhan
+                  side: const BorderSide(color: Colors.redAccent), // Warna dan lebar border
+                ),
+              ),
+            ),
+            child: const Text(
+              "LOGOUT",
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
       body: FutureBuilder(
@@ -71,14 +80,19 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  autocorrect: false,
-                  enabled: false,
-                  controller: controller.nameC2,
-                  textInputAction: TextInputAction.none,
-                  decoration: const InputDecoration(
-                    labelText: "Nama",
-                    border: OutlineInputBorder(),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Selamat Datang Owner ',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        controller.nameC.text,
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(
@@ -96,27 +110,35 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                 const SizedBox(
                   height: 20,
                 ),
-                Obx(() => ElevatedButton(
-                      onPressed: () async {
-                        if (controller.isLoading.isFalse) {
-                          if (controller.nameC.text == controller.nameC2.text &&
-                              controller.passwordC.text.isEmpty) {
-                            // Check if user have same name and not want to change password but they click the button
-                            Get.snackbar("Info", "There is no data to update",
-                                borderWidth: 1, borderColor: Colors.white, barBlur: 100);
-                            return;
-                          }
-                          await controller.updateProfile();
-                          if (controller.passwordC.text.isNotEmpty &&
-                              controller.passwordC.text.length >= 6) {
-                            await controller.logout();
-                            await authC.resetTimer();
-                            Get.offAllNamed(Routes.HOME);
-                          }
+                Obx(
+                  () => ElevatedButton(
+                    onPressed: () async {
+                      if (controller.isLoading.isFalse) {
+                        if (controller.nameC.text == controller.nameC2.text &&
+                            controller.passwordC.text.isEmpty) {
+                          // Check if user has the same name and does not want to change the password but clicks the button
+                          Get.snackbar("Info", "There is no data to update",
+                              borderWidth: 1, borderColor: Colors.white, barBlur: 100);
+                          return;
                         }
-                      },
-                      child: Text(controller.isLoading.isFalse ? "Update Data" : "Loading..."),
-                    )),
+                        await controller.updateProfile();
+                        if (controller.passwordC.text.isNotEmpty &&
+                            controller.passwordC.text.length >= 6) {
+                          await controller.logout();
+                          await authC.resetTimer();
+                          Get.offAllNamed(Routes.HOME);
+                        }
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.green), // Warna latar belakang tombol
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black), // Warna teks tombol
+                    ),
+                    child: Text(controller.isLoading.isFalse ? "Update Data" : "Loading..."),
+                  ),
+                ),
               ],
             );
           }),
