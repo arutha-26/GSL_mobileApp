@@ -30,6 +30,7 @@ dependencies:
 
 dev_dependencies:
   flutter_lints: ^3.0.1
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 
@@ -39,11 +40,13 @@ flutter:
 
   assets:
     - .env
+    - images/gsl_icon.png
     - images/gsl_logo.png
     - images/logo_gsl.jpg
     - images/logo_gsl.png
     - images/logo_gsl_new.png
     - images/logo_gsl_crop.png
+    - images/logo_edited.png
     - images/owner_icon.png
     - images/karyawan_icon.png
     - images/pelanggan_icon.png
@@ -73,3 +76,8 @@ flutter:
     - images/dollar.png
     - images/document.png
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "images/gsl_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21

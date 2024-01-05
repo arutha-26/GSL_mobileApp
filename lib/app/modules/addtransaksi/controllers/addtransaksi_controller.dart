@@ -304,9 +304,9 @@ class AddtransaksiController extends GetxController {
         NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
 
     // Handle negative kembalian (underpayment)
-    if (kembalian < 0) {
+    if (kembalian <= 0) {
       // Update kembalianController with an error message
-      kembalianController.text = "Pembayaran Kurang: ${currencyFormatter.format(minus)}";
+      kembalianController.text = "Rp0";
       // Optionally, show a snackbar or dialog for user feedback
 
       // Set a constant Kembalian value
