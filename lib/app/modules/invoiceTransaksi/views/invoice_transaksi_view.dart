@@ -14,10 +14,10 @@ import '../../../utils/InvoiceSearchWidget.dart';
 import '../../../utils/invoiceData.dart';
 import '../controllers/invoice_transaksi_controller.dart';
 
-// TODO BUAT COLSPAN NYA, DATA ALAMAT PELANGGAN KURANG MUNGKIN BISA CEK LAGI DATABASENYA ATAU FUNC NYA AGAR BISA AMBIL DATA DARI USER YAA,
+// TODO BUAT COLSPAN NYA
 
 class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
-  InvoiceTransaksiView({Key? key}) : super(key: key);
+  InvoiceTransaksiView({super.key});
 
   Future<void> selectDateRange(BuildContext context, TextEditingController startDateController,
       TextEditingController endDateController) async {
@@ -257,19 +257,19 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               const SizedBox(
                 height: 10,
               ),
-              TextField(
-                enabled: false,
-                autocorrect: false,
-                controller: controller.namaKaryawanC,
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: "Nama Karyawan",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              // TextField(
+              //   enabled: false,
+              //   autocorrect: false,
+              //   controller: controller.namaKaryawanC,
+              //   textInputAction: TextInputAction.next,
+              //   decoration: const InputDecoration(
+              //     labelText: "Nama Karyawan",
+              //     border: OutlineInputBorder(),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
               InvoiceSearchWidget(
                 nameController: controller.nameController,
                 phoneController: controller.phoneController,
@@ -335,15 +335,18 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               const SizedBox(height: 20),
               Obx(
                 () => ElevatedButton(
-                  onPressed: () async {
-                    if (controller.isLoading.isFalse) {
-                      await controller.fetchDataTransaksi();
-                    }
-                  },
-                  child: Text(
-                    controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
-                  ),
-                ),
+                    onPressed: () async {
+                      if (controller.isLoading.isFalse) {
+                        await controller.fetchDataTransaksi();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      backgroundColor: const Color(0xFF22c55e),
+                    ),
+                    child: Text(
+                      controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
+                    )),
               ),
               const SizedBox(height: 20),
               // Display fetched data in cards
@@ -384,21 +387,24 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: () async {
-                  if (controller.invoiceData.isNotEmpty) {
-                    await generateAndOpenInvoicePDF();
-                  } else {
-                    // Show a message that there's no data to generate an invoice
-                    // You can customize this based on your requirements
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('No data available to generate an invoice.'),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Generate Invoice'),
-              ),
+                  onPressed: () async {
+                    if (controller.invoiceData.isNotEmpty) {
+                      await generateAndOpenInvoicePDF();
+                    } else {
+                      // Show a message that there's no data to generate an invoice
+                      // You can customize this based on your requirements
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No data available to generate an invoice.'),
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e),
+                  ),
+                  child: const Text('Buat Invoice')),
             ],
           );
         },

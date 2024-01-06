@@ -47,7 +47,8 @@ class UpdateDataHargaView extends GetView<UpdateDataHargaController> {
                     controller.updateUserData(userData);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e),
                     minimumSize: const Size(150, 48),
                   ),
                   child: controller.isLoading.value

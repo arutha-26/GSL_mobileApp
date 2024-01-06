@@ -68,18 +68,6 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                 const SizedBox(
                   height: 10,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Center(
-                  child: Text(
-                    controller.emailC.text,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -93,6 +81,19 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  autocorrect: false,
+                  enabled: false,
+                  controller: controller.emailC,
+                  textInputAction: TextInputAction.none,
+                  decoration: const InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(

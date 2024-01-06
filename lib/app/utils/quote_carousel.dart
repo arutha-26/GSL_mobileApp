@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 class QuoteCarousel extends StatelessWidget {
   final List<String> quotes = [
-    'Keberhasilan dimulai dari tekad yang kuat dan tindakan konsisten.',
-    'Setiap kesalahan adalah peluang untuk belajar dan berkembang.',
-    'Jadilah orang yang memberikan energi positif di sekitarmu.',
-    'Kesuksesan bukan akhir perjalanan, tapi hasil dari usaha terus-menerus.',
-    'Jangan takut mencoba hal baru, karena di situlah peluang terbesar.',
-    'Ketika hidup memberimu alasan untuk menyerah, berikanlah alasan untuk tetap melangkah.',
-    'Percayalah pada dirimu sendiri, karena orang lain mungkin ragu.',
-    'Jadilah seseorang yang memberikan lebih banyak daripada yang diharapkan.',
-    'Waktu terbaik untuk memulai adalah sekarang, jangan tunda-tunda lagi.',
-    'Jangan biarkan kegagalan hari ini menghentikan impianmu untuk besok.'
+    'Bekerja dengan tekad kuat adalah kunci menuju keberhasilan di Green Spirit Laundry.',
+    'Setiap tantangan adalah peluang untuk belajar dan tumbuh bersama tim.',
+    'Sebagai bagian dari Green Spirit Laundry, jadilah sumber energi positif untuk rekan kerjamu.',
+    'Kesuksesan bukan tujuan akhir, tapi hasil dari kerja keras dan kerjasama tim yang terus-menerus.',
+    'Jangan ragu untuk mencoba hal baru di dunia laundry, karena di situlah peluang terbesar kita.',
+    'Ketika pekerjaan menantangmu, berikan alasan untuk terus maju dan berkembang.',
+    'Percayalah pada kemampuanmu, Green Spirit Laundry membutuhkan kontribusi unikmu.',
+    'Berikan lebih dari yang diharapkan, karena semangat kerjasama membangun kesuksesan bersama.',
+    'Waktu terbaik untuk memberikan yang terbaik adalah sekarang, tanpa penundaan.',
+    'Kegagalan hari ini hanyalah batu loncatan menuju impian besar Green Spirit Laundry untuk hari besok.'
   ];
 
   @override

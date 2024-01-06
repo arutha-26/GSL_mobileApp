@@ -6,6 +6,59 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class AdddataController extends GetxController {
+  RxString userRole = "".obs; // Tambahkan ini sebagai variabel anggota
+
+  @override
+  void onInit() {
+    getUserRole();
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    getUserRole();
+    super.onReady();
+  }
+
+  Future<String?> getUserRole() async {
+    try {
+      // Assuming 'uid' matches the 'id' in the Supabase auth table
+      var uid = client.auth.currentUser?.id;
+
+      if (uid == null) {
+        if (kDebugMode) {
+          print("User ID not found");
+        }
+        return null;
+      }
+
+      var response = await client
+          .from('user') // Replace with your user details table name
+          .select('role')
+          .eq('uid', uid)
+          .single()
+          .execute();
+
+      if (response.data != null && response.data.isNotEmpty) {
+        userRole.value = response.data['role'] as String? ?? ""; // Set nilai userRole
+        if (kDebugMode) {
+          print('user role:${userRole.value}');
+        }
+        return userRole.value;
+      } else {
+        if (kDebugMode) {
+          print("No user found");
+        }
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Exception occurred: $e");
+      }
+      return null;
+    }
+  }
+
   @override
   void onClose() {
     // Reset the controller's state when the page is disposed

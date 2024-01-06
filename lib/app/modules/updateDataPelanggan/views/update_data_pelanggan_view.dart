@@ -51,7 +51,8 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
                     // }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.lightBlue,
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e), // Warna teks
                     minimumSize: const Size(150, 48),
                   ),
                   child: controller.isLoading.value

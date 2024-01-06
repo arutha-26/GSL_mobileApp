@@ -52,7 +52,8 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
                     // }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.lightBlue,
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e),
                     minimumSize: const Size(150, 48),
                   ),
                   child: controller.isLoading.value

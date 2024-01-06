@@ -6,7 +6,6 @@ import '../../../routes/app_pages.dart';
 
 class KaryawanprofileController extends GetxController {
   RxBool isLoading = false.obs;
-  RxBool isHidden = true.obs;
   TextEditingController nameC = TextEditingController();
   TextEditingController nameC2 = TextEditingController();
   TextEditingController emailC = TextEditingController();
@@ -45,13 +44,13 @@ class KaryawanprofileController extends GetxController {
             Get.snackbar("ERROR", e.toString());
           }
         } else {
-          Get.snackbar("ERROR", "Password harus lebih dari 6");
+          Get.snackbar("ERROR", "Password must be longer than 6 characters");
         }
       }
       Get.defaultDialog(
           barrierDismissible: false,
-          title: "Update Profile sukses",
-          middleText: "Nama dan password berhasil diupdate",
+          title: "Update Profile success",
+          middleText: "Nama atau password akan diupdate",
           actions: [
             OutlinedButton(
                 onPressed: () {

@@ -41,9 +41,13 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
       body: Column(
         children: [
           ElevatedButton(
-            onPressed: () => _selectDate(context),
-            child: const Text('Pilih Tanggal'),
-          ),
+              onPressed: () => _selectDate(context),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: const Color(0xFF22c55e),
+                minimumSize: const Size(220, 45),
+              ),
+              child: const Text('Pilih Tanggal Transaksi')),
           Obx(() {
             if (controller.isLoading.isTrue) {
               return const Center(
@@ -152,24 +156,31 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                if (controller.currentPage.value > 1) {
-                  controller.currentPage--;
-                  await controller.fetchDataWithDateRange(page: controller.currentPage.value);
-                  controller.data.refresh();
-                }
-              },
-              child: const Icon(Icons.arrow_back),
-            ),
+                onPressed: () async {
+                  if (controller.currentPage.value > 1) {
+                    controller.currentPage--;
+                    await controller.fetchDataWithDateRange(
+                        page: controller.currentPage.value);
+                    controller.data.refresh();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: const Color(0xFF22c55e),
+                ),
+                child: const Icon(Icons.arrow_back)),
             const SizedBox(width: 10),
             ElevatedButton(
-              onPressed: () async {
-                controller.currentPage++;
-                await controller.fetchDataWithDateRange(page: controller.currentPage.value);
-                controller.data.refresh();
-              },
-              child: const Icon(Icons.arrow_forward),
-            ),
+                onPressed: () async {
+                  controller.currentPage++;
+                  await controller.fetchDataWithDateRange(page: controller.currentPage.value);
+                  controller.data.refresh();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: const Color(0xFF22c55e),
+                ),
+                child: const Icon(Icons.arrow_forward)),
             const SizedBox(width: 10),
             Obx(() {
               return Text(

@@ -378,6 +378,10 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                             controller.addTransaksi();
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: const Color(0xFF22c55e), // Warna teks
+                        ),
                         child: Text(
                           controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
                         ),
