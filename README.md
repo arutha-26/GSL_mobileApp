@@ -25,9 +25,9 @@ help you get started:
 
 ## Features
 
-- Feature 1: Describe a key feature of your app.
-- Feature 2: Highlight another important functionality.
-- Feature 3: Mention additional features and capabilities.
+- Feature 1: Manajement Transaction.
+- Feature 2: Export Data To Invoice PDF.
+- Feature 3: Mantain User Data.
 
 ## Development Setup
 
@@ -36,4 +36,4 @@ To set up the development environment for this project, follow these steps:
 1. Clone this repository to your local machine:
    
    ```bash
-   git clone https://github.com/your-username/green-spirit-laundry.git
+   git clone https://github.com/arutha-26/GSL_mobileApp.git
