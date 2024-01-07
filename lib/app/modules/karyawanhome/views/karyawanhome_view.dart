@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
+import 'package:gsl/app/utils/bottom_navbar_karyawan.dart';
 
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar.dart';
 import '../../../utils/quote_carousel.dart';
 import '../../adddatauser/controllers/adddata_controller.dart';
 import '../../adddatauser/views/adddata_view.dart';
@@ -20,12 +20,6 @@ import '../../pengambilanLaundry/controllers/pengambilan_laundry_controller.dart
 import '../../pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../controllers/karyawanhome_controller.dart';
 
-// TODO:
-/*
-BUAT PAGE ADD DATA NYA KHUSUS, KARYAWAN TIDAK BISA ADD KARYAWAN DAN OWNER
-KARYAWAN TIDAK BISA LIHAT DATA KARYAWAN
-*/
-
 class KaryawanhomeView extends GetView<KaryawanhomeController> {
   KaryawanhomeView({Key? key}) : super(key: key);
 
@@ -37,131 +31,125 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
         title: const Text('Green Spirit Laundry'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CarouselSlider(
-              items: [
-                Image.asset('images/banner_1.png'),
-                Image.asset('images/banner_4.png'),
-                Image.asset('images/banner_7.png'),
-                Image.asset('images/banner_5.png'),
-              ],
-              options: CarouselOptions(
-                autoPlay: true,
-                aspectRatio: 16 / 9,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                autoPlayAnimationDuration: const Duration(milliseconds: 2500),
-                viewportFraction: 1,
-              ),
-            ),
-            SizedBox(
-              width: 450, // Set the width to the screen width
-              height: 300.0, // Adjust the height based on your needs
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return GridView.count(
-                    scrollDirection: Axis.vertical,
-                    crossAxisSpacing: 20.0,
-                    mainAxisSpacing: 20.0,
-                    padding: const EdgeInsets.all(16.0),
-                    shrinkWrap: true,
-                    // physics:
-                    //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
-                    crossAxisCount: 3,
-                    children: [
-                      GlassButton(
-                        onPressed: () {
-                          Get.put(AdddataController());
-                          Get.to(() => AdddataView());
-                        },
-                        label: 'Data Pengguna',
-                        color: Colors.blue,
-                        iconPath: 'images/plus.png',
-                      ),
-                      GlassButton(
-                        onPressed: () {
-                          Get.put(AddtransaksiController());
-                          Get.to(() => AddtransaksiView());
-                        },
-                        label: 'Data Transaksi',
-                        color: Colors.green,
-                        iconPath: 'images/plus.png',
-                      ),
-                      // GlassButton(
-                      //   onPressed: () {
-                      //     Get.put(PaneltransaksiController());
-                      //     Get.to(() => PaneltransaksiView());
-                      //   },
-                      //   label: 'Panel Transaksi',
-                      //   color: Colors.orange,
-                      //   iconPath: 'images/settings.png',
-                      // ),
-                      GlassButton(
-                        onPressed: () {
-                          Get.put(PengambilanLaundryController());
-                          Get.to(() => PengambilanLaundryView());
-                        },
-                        label: 'Update Data Laundry',
-                        color: Colors.red,
-                        iconPath: 'images/edit.png',
-                      ),
-                      GlassButton(
-                        onPressed: () {
-                          Get.put(DatapelangganController());
-                          Get.to(() => DatapelangganView());
-                        },
-                        label: 'Data Pelanggan',
-                        color: Colors.purple,
-                        iconPath: 'images/document.png',
-                      ),
-                      // GlassButton(
-                      //   onPressed: () {
-                      //     Get.put(DataKaryawanController());
-                      //     Get.to(() => DataKaryawanView());
-                      //   },
-                      //   label: 'Data Karyawan',
-                      //   color: Colors.purple,
-                      //   iconPath: 'images/document.png',
-                      // ),
-                      GlassButton(
-                        onPressed: () {
-                          Get.put(DataTransaksiController());
-                          Get.to(() => DataTransaksiView());
-                        },
-                        label: 'Data Transaksi',
-                        color: Colors.teal,
-                        iconPath: 'images/document.png',
-                      ),
-                      GlassButton(
-                        onPressed: () {
-                          Get.put(InvoiceTransaksiController());
-                          Get.to(() => InvoiceTransaksiView());
-                        },
-                        label: 'Invoice Transaksi',
-                        color: Colors.teal,
-                        iconPath: 'images/document.png',
-                      )
+      body: Obx(() {
+        if (controller.isLoading.isTrue) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Scrollbar(
+            thumbVisibility: true,
+            trackVisibility: true,
+            scrollbarOrientation: ScrollbarOrientation.right,
+            thickness: 5,
+            radius: const Radius.circular(20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CarouselSlider(
+                    items: [
+                      Image.asset('images/banner_1.png'),
+                      Image.asset('images/banner_4.png'),
+                      Image.asset('images/banner_7.png'),
+                      Image.asset('images/banner_5.png'),
                     ],
-                  );
-                },
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      aspectRatio: 16 / 9,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: true,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      autoPlayAnimationDuration: const Duration(milliseconds: 2500),
+                      viewportFraction: 1,
+                    ),
+                  ),
+                  _buildProfitAndTransactionCountCard(),
+                  SizedBox(
+                    width: 450, // Set the width to the screen width
+                    height: 300.0, // Adjust the height based on your needs
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return GridView.count(
+                          scrollDirection: Axis.vertical,
+                          crossAxisSpacing: 20.0,
+                          mainAxisSpacing: 20.0,
+                          padding: const EdgeInsets.all(16.0),
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          children: [
+                            GlassButton(
+                              onPressed: () {
+                                Get.put(AdddataController());
+                                Get.to(() => AdddataView());
+                              },
+                              label: 'Data Pengguna',
+                              color: Colors.blue,
+                              iconPath: 'images/plus.png',
+                            ),
+                            GlassButton(
+                              onPressed: () {
+                                Get.put(AddtransaksiController());
+                                Get.to(() => AddtransaksiView());
+                              },
+                              label: 'Data Transaksi',
+                              color: Colors.green,
+                              iconPath: 'images/plus.png',
+                            ),
+                            GlassButton(
+                              onPressed: () {
+                                Get.put(PengambilanLaundryController());
+                                Get.to(() => PengambilanLaundryView());
+                              },
+                              label: 'Update Data Laundry',
+                              color: Colors.red,
+                              iconPath: 'images/edit.png',
+                            ),
+                            GlassButton(
+                              onPressed: () {
+                                Get.put(DatapelangganController());
+                                Get.to(() => DatapelangganView());
+                              },
+                              label: 'Data Pelanggan',
+                              color: Colors.purple,
+                              iconPath: 'images/document.png',
+                            ),
+                            GlassButton(
+                              onPressed: () {
+                                Get.put(DataTransaksiController());
+                                Get.to(() => DataTransaksiView());
+                              },
+                              label: 'Data Transaksi',
+                              color: Colors.teal,
+                              iconPath: 'images/document.png',
+                            ),
+                            GlassButton(
+                              onPressed: () {
+                                Get.put(InvoiceTransaksiController());
+                                Get.to(() => InvoiceTransaksiView());
+                              },
+                              label: 'Invoice Transaksi',
+                              color: Colors.teal,
+                              iconPath: 'images/document.png',
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  // TERAPKAN DISINI
+                  QuoteCarousel(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            // TERAPKAN DISINI
-            QuoteCarousel(),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+      }),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 0,
         onTap: (index) {
@@ -171,14 +159,59 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
               Get.offAllNamed(Routes.KARYAWANHOME);
               break;
             case 1:
-              Get.offAllNamed(Routes.KARYAWAN_DASHBOARD);
-              break;
-            case 2:
               Get.offAllNamed(Routes.KARYAWANPROFILE);
               break;
             default:
           }
         },
+      ),
+    );
+  }
+
+  Widget buildRowCard(Widget card1, Widget card2) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(child: card1),
+        const SizedBox(width: 8),
+        Expanded(child: card2),
+      ],
+    );
+  }
+
+  Widget _buildProfitAndTransactionCountCard() {
+    return buildRowCard(
+      _buildStatusCard(),
+      _buildTodayTransactionsCard(),
+    );
+  }
+
+  Widget _buildStatusCard() {
+    return InkWell(
+      onTap: () {
+        // Arahkan ke halaman yang diinginkan
+        Get.offAllNamed(Routes.KARYAWANHOME);
+      },
+      child: Card(
+        child: ListTile(
+          title: const Text('Status Cucian'),
+          subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTodayTransactionsCard() {
+    return InkWell(
+      onTap: () {
+        // Arahkan ke halaman yang diinginkan
+        Get.offAllNamed(Routes.KARYAWANHOME);
+      },
+      child: Card(
+        child: ListTile(
+          title: const Text('Transaksi Hari Ini'),
+          subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+        ),
       ),
     );
   }

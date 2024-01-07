@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar.dart';
+import '../../../utils/bottom_navbar_karyawan.dart';
 import '../controllers/karyawanprofile_controller.dart';
 
 class KaryawanprofileView extends GetView<KaryawanprofileController> {
@@ -142,9 +142,8 @@ class KaryawanprofileView extends GetView<KaryawanprofileController> {
             );
           }),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 2,
+        currentIndex: 1,
         onTap: (index) {
-          // Handle navigation using Get
           switch (index) {
             case 0:
               Get.offAllNamed(
@@ -152,11 +151,7 @@ class KaryawanprofileView extends GetView<KaryawanprofileController> {
               break;
             case 1:
               Get.offAllNamed(Routes
-                  .KARYAWAN_DASHBOARD); // Replace '/dashboard' with your actual dashboard route
-              break;
-            case 2:
-              Get.offAllNamed(
-                  Routes.KARYAWANPROFILE); // Replace '/profile' with your actual profile route
+                  .KARYAWANPROFILE); // Replace '/dashboard' with your actual dashboard route
               break;
             default:
           }
