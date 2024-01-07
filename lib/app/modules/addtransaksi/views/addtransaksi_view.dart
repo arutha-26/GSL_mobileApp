@@ -16,8 +16,23 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
-    if (picked != null && picked != DateTime.now()) {
-      controller.text = DateFormat('dd-MM-yyyy').format(picked);
+    if (picked != null) {
+      TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (pickedTime != null) {
+        DateTime pickedDateTime = DateTime(
+          picked.year,
+          picked.month,
+          picked.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        controller.text = DateFormat('yyyy-MM-dd HH:mm:ss').format(pickedDateTime);
+      }
     }
   }
 

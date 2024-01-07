@@ -52,6 +52,10 @@ import '../modules/pengambilanLaundry/bindings/pengambilan_laundry_binding.dart'
 import '../modules/pengambilanLaundry/views/pengambilan_laundry_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
+import '../modules/statusCucianTransaksi/bindings/status_cucian_transaksi_binding.dart';
+import '../modules/statusCucianTransaksi/views/status_cucian_transaksi_view.dart';
+import '../modules/transaksiHariIni/bindings/transaksi_hari_ini_binding.dart';
+import '../modules/transaksiHariIni/views/transaksi_hari_ini_view.dart';
 import '../modules/updateDataHarga/bindings/update_data_harga_binding.dart';
 import '../modules/updateDataHarga/views/update_data_harga_view.dart';
 import '../modules/updateDataKaryawan/bindings/update_data_karyawan_binding.dart';
@@ -212,6 +216,16 @@ class AppPages {
       name: _Paths.INVOICE_TRANSAKSI_DATA,
       page: () => InvoiceTransaksiDataView(invoiceData: RxList<InvoiceData>.empty()),
       binding: InvoiceTransaksiDataBinding(),
+    ),
+    GetPage(
+      name: _Paths.STATUS_CUCIAN_TRANSAKSI,
+      page: () => const StatusCucianTransaksiView(),
+      binding: StatusCucianTransaksiBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRANSAKSI_HARI_INI,
+      page: () => const TransaksiHariIniView(),
+      binding: TransaksiHariIniBinding(),
     ),
   ];
 }

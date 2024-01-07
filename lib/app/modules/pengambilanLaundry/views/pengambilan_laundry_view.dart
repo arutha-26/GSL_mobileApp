@@ -14,7 +14,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(2105),
     );
     if (picked != null && picked != DateTime.now()) {
       controller.text = DateFormat('dd-MM-yyyy').format(picked);
@@ -354,8 +354,13 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                             controller.updateTransaksi();
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: const Color(0xFF22c55e), // Warna teks
+                        ),
                         child: Text(
                           controller.isLoading.isFalse ? "Kirim" : "Loading...",
+                          style: const TextStyle(fontSize: 16),
                         ),
                       )),
                 ],

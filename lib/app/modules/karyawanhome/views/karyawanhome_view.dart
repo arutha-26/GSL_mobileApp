@@ -30,6 +30,14 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
       appBar: AppBar(
         title: const Text('Green Spirit Laundry'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              controller.refreshData();
+            },
+          ),
+        ],
       ),
       body: Obx(() {
         if (controller.isLoading.isTrue) {
@@ -38,8 +46,9 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
           return Scrollbar(
             thumbVisibility: true,
             trackVisibility: true,
+            interactive: true,
             scrollbarOrientation: ScrollbarOrientation.right,
-            thickness: 5,
+            thickness: 10,
             radius: const Radius.circular(20),
             child: SingleChildScrollView(
               child: Column(
@@ -61,7 +70,10 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                       viewportFraction: 1,
                     ),
                   ),
-                  _buildProfitAndTransactionCountCard(),
+                  Padding(
+                    padding: const EdgeInsets.all(9.0),
+                    child: _buildProfitAndTransactionCountCard(),
+                  ),
                   SizedBox(
                     width: 450, // Set the width to the screen width
                     height: 300.0, // Adjust the height based on your needs
@@ -190,12 +202,32 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
     return InkWell(
       onTap: () {
         // Arahkan ke halaman yang diinginkan
-        Get.offAllNamed(Routes.KARYAWANHOME);
+        Get.toNamed(Routes.STATUS_CUCIAN_TRANSAKSI);
       },
       child: Card(
-        child: ListTile(
-          title: const Text('Status Cucian'),
-          subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Status Cucian'),
+            subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+          ),
         ),
       ),
     );
@@ -205,12 +237,32 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
     return InkWell(
       onTap: () {
         // Arahkan ke halaman yang diinginkan
-        Get.offAllNamed(Routes.KARYAWANHOME);
+        Get.toNamed(Routes.TRANSAKSI_HARI_INI);
       },
       child: Card(
-        child: ListTile(
-          title: const Text('Transaksi Hari Ini'),
-          subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Transaksi Hari Ini'),
+            subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+          ),
         ),
       ),
     );

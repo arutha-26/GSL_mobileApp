@@ -325,9 +325,13 @@ class AddtransaksiController extends GetxController {
 
   String formatDate(String date) {
     try {
-      // Assuming date is in DD-MM-YYYY format
+      // Assuming date is in DD-MM-YYYY HH:mm:ss format
       DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
-      return DateFormat('yyyy-MM-dd').format(parsedDate); // Convert to YYYY-MM-DD format
+
+      // Convert to local time zone
+      DateTime localDate = parsedDate.toLocal();
+
+      return DateFormat('yyyy-MM-dd').format(localDate);
     } catch (e) {
       if (kDebugMode) {
         print("Error parsing date: $e");

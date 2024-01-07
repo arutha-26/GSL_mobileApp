@@ -36,6 +36,8 @@ class LoginpageView extends GetView<LoginpageController> {
                 decoration: const InputDecoration(
                   labelText: 'Email',
                   labelStyle: TextStyle(color: Colors.black87),
+                  hintText: 'Example@gsl.com',
+                  hintStyle: TextStyle(color: Colors.grey), // Optional: Set hint text color
                 ),
               ),
               const SizedBox(height: 16),

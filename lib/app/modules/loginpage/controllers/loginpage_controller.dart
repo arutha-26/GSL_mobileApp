@@ -101,53 +101,63 @@ class LoginpageController extends GetxController {
         String? userRole = await getUserRole();
         bool? userStatus = await getUserStatus();
 
-        if (userRole != null && userStatus != false) {
+        if (userStatus != false) {
           // Navigate based on user role
-          switch (userRole) {
-            case 'Owner':
-              Get.offAllNamed(Routes.OWNERHOME);
-              Get.snackbar(
-                'Berhasil Login',
-                'Selamat Datang Owner',
-                snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.black87,
-                backgroundColor: const Color(0xFFC6DDD8),
-              );
-              break;
-            case 'Karyawan':
-              Get.offAllNamed(Routes.KARYAWANHOME);
-              Get.snackbar(
-                'Berhasil Login',
-                'Selamat Datang Karyawan',
-                snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.black87,
-                backgroundColor: const Color(0xFFC6DDD8),
-              );
-              break;
-            case 'Pelanggan':
-              Get.offAllNamed(Routes.PELANGGANHOME);
-              Get.snackbar(
-                'Berhasil Login',
-                'Selamat Datang Pelanggan',
-                snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.black87,
-                backgroundColor: const Color(0xFFC6DDD8),
-              );
-              break;
-            default:
-              Get.snackbar(
-                'Gagal',
-                'User Role atau Status Error',
-                snackPosition: SnackPosition.BOTTOM,
-                colorText: Colors.white,
-                backgroundColor: Colors.red,
-              );
-              break;
+          if (userRole != null) {
+            switch (userRole) {
+              case 'Owner':
+                Get.offAllNamed(Routes.OWNERHOME);
+                Get.snackbar(
+                  'Berhasil Login',
+                  'Selamat Datang Owner',
+                  snackPosition: SnackPosition.BOTTOM,
+                  colorText: Colors.black87,
+                  backgroundColor: const Color(0xFFC6DDD8),
+                );
+                break;
+              case 'Karyawan':
+                Get.offAllNamed(Routes.KARYAWANHOME);
+                Get.snackbar(
+                  'Berhasil Login',
+                  'Selamat Datang Karyawan',
+                  snackPosition: SnackPosition.BOTTOM,
+                  colorText: Colors.black87,
+                  backgroundColor: const Color(0xFFC6DDD8),
+                );
+                break;
+              case 'Pelanggan':
+                Get.offAllNamed(Routes.PELANGGANHOME);
+                Get.snackbar(
+                  'Berhasil Login',
+                  'Selamat Datang Pelanggan',
+                  snackPosition: SnackPosition.BOTTOM,
+                  colorText: Colors.black87,
+                  backgroundColor: const Color(0xFFC6DDD8),
+                );
+                break;
+              default:
+                Get.snackbar(
+                  'Gagal',
+                  'User Role atau Status Error',
+                  snackPosition: SnackPosition.BOTTOM,
+                  colorText: Colors.white,
+                  backgroundColor: Colors.red,
+                );
+                break;
+            }
+          } else {
+            Get.snackbar(
+              'Gagal',
+              'User Role Tidak Ditemukan',
+              snackPosition: SnackPosition.BOTTOM,
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+            );
           }
         } else {
           Get.snackbar(
             'Gagal',
-            'User Role atau Status Error',
+            'Status Pengguna Non-Aktif',
             snackPosition: SnackPosition.BOTTOM,
             colorText: Colors.white,
             backgroundColor: Colors.red,
@@ -157,11 +167,23 @@ class LoginpageController extends GetxController {
         return true;
       } catch (e) {
         isLoading.value = false;
-        Get.snackbar("ERROR", e.toString());
+        Get.snackbar(
+          "ERROR",
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
         return null;
       }
     } else {
-      Get.snackbar("ERROR", "Email dan Password harus terisi!");
+      Get.snackbar(
+        'Error',
+        'Semua Data Harus Terisi!',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
       return null;
     }
   }
