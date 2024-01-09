@@ -98,7 +98,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
     return InkWell(
       onTap: () {
         // Arahkan ke halaman yang diinginkan
-        Get.offAllNamed(Routes.OWNERHOME);
+        Get.toNamed(Routes.STATUS_CUCIAN_TRANSAKSI);
       },
       child: Card(
         child: ListTile(
@@ -145,7 +145,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
     return InkWell(
       onTap: () {
         // Arahkan ke halaman yang diinginkan
-        Get.offAllNamed(Routes.OWNERHOME);
+        Get.toNamed(Routes.TRANSAKSI_HARI_INI);
       },
       child: Card(
         child: ListTile(
