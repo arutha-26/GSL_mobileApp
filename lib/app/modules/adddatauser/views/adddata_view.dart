@@ -74,23 +74,25 @@ class AdddataView extends GetView<AdddataController> {
         ),
         const SizedBox(height: 20),
         DropdownSearch<String>(
-          popupProps: PopupProps.menu(
-            constraints: BoxConstraints(
-              maxHeight:
-                  calculateMaxHeight(controller.userRole.value, controller.roleOptions.length),
+            popupProps: PopupProps.menu(
+              constraints: BoxConstraints(
+                maxHeight: calculateMaxHeight(
+                    controller.userRole.value, controller.roleOptions.length),
+              ),
+              showSelectedItems: true,
             ),
-            showSelectedItems: true,
-          ),
-          items: controller.userRole.value == 'Karyawan'
-              ? const ["Pelanggan"]
-              : const ["Owner", "Karyawan", "Pelanggan"],
-          dropdownDecoratorProps: const DropDownDecoratorProps(
-            dropdownSearchDecoration: InputDecoration(
-              labelText: "Role",
-              border: OutlineInputBorder(),
+            items: controller.userRole.value == 'Karyawan'
+                ? const ["Pelanggan"]
+                : const ["Owner", "Karyawan", "Pelanggan"],
+            dropdownDecoratorProps: const DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+                labelText: "Role",
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-        ),
+            onChanged: (String? value) {
+              controller.setSelectedRole(value);
+            }),
         const SizedBox(height: 20),
         TextField(
           autocorrect: false,
@@ -103,6 +105,7 @@ class AdddataView extends GetView<AdddataController> {
           ],
           decoration: const InputDecoration(
             labelText: "No Telp",
+            hintText: "819213XXXXXX",
             border: OutlineInputBorder(),
           ),
         ),

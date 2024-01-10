@@ -143,7 +143,8 @@ class AddtransaksiController extends GetxController {
           "tanggal_selesai": formatDate(tanggalSelesaiController.text),
           "tanggal_diambil": null,
           "berat_laundry": double.tryParse(beratLaundryController.text),
-          "total_biaya": numericTotalHarga.value,
+          "total_biaya":
+              numericTotalHarga.value.toStringAsFixed(0), // Round to 0 decimal places
           "nama_pelanggan": nameController.text,
           "nomor_pelanggan": phoneController.text,
           "kategori_pelanggan": kategoriController.text,
@@ -154,7 +155,8 @@ class AddtransaksiController extends GetxController {
           "kembalian": getNumericValueFromKembalian(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
-          "created_at": DateTime.now().toIso8601String(),
+          "created_at":
+              DateFormat('yyyy-MM-dd').format(DateTime.now()), // Use the correct format
           "is_hidden": false,
         };
 
@@ -174,17 +176,19 @@ class AddtransaksiController extends GetxController {
         clearInputs();
 
         Get.defaultDialog(
-            barrierDismissible: false,
-            title: "Tambah Data Transaksi Berhasil",
-            middleText: "Transaksi berhasil ditambahkan\n Faktur Berhasil Terkirim",
-            actions: [
-              OutlinedButton(
-                  onPressed: () {
-                    Get.back();
-                    Get.back();
-                  },
-                  child: const Text("OK"))
-            ]);
+          barrierDismissible: false,
+          title: "Tambah Data Transaksi Berhasil",
+          middleText: "Transaksi berhasil ditambahkan\n Faktur Berhasil Terkirim",
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Get.back();
+                Get.back();
+              },
+              child: const Text("OK"),
+            )
+          ],
+        );
       } catch (e) {
         isLoading.value = false;
         Get.snackbar("ERROR", e.toString());
@@ -240,7 +244,7 @@ class AddtransaksiController extends GetxController {
 
     // Format and display
     NumberFormat currencyFormatter =
-        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
+        NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
     hargaTotalController.text = currencyFormatter.format(totalHarga);
     // Display the numeric value in hargaKiloController
     hargaKiloController.text = hargaPerKg.toString();

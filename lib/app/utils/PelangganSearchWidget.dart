@@ -32,14 +32,14 @@ class PelangganSearchWidget extends StatelessWidget {
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
           final kategori = option.kategori ?? '';
-          return '$name - +62$phone - $kategori';
+          return '$name - $phone - $kategori';
         } else {
           return ''; // Return an empty string for null options
         }
       },
       onSelected: (Pelanggan selection) {
         nameController.text = selection.nama ?? '';
-        phoneController.text = '+62${selection.phone}' ?? '';
+        phoneController.text = '${selection.phone}' ?? '';
         kategoriController.text = selection.kategori ?? '';
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
