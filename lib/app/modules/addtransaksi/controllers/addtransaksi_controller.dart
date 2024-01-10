@@ -139,8 +139,8 @@ class AddtransaksiController extends GetxController {
       try {
         var dataTransaksi = {
           "nama_karyawan_masuk": namaKaryawanC.text,
-          "tanggal_datang": formatDate(tanggalDatangController.text),
-          "tanggal_selesai": formatDate(tanggalSelesaiController.text),
+          "tanggal_datang": formatDate(tanggalDatangController.text).toString(),
+          "tanggal_selesai": formatDate(tanggalSelesaiController.text).toString(),
           "tanggal_diambil": null,
           "berat_laundry": double.tryParse(beratLaundryController.text),
           "total_biaya":
@@ -155,8 +155,7 @@ class AddtransaksiController extends GetxController {
           "kembalian": getNumericValueFromKembalian(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
-          "created_at":
-              DateFormat('yyyy-MM-dd').format(DateTime.now()), // Use the correct format
+          "created_at": DateTime.now().toString(),
           "is_hidden": false,
         };
 
@@ -311,11 +310,14 @@ class AddtransaksiController extends GetxController {
     if (kembalian <= 0) {
       // Update kembalianController with an error message
       kembalianController.text = "Rp0";
+      sisaTagihan = currencyFormatter.format(kembalian);
+
       // Optionally, show a snackbar or dialog for user feedback
 
       // Set a constant Kembalian value
       kembalian = -totalBiaya;
     } else {
+      sisaTagihan = "Rp0";
       // Format and display kembalian
       kembalianController.text = currencyFormatter.format(kembalian);
     }
@@ -375,8 +377,10 @@ class AddtransaksiController extends GetxController {
     statusPembayaran.value = status;
   }
 
+  String sisaTagihan = "Error";
+
   Future<void> kirimPesanWhatsApp(String nomorPelanggan, String pesan) async {
-    String whatsappNumber = nomorPelanggan; // Replace with the actual WhatsApp number
+    String whatsappNumber = '+62$nomorPelanggan'; // Replace with the actual WhatsApp number
 
     String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
     cleanedInput = cleanedInput.replaceAll('.', '');
@@ -404,14 +408,14 @@ Jl. UNGASAN
 089788786564
 
 Pelanggan Yth,
-${nameController.text}
+${(nameController.text).capitalizeFirst}
 
 Nomor Nota:
 ${generateRandomNotaNumber()}
 
 Terima:
 ${tanggalDatangController.text}
-Selesai:
+Selesai: 
 ${tanggalSelesaiController.text}
 
 =================
@@ -428,7 +432,7 @@ Grand total : ${hargaTotalController.text}
 Nominal Bayar : ${nominalBayarController.text}
 Kembalian : ${kembalianController.text}
 Status Pembayaran: ${statusPembayaran.value = (statusPembayaran.value == "sudah_dibayar") ? "Sudah Dibayar" : "Belum Dibayar"}
-Sisa Tagihan : Rp0
+Sisa Tagihan : ${sisaTagihan.toString()}
 
 Status Cucian: ${statusCucian.value = (statusCucian.value = (statusCucian.value == "diproses") ? "Diproses" : (statusCucian.value == "selesai") ? "Selesai" : (statusCucian.value == "diambil") ? "Diambil" : "Status Tidak Valid")}
 

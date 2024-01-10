@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +8,23 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/pengambilan.dart';
 
 class PengambilanLaundryController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    // beratLaundryController.addListener(() {
+    //   hitungTotalHarga();
+    // });
+    formatNominal();
+    // nominalBayarController.addListener(getKembalian);
+    nominalBayarController.addListener(() {
+      getKembalian();
+    });
+    // nominalBayarController.addListener(() {
+    //   formattedNominal.value = formatNumber(nominalBayarController.text);
+    // });
+    // Anda bisa menambahkan listener lain di sini
+  }
+
   void clearInputs() {
     namaKaryawanC.clear();
     idTransaksiController.clear();
@@ -56,8 +71,92 @@ class PengambilanLaundryController extends GetxController {
   TextEditingController metodePembayaranController = TextEditingController();
   TextEditingController statusPembayaranController = TextEditingController();
   TextEditingController statusCucianController = TextEditingController();
+  TextEditingController nominalBayarController = TextEditingController();
+  TextEditingController kembalianController = TextEditingController();
 
   SupabaseClient client = Supabase.instance.client;
+
+  int getNumericValueFromKembalian() {
+    String rawValue = kembalianController.text.replaceAll(RegExp(r'[^\d]'), '');
+    return int.tryParse(rawValue) ?? 0;
+  }
+
+  formatNominal() {
+    nominalBayarController.addListener(() {
+      final value = nominalBayarController.text;
+
+      if (value.isEmpty) {
+        return; // Tidak perlu format jika nilai kosong
+      }
+
+      // Hapus semua karakter non-digit
+      final cleanedInput = value.replaceAll(RegExp(r'[^\d]'), '');
+
+      // Periksa apakah nilai kosong setelah membersihkan karakter
+      if (cleanedInput.isEmpty) {
+        return; // Tidak perlu format jika nilai kosong setelah membersihkan karakter
+      }
+
+      final number = int.tryParse(cleanedInput); // Menggunakan int.tryParse
+
+      if (number != null) {
+        final formattedValue =
+            NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(number);
+        if (value != formattedValue) {
+          nominalBayarController.value = TextEditingValue(
+            text: formattedValue,
+            selection: TextSelection.collapsed(offset: formattedValue.length),
+          );
+        }
+      }
+    });
+  }
+
+  void getKembalian() {
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    final formattedNominal =
+        "Rp${NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(double.parse(cleanedInput))}";
+
+    nominalBayarController.value = TextEditingValue(
+      text: formattedNominal,
+      selection: TextSelection.collapsed(offset: formattedNominal.length),
+    );
+
+    String cleanedInput2 = hargaTotalController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput2 = cleanedInput2.replaceAll('.', '');
+
+    double nominalHarga = double.parse(cleanedInput) ?? 0.0;
+
+    double totalBiaya = 0.0; // Default value if the parsing fails
+    if (cleanedInput2.isNotEmpty) {
+      totalBiaya = double.tryParse(cleanedInput2) ?? 0.0;
+    }
+
+    if (kDebugMode) {
+      print('cleaninput2 value: ${hargaTotalController.text.toString()}');
+    }
+
+    double kembalian = nominalHarga - totalBiaya;
+    double minus = totalBiaya - nominalHarga;
+
+    final currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
+
+    if (kembalian <= 0) {
+      kembalianController.text = "Rp0";
+      kembalian = -totalBiaya;
+    } else {
+      kembalianController.text = currencyFormatter.format(kembalian);
+    }
+
+    if (kDebugMode) {
+      print(
+        "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian",
+      );
+    }
+  }
 
   // Fungsi untuk mengonversi nilai status_pembayaran
   String convertStatusPembayaran(String status) {
@@ -171,7 +270,9 @@ class PengambilanLaundryController extends GetxController {
         String nomorPelanggan = phoneController.text;
         String pesan = '';
 
-        await kirimPesanWhatsApp(nomorPelanggan, pesan);
+        if (statusCucianController.value == "selesai") {
+          await kirimPesanWhatsApp(nomorPelanggan, pesan);
+        }
 
         clearInputs();
 
@@ -201,18 +302,7 @@ class PengambilanLaundryController extends GetxController {
   }
 
   Future<void> kirimPesanWhatsApp(String nomorPelanggan, String pesan) async {
-    String whatsappNumber = nomorPelanggan; // Replace with the actual WhatsApp number
-
-    String generateRandomNotaNumber() {
-      // Generate a random 12-digit number
-      Random random = Random();
-      int randomNumber = random.nextInt(10000);
-
-      // Format the random number as a string with leading zeros if necessary
-      String formattedNumber = randomNumber.toString().padLeft(8, '0');
-
-      return formattedNumber;
-    }
+    String whatsappNumber = '+62$nomorPelanggan';
 
     String convertStatusPembayaranToString(String statusPembayaran) =>
         statusPembayaran == 'belum_dibayar' ? 'Belum Dibayar' : 'Sudah Dibayar';

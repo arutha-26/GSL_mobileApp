@@ -42,19 +42,19 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  TextField(
-                    enabled: false,
-                    autocorrect: false,
-                    controller: controller.namaKaryawanC,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Nama Karyawan",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  // TextField(
+                  //   enabled: false,
+                  //   autocorrect: false,
+                  //   controller: controller.namaKaryawanC,
+                  //   textInputAction: TextInputAction.next,
+                  //   decoration: const InputDecoration(
+                  //     labelText: "Nama Karyawan",
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
                   SearchPengambilan(
                     idTransaksiController: controller.idTransaksiController,
                     nameController: controller.nameController,
@@ -66,17 +66,17 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     statusCucianController: controller.statusCucianController,
                     pengambilanLaundryController: controller,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.none,
-                    controller: controller.idTransaksiController,
-                    decoration: const InputDecoration(
-                      labelText: "Id Transaksi",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  // TextField(
+                  //   keyboardType: TextInputType.none,
+                  //   controller: controller.idTransaksiController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: "Id Transaksi",
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -107,7 +107,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     controller: controller.beratController,
                     // controller diubah
                     textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.none,
                     decoration: const InputDecoration(
                       labelText: "Berat Laundry",
                       border: OutlineInputBorder(),
@@ -192,82 +192,112 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  DropdownSearch<String>(
-                    popupProps: const PopupProps.menu(
-                      constraints: BoxConstraints(maxHeight: 180),
-                      // 60 are per data height
-                      showSelectedItems: true,
-                    ),
-                    items: const ["-", "Tunai", "Transfer"],
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Metode Pembayaran",
-                        border: OutlineInputBorder(),
+                  Visibility(
+                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    child: DropdownSearch<String>(
+                      popupProps: const PopupProps.menu(
+                        constraints: BoxConstraints(maxHeight: 180),
+                        // 60 are per data height
+                        showSelectedItems: true,
                       ),
+                      items: const ["-", "Tunai", "Transfer"],
+                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          labelText: "Metode Pembayaran",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      onChanged: (String? value) {
+                        controller.setSelectedPembayaran(value);
+                      },
                     ),
-                    onChanged: (String? value) {
-                      controller.setSelectedPembayaran(value);
-                    },
                   ),
-                  const SizedBox(
-                    height: 20,
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    controller: controller.nominalBayarController,
+                    decoration: const InputDecoration(
+                      labelText: "Nominal Bayar",
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Opsi "Sudah Dibayar"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusPembayaran.value == 'sudah_dibayar'
-                                    ? Colors.green[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusPembayaran.value == 'sudah_dibayar'
-                                      ? Colors.green
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.payment, color: Colors.green),
-                                  Text('Sudah Dibayar'),
-                                ],
-                              ),
-                            ),
-                          )),
+                  const SizedBox(height: 20),
+                  TextField(
+                    keyboardType: TextInputType.none,
+                    controller: controller.kembalianController,
+                    decoration: const InputDecoration(
+                      labelText: "Kembalian",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
 
-                      // Opsi "Belum Dibayar"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusPembayaran('belum_dibayar'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusPembayaran.value == 'belum_dibayar'
-                                    ? Colors.red[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusPembayaran.value == 'belum_dibayar'
-                                      ? Colors.red
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.payment, color: Colors.red),
-                                  Text('Belum Dibayar'),
-                                ],
-                              ),
-                            ),
-                          )),
-                    ],
+                  Visibility(
+                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    child: const SizedBox(
+                      height: 20,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  Visibility(
+                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // Opsi "Sudah Dibayar"
+                        Obx(() => GestureDetector(
+                              onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: controller.statusPembayaran.value == 'sudah_dibayar'
+                                      ? Colors.green[100]
+                                      : Colors.transparent,
+                                  border: Border.all(
+                                    color: controller.statusPembayaran.value == 'sudah_dibayar'
+                                        ? Colors.green
+                                        : Colors.transparent,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.payment, color: Colors.green),
+                                    Text('Sudah Dibayar'),
+                                  ],
+                                ),
+                              ),
+                            )),
+
+                        // Opsi "Belum Dibayar"
+                        Obx(() => GestureDetector(
+                              onTap: () => controller.setStatusPembayaran('belum_dibayar'),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: controller.statusPembayaran.value == 'belum_dibayar'
+                                      ? Colors.red[100]
+                                      : Colors.transparent,
+                                  border: Border.all(
+                                    color: controller.statusPembayaran.value == 'belum_dibayar'
+                                        ? Colors.red
+                                        : Colors.transparent,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Column(
+                                  children: [
+                                    Icon(Icons.payment, color: Colors.red),
+                                    Text('Belum Dibayar'),
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    child: const SizedBox(
+                      height: 20,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
