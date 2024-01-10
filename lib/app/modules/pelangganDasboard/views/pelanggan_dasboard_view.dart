@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gsl/app/utils/bottom_navbar_pelanggan.dart';
 import 'package:intl/intl.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar.dart';
 import '../controllers/pelanggan_dasboard_controller.dart';
 
 class PelangganDasboardView extends GetView<PelangganDasboardController> {
@@ -17,7 +16,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('History Transaksi'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -34,32 +33,32 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
           //   'Selamat Datang di Green Spirit Laundry',
           //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           // ),
-          CarouselSlider(
-            items: [
-              Image.asset('images/banner_1.png'),
-              Image.asset('images/banner_4.png'),
-              Image.asset('images/banner_7_edit.png'),
-              Image.asset('images/banner_5.png'),
-            ],
-            options: CarouselOptions(
-              autoPlay: true,
-              aspectRatio: 16 / 9,
-              enlargeCenterPage: true,
-              enableInfiniteScroll: true,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              autoPlayAnimationDuration: const Duration(milliseconds: 2000),
-              viewportFraction: 1,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Data Transaksi',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
+          // CarouselSlider(
+          //   items: [
+          //     Image.asset('images/banner_1.png'),
+          //     Image.asset('images/banner_4.png'),
+          //     Image.asset('images/banner_7_edit.png'),
+          //     Image.asset('images/banner_5.png'),
+          //   ],
+          //   options: CarouselOptions(
+          //     autoPlay: true,
+          //     aspectRatio: 16 / 9,
+          //     enlargeCenterPage: true,
+          //     enableInfiniteScroll: true,
+          //     autoPlayCurve: Curves.fastOutSlowIn,
+          //     autoPlayAnimationDuration: const Duration(milliseconds: 2000),
+          //     viewportFraction: 1,
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
+          // const Text(
+          //   'Data Transaksi',
+          //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          // ),
           const SizedBox(height: 10),
           Expanded(
             child: Scrollbar(
-              thickness: 5,
+              thickness: 7,
               scrollbarOrientation: ScrollbarOrientation.right,
               radius: const Radius.circular(12),
               trackVisibility: true,
@@ -69,7 +68,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                 if (controller.isLoading.isTrue) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (controller.transactionHistory.isEmpty) {
-                  return const Center(child: Text('No Transaction History Found'));
+                  return const Center(child: Text('Data Transaksi Tidak Ditemukan'));
                 } else {
                   return ListView.builder(
                     itemCount: controller.transactionHistory.length,

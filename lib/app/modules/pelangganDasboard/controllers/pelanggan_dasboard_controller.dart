@@ -99,6 +99,7 @@ class PelangganDasboardController extends GetxController {
           .from('transaksi')
           .select('*')
           .eq('nama_pelanggan', namaPelanggan)
+          .eq('status_cucian', 'diambil')
           .order('transaksi_id',
               ascending: false) // Urutkan berdasarkan tanggal_diambil secara menurun
           .execute();

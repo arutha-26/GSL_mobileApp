@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar.dart';
+import '../../../utils/bottom_navbar_karyawan.dart';
 import '../controllers/pelanggan_profile_controller.dart';
 
 class PelangganProfileView extends GetView<PelangganProfileController> {
@@ -138,25 +138,20 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
             );
           }),
       bottomNavigationBar: BottomNavBar(
-          currentIndex: 2,
-          onTap: (index) {
-            // Handle navigation using Get
-            switch (index) {
-              case 0:
-                Get.offAllNamed(
-                    Routes.PELANGGANHOME); // Replace '/home' with your actual home route
-                break;
-              case 1:
-                Get.offAllNamed(Routes
-                    .PELANGGAN_DASBOARD); // Replace '/dashboard' with your actual dashboard route
-                break;
-              case 2:
-                Get.offAllNamed(Routes
-                    .PELANGGAN_PROFILE); // Replace '/profile' with your actual profile route
-                break;
-              default:
-            }
-          }),
+        currentIndex: 1,
+        onTap: (index) {
+          // Handle navigation using Get
+          switch (index) {
+            case 0:
+              Get.offAllNamed(Routes.PELANGGANHOME);
+              break;
+            case 1:
+              Get.offAllNamed(Routes.PELANGGAN_PROFILE);
+              break;
+            default:
+          }
+        },
+      ),
     );
   }
 }

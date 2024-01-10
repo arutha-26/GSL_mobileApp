@@ -122,7 +122,7 @@ class PelangganTransaksiController extends GetxController {
     }
   }
 
-  final List<String> statusOptions = ['Diproses', 'Selesai', 'Diambil'];
+  final List<String> statusOptions = ['Diproses', 'Selesai'];
 
   RxString selectedStatus = 'Diproses'.obs;
 

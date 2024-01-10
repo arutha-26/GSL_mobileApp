@@ -27,20 +27,33 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Obx(() {
-              return DropdownButton<String>(
-                value: controller.selectedStatus.value,
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    controller.filterByStatus(newValue);
-                  }
-                },
-                items: controller.statusOptions.map((String option) {
-                  return DropdownMenuItem<String>(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList(),
-                hint: const Text('Filter Status Cucian'),
+              return Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Status Cucian: ',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                    DropdownButton<String>(
+                      value: controller.selectedStatus.value,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          controller.filterByStatus(newValue);
+                        }
+                      },
+                      items: controller.statusOptions.map((String option) {
+                        return DropdownMenuItem<String>(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList(),
+                      hint: const Text('Filter Status Cucian'),
+                    ),
+                  ],
+                ),
               );
             }),
           ),
@@ -69,7 +82,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                 foregroundColor: Colors.black87,
                 padding: const EdgeInsets.symmetric(horizontal: 55), // Sesuaikan lebar tombol
               ),
-              child: const Text('Pilih Tanggal'),
+              child: const Text('Pilih Tanggal Transaksi'),
             ),
           ),
 
