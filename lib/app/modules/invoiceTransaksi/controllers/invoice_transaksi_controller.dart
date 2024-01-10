@@ -88,8 +88,8 @@ class InvoiceTransaksiController extends GetxController {
     String endDateText = endDateController.text;
 
     // Parse text into DateTime objects
-    DateTime startDateFormatted = parseDate(startDateText);
-    DateTime endDateFormatted = parseDate(endDateText);
+    DateTime startDateFormatted = parseDate(startDateText).toLocal();
+    DateTime endDateFormatted = parseDate(endDateText).toLocal();
 
     try {
       // Perform data fetching for transaksi

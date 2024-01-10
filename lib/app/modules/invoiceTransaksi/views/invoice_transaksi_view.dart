@@ -48,9 +48,9 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: Colors.indigo[400], // Header background color
-            hintColor: Colors.blue, // Selected day color
-            colorScheme: const ColorScheme.light(primary: Colors.blue),
+            primaryColor: Colors.greenAccent, // Header background color
+            hintColor: Colors.tealAccent, // Selected day color
+            colorScheme: const ColorScheme.light(primary: Colors.indigo),
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
