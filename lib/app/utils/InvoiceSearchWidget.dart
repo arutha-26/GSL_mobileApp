@@ -45,6 +45,7 @@ class InvoiceSearchWidget extends StatelessWidget {
         return TextField(
           controller: controller,
           focusNode: focusNode,
+          textInputAction: TextInputAction.done,
           onEditingComplete: onEditingComplete,
           decoration: const InputDecoration(
             labelText: "Cari Pelanggan",

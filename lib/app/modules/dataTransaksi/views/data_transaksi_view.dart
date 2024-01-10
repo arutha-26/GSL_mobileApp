@@ -67,16 +67,15 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               'created_at',
               'is_hidden',
               'tanggal_diambil',
-              'nama_karyawan_keluar'
-                  'status_cucian'
-                  'total_biaya'
-                  'status_pembayaran'
-                  'berat_laundry'
-                  'layanan_laundry'
-                  'metode_laundry'
-                  'kategori_pelanggan'
-                  'nama_karyawan_masuk'
-                  'nomor_pelanggan'
+              'nama_karyawan_keluar',
+              'status_cucian',
+              'status_pembayaran',
+              'berat_laundry',
+              'layanan_laundry',
+              'metode_laundry',
+              'kategori_pelanggan',
+              'nama_karyawan_masuk',
+              'nomor_pelanggan'
             ];
 
             List<DataColumn> columns = [
@@ -106,8 +105,8 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                     idx,
                     DataRow(
                       cells: [
-                        DataCell(Center(child: Text('${idx + 1}.'))),
-                        // Display the row number starting from 1
+                        DataCell(
+                            Center(child: Text('${controller.data[idx]['nomor_urut']}.'))),
                         ...filteredRow.keys.map((key) {
                           return DataCell(
                             Center(child: Text('${filteredRow[key]}')),
@@ -139,11 +138,19 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
 
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: columns,
-                  rows: rows,
+              child: Scrollbar(
+                thickness: 5,
+                radius: const Radius.circular(20),
+                scrollbarOrientation: ScrollbarOrientation.bottom,
+                thumbVisibility: true,
+                trackVisibility: true,
+                interactive: true,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: columns,
+                    rows: rows,
+                  ),
                 ),
               ),
             );

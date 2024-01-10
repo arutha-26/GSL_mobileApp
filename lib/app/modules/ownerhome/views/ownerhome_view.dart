@@ -66,6 +66,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 scrollbarOrientation: ScrollbarOrientation.bottom,
                 thumbVisibility: true,
                 trackVisibility: true,
+                interactive: true,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 1,

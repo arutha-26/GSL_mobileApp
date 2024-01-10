@@ -8,16 +8,15 @@ import 'package:get/get.dart';
 import '../controllers/adddata_controller.dart';
 
 class AdddataView extends GetView<AdddataController> {
-  double calculateMaxHeight(int itemCount) {
+  double calculateMaxHeight(String userRole, int itemCount) {
     const itemHeight = 60.0; // Sesuaikan dengan tinggi item dropdown
-    const padding = 8.0; // Sesuaikan dengan padding dan margin yang mungkin digunakan
-    const minHeight = 60.0; // Minimal tinggi dropdown
+    const minHeight = 180.0; // Minimal tinggi dropdown jika bukan Karyawan
 
     // Hitung ketinggian dropdown
-    double calculatedHeight = min(itemCount * itemHeight, 60.0);
+    double calculatedHeight =
+        userRole == 'Karyawan' ? itemHeight : min(itemCount * itemHeight, minHeight);
 
-    // Pastikan tidak kurang dari tinggi minimal
-    return max(calculatedHeight, minHeight);
+    return calculatedHeight;
   }
 
   @override
@@ -77,7 +76,8 @@ class AdddataView extends GetView<AdddataController> {
         DropdownSearch<String>(
           popupProps: PopupProps.menu(
             constraints: BoxConstraints(
-              maxHeight: calculateMaxHeight(controller.roleOptions.length),
+              maxHeight:
+                  calculateMaxHeight(controller.userRole.value, controller.roleOptions.length),
             ),
             showSelectedItems: true,
           ),
@@ -90,9 +90,6 @@ class AdddataView extends GetView<AdddataController> {
               border: OutlineInputBorder(),
             ),
           ),
-          onChanged: (String? value) {
-            controller.setSelectedRole(value);
-          },
         ),
         const SizedBox(height: 20),
         TextField(

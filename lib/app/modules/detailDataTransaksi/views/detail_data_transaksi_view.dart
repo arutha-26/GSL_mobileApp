@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/detail_data_transaksi_controller.dart';
 
@@ -7,6 +8,12 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
   DetailDataTransaksiView({super.key});
 
   final TextEditingController _harga = TextEditingController();
+
+  String formatCurrency(num value) {
+    NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
+    return currencyFormatter.format(value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,83 +58,100 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: ListView(
-              padding: const EdgeInsets.all(5),
-              children: [
-                Image.asset(
-                  'images/history_icon.png',
-                  width: 150,
-                  height: 150,
-                ),
-                const SizedBox(height: 5),
+            child: Scrollbar(
+              thickness: 3,
+              radius: const Radius.circular(20),
+              scrollbarOrientation: ScrollbarOrientation.right,
+              thumbVisibility: true,
+              trackVisibility: true,
+              interactive: true,
+              child: ListView(
+                padding: const EdgeInsets.all(5),
+                children: [
+                  Image.asset(
+                    'images/history_icon.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                  const SizedBox(height: 5),
 
-                TextRow(label: 'Transaksi ID', value: data['transaksi_id']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Transaksi ID', value: data['transaksi_id']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Nama Karyawan Penerima',
-                    value: data['nama_karyawan_masuk']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Nama Karyawan Penerima',
+                      value: data['nama_karyawan_masuk']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Nama Pelanggan', value: data['nama_pelanggan']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Nama Pelanggan',
+                      value: data['nama_pelanggan']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Nomor Pelanggan',
-                    value: data['nomor_pelanggan']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Nomor Pelanggan',
+                      value: data['nomor_pelanggan']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Kategori Pelanggan',
-                    value: data['kategori_pelanggan']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Kategori Pelanggan',
+                      value: data['kategori_pelanggan']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(label: 'Berat Laundry', value: '${data['berat_laundry']} Kg' ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(label: 'Berat Laundry', value: '${data['berat_laundry']} Kg' ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Layanan Laundry',
-                    value: data['layanan_laundry']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Layanan Laundry',
+                      value: data['layanan_laundry']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Metode Laundry', value: data['metode_laundry']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Metode Laundry',
+                      value: data['metode_laundry']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(label: 'Tanggal Datang', value: formatDate(data['tanggal_datang'])),
-                const SizedBox(height: 5),
+                  TextRow(label: 'Tanggal Datang', value: formatDate(data['tanggal_datang'])),
+                  const SizedBox(height: 5),
 
-                TextRow(label: 'Total Biaya', value: 'Rp ${data['total_biaya']},000' ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                    label: 'Total Biaya',
+                    value: formatCurrency(data['total_biaya'] ?? 0),
+                  ),
 
-                TextRow(
-                    label: 'Metode Pembayaran',
-                    value: data['metode_pembayaran']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Status Pembayaran',
-                    value: getStatusPembayaran(data['status_pembayaran'])),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Metode Pembayaran',
+                      value: data['metode_pembayaran']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Status Cucian',
-                    value: data['status_cucian']?.toString().capitalizeFirst ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Status Pembayaran',
+                      value: getStatusPembayaran(data['status_pembayaran'])),
+                  const SizedBox(height: 5),
 
-                TextRow(label: 'Tanggal Selesai', value: formatDate(data['tanggal_selesai'])),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Status Cucian',
+                      value: data['status_cucian']?.toString().capitalizeFirst ?? '-'),
+                  const SizedBox(height: 5),
 
-                TextRow(
-                    label: 'Nama Karyawan Keluar',
-                    value: data['nama_karyawan_keluar']?.toString() ?? '-'),
-                const SizedBox(height: 5),
+                  TextRow(
+                      label: 'Tanggal Selesai', value: formatDate(data['tanggal_selesai'])),
+                  const SizedBox(height: 5),
 
-                TextRow(label: 'Tanggal Diambil', value: formatDate(data['tanggal_diambil'])),
-                const SizedBox(height: 5),
-                // Text fields for editing prices
-              ],
+                  TextRow(
+                      label: 'Nama Karyawan Keluar',
+                      value: data['nama_karyawan_keluar']?.toString() ?? '-'),
+                  const SizedBox(height: 5),
+
+                  TextRow(
+                      label: 'Tanggal Diambil', value: formatDate(data['tanggal_diambil'])),
+                  const SizedBox(height: 5),
+                  // Text fields for editing prices
+                ],
+              ),
             ),
           );
         },

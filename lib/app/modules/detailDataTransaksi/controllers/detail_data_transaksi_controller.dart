@@ -21,7 +21,9 @@ class DetailDataTransaksiController extends GetxController {
         }
       }
     } catch (error) {
-      print('Error fetching data: $error');
+      if (kDebugMode) {
+        print('Error fetching data: $error');
+      }
     }
     return {}; // Return an empty map in case of failure
   }

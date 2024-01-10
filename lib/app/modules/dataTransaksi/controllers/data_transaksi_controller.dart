@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DataTransaksiController extends GetxController {
@@ -24,56 +25,58 @@ class DataTransaksiController extends GetxController {
           .select('*')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
           .lte('tanggal_datang', '${endDate.value.toLocal().add(const Duration(days: 1))}')
-          .execute(); // Fetch all data for the date range
+          .order('tanggal_datang', ascending: true)
+          .execute();
 
-      if (response != null && response.data != null && response.data is List) {
-        data.value = (response.data as List).map((item) {
-          final editAt = DateTime.parse(item['tanggal_datang'] as String);
-          final formattedDate = '${editAt.day}-${editAt.month}-${editAt.year}';
-          final berat = (item['berat_laundry'] as num);
-          final formattedBerat = '$berat Kg';
-          final harga = (item['total_biaya'] as num);
-          final formattedHarga = '$harga.000';
-          final nomor = (item['nomor_pelanggan'] as String);
-          final formattedNomor = '+62$nomor';
-          final cucian = (item['status_cucian'] as String);
-          final formattedCucian = cucian.capitalizeFirst;
-          final statusPembayaran = item['status_pembayaran'] as String;
-          final formattedStatusP =
-              statusPembayaran == 'sudah_dibayar' ? 'Sudah Dibayar' : 'Belum Dibayar';
+      if (response != null && response.data is List) {
+        data.value = (response.data as List)
+            .map<Map<String, dynamic>>((item) {
+              final editAt = DateTime.parse(item['tanggal_datang'] as String);
+              final formattedDate = '${editAt.day}-${editAt.month}-${editAt.year}';
+              final berat = (item['berat_laundry'] as num);
+              final formattedBerat = '$berat Kg';
+              final harga = (item['total_biaya'] as num);
+              NumberFormat currencyFormatter =
+                  NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
+              final formatHarga = currencyFormatter.format(harga);
 
-          if (item is Map<String, dynamic>) {
-            return {
-              'transaksi_id': item['transaksi_id'],
-              'nama_pelanggan': item['nama_pelanggan'],
-              // 'nomor_pelanggan': formattedNomor,
-              // 'nama_karyawan_masuk': item['nama_karyawan_masuk'],
-              // 'kategori_pelanggan': item['kategori_pelanggan'],
-              // 'metode_laundry': item['metode_laundry'],
-              // 'layanan_laundry': item['layanan_laundry'],
-              // 'berat_laundry': formattedBerat,
-              // 'status_pembayaran': formattedStatusP,
-              // 'total_biaya': formattedHarga,
-              // 'status_cucian': formattedCucian,
-              'tanggal_datang': formattedDate,
-            };
-          } else {
-            return <String, dynamic>{};
-          }
-        }).toList();
+              final nomor = (item['nomor_pelanggan'] as String);
+              final formattedNomor = '+62$nomor';
+              final cucian = (item['status_cucian'] as String);
+              final formattedCucian = cucian.capitalizeFirst;
+              final statusPembayaran = item['status_pembayaran'] as String;
+              final formattedStatusP =
+                  statusPembayaran == 'sudah_dibayar' ? 'Sudah Dibayar' : 'Belum Dibayar';
 
-        // Update the totalDataCount variable
+              return {
+                'transaksi_id': item['transaksi_id'],
+                'nama_pelanggan': item['nama_pelanggan'],
+                'total_biaya': formatHarga,
+                'tanggal_datang': formattedDate,
+              };
+            })
+            .where((item) => item.isNotEmpty)
+            .toList();
+
         totalDataCount.value = data.length;
 
-        // Paginate the new data based on the specified page
-        final startIdx = (page - 1) * 10;
-        final endIdx = startIdx + 10;
+        final List<Map<String, dynamic>> newData = [];
+
+        final itemsPerPage = 10;
+        final startIdx = (page - 1) * itemsPerPage;
 
         if (startIdx < data.length) {
-          // Ensure that the start index is within the bounds of newData
-          data.value = data.sublist(startIdx, endIdx.clamp(startIdx, data.length));
+          for (var index = 0;
+              index < itemsPerPage && (startIdx + index) < data.length;
+              index++) {
+            final item = data[startIdx + index];
+            newData.add({
+              ...item,
+              'nomor_urut': startIdx + index + 1,
+            });
+          }
+          data.value = newData;
         } else {
-          // Handle the case where startIdx is beyond the length of newData
           data.value = [];
         }
 
