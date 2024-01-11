@@ -4,8 +4,9 @@ import 'package:gsl/app/utils/pengambilan.dart';
 
 class SearchPengambilan extends StatelessWidget {
   final TextEditingController idTransaksiController;
-  final TextEditingController nameController;
-  final TextEditingController phoneController;
+  final TextEditingController idUserController;
+  final TextEditingController namaController;
+  final TextEditingController noTelpController;
   final TextEditingController beratController;
   final TextEditingController totalHargaController;
   final TextEditingController metodePembayaranController;
@@ -16,8 +17,9 @@ class SearchPengambilan extends StatelessWidget {
   SearchPengambilan({
     Key? key,
     required this.idTransaksiController,
-    required this.nameController,
-    required this.phoneController,
+    required this.idUserController,
+    required this.namaController,
+    required this.noTelpController,
     required this.beratController,
     required this.totalHargaController,
     required this.metodePembayaranController,
@@ -37,23 +39,25 @@ class SearchPengambilan extends StatelessWidget {
       },
       displayStringForOption: (Pengambilan option) {
         if (option != null) {
-          final id = option.id ?? '';
-          final name = option.nama ?? '';
-          final phone = option.phone ?? '';
+          final idTransaksi = option.idTransaksi ?? '';
+          final idUser = option.idUser ?? '';
+          final nama = option.nama ?? '';
+          final noTelp = option.noTelp ?? '';
           final berat = option.berat ?? '';
           final totalHarga = option.totalHarga ?? '';
           final metodePembayaran = option.metodePembayaran ?? '';
           final statusPembayaran = option.statusPembayaran ?? '';
           final statusCucian = option.statusCucian ?? '';
-          return '$id - $name - $phone - $berat - $totalHarga - $metodePembayaran - $statusPembayaran - $statusCucian';
+          return '$idTransaksi-$nama-$noTelp-$berat-$totalHarga-$metodePembayaran-$statusPembayaran-$statusCucian';
         } else {
           return ''; // Return an empty string for null options
         }
       },
       onSelected: (Pengambilan selection) {
-        idTransaksiController.text = selection.id ?? '';
-        nameController.text = selection.nama ?? '';
-        phoneController.text = selection.phone ?? '';
+        idTransaksiController.text = selection.idTransaksi ?? '';
+        idUserController.text = selection.idUser ?? '';
+        namaController.text = selection.nama ?? '';
+        noTelpController.text = selection.noTelp ?? '';
         beratController.text = selection.berat ?? '';
         totalHargaController.text = selection.totalHarga ?? '';
         metodePembayaranController.text = selection.metodePembayaran ?? '';

@@ -57,14 +57,15 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   // ),
                   SearchPengambilan(
                     idTransaksiController: controller.idTransaksiController,
-                    nameController: controller.nameController,
-                    phoneController: controller.phoneController,
+                    idUserController: controller.idUserController,
                     beratController: controller.beratController,
                     totalHargaController: controller.totalHargaController,
                     metodePembayaranController: controller.metodePembayaranController,
                     statusPembayaranControlller: controller.statusPembayaranController,
                     statusCucianController: controller.statusCucianController,
                     pengambilanLaundryController: controller,
+                    namaController: controller.namaController,
+                    noTelpController: controller.noTelpController,
                   ),
                   // const SizedBox(
                   //   height: 20,
@@ -82,7 +83,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   ),
                   TextField(
                     keyboardType: TextInputType.none,
-                    controller: controller.nameController,
+                    controller: controller.namaController,
                     decoration: const InputDecoration(
                       labelText: "Nama Pelanggan",
                       border: OutlineInputBorder(),
@@ -93,7 +94,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   ),
                   TextField(
                     keyboardType: TextInputType.none,
-                    controller: controller.phoneController,
+                    controller: controller.noTelpController,
                     decoration: const InputDecoration(
                       labelText: "Nomor Pelanggan",
                       border: OutlineInputBorder(),
@@ -173,27 +174,33 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     height: 20,
                   ),
                   const Text('Update Data Dibawah ini!'),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: controller.tanggalDiambilController,
-                    decoration: const InputDecoration(
-                      labelText: "Tanggal Diambil",
-                      border: OutlineInputBorder(),
+                  Visibility(
+                    visible: controller.statusCucianController.value == 'selesai',
+                    child: const SizedBox(
+                      height: 20,
                     ),
-                    onTap: () {
-                      FocusScope.of(context)
-                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                      selectDate(
-                          context,
-                          controller
-                              .tanggalDiambilController); // Call your date picker function
-                    },
+                  ),
+                  Visibility(
+                    visible: controller.statusCucianController.value == 'selesai',
+                    child: TextField(
+                      controller: controller.tanggalDiambilController,
+                      decoration: const InputDecoration(
+                        labelText: "Tanggal Diambil",
+                        border: OutlineInputBorder(),
+                      ),
+                      onTap: () {
+                        FocusScope.of(context)
+                            .requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                        selectDate(
+                            context,
+                            controller
+                                .tanggalDiambilController); // Call your date picker function
+                      },
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Visibility(
-                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    visible: controller.statusPembayaran.value == 'belum_dibayar',
                     child: DropdownSearch<String>(
                       popupProps: const PopupProps.menu(
                         constraints: BoxConstraints(maxHeight: 180),
@@ -212,6 +219,9 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                       },
                     ),
                   ),
+                  Visibility(
+                      visible: controller.statusPembayaran.value == 'belum_dibayar',
+                      child: const SizedBox(height: 20)),
                   TextField(
                     keyboardType: TextInputType.number,
                     controller: controller.nominalBayarController,
@@ -231,13 +241,13 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   ),
 
                   Visibility(
-                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    visible: controller.statusPembayaran.value == 'belum_dibayar',
                     child: const SizedBox(
                       height: 20,
                     ),
                   ),
                   Visibility(
-                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
+                    visible: controller.statusPembayaran.value == 'belum_dibayar',
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

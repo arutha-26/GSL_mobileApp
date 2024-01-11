@@ -1,7 +1,8 @@
 class Pengambilan {
+  final String idTransaksi;
+  final String idUser;
   final String nama;
-  final String id;
-  final String phone;
+  final String noTelp;
   final String berat;
   final String totalHarga;
   final String metodePembayaran;
@@ -9,9 +10,10 @@ class Pengambilan {
   final String statusCucian;
 
   Pengambilan({
-    required this.id,
+    required this.idTransaksi,
+    required this.idUser,
     required this.nama,
-    required this.phone,
+    required this.noTelp,
     required this.berat,
     required this.totalHarga,
     required this.metodePembayaran,
@@ -21,14 +23,15 @@ class Pengambilan {
 
   factory Pengambilan.fromMap(Map<String, dynamic> map) {
     return Pengambilan(
-      id: map['transaksi_id'],
-      nama: map['nama_pelanggan'] as String,
-      phone: map['nomor_pelanggan'] as String,
-      berat: map['berat_laundry'] as String,
-      totalHarga: map['total_biaya'] as String,
-      metodePembayaran: map['metode_pembayaran'] as String,
-      statusPembayaran: map['status_pembayaran'] as String,
-      statusCucian: map['status_cucian'] as String,
+      idTransaksi: map['transaksi.id_transaksi'],
+      idUser: map['user.id_user'],
+      nama: map['user.nama'],
+      noTelp: map['user.no_telp'],
+      berat: map['transaksi.berat_laundry'] as String,
+      totalHarga: map['transaksi.total_biaya'] as String,
+      metodePembayaran: map['transaksi.metode_pembayaran'] as String,
+      statusPembayaran: map['transaksi.status_pembayaran'] as String,
+      statusCucian: map['transaksi.status_cucian'] as String,
     );
   }
 }

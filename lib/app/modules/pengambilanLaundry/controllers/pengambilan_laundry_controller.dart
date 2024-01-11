@@ -64,6 +64,9 @@ class PengambilanLaundryController extends GetxController {
   TextEditingController beratLaundryController = TextEditingController();
   TextEditingController hargaTotalController = TextEditingController();
   TextEditingController idTransaksiController = TextEditingController();
+  TextEditingController idUserController = TextEditingController();
+  TextEditingController namaController = TextEditingController();
+  TextEditingController noTelpController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController beratController = TextEditingController();
@@ -137,23 +140,23 @@ class PengambilanLaundryController extends GetxController {
     if (kDebugMode) {
       print('cleaninput2 value: ${hargaTotalController.text.toString()}');
     }
-
-    double kembalian = nominalHarga - totalBiaya;
-    double minus = totalBiaya - nominalHarga;
+    double? biaya = double.tryParse(globalBiaya);
+    double kembalian = nominalHarga - biaya!;
+    double minus = biaya - nominalHarga;
 
     final currencyFormatter =
         NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
 
     if (kembalian <= 0) {
       kembalianController.text = "Rp0";
-      kembalian = -totalBiaya;
+      kembalian = -biaya;
     } else {
       kembalianController.text = currencyFormatter.format(kembalian);
     }
 
     if (kDebugMode) {
       print(
-        "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian",
+        "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian, globalBiaya: $biaya",
       );
     }
   }
@@ -182,6 +185,8 @@ class PengambilanLaundryController extends GetxController {
     return hargaRupiah;
   }
 
+  String globalBiaya = "0";
+
   Future<List<Pengambilan>> fetchDataTransaksi(String query) async {
     List<Pengambilan> results = [];
 
@@ -189,16 +194,18 @@ class PengambilanLaundryController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'nama_pelanggan, transaksi_id, nomor_pelanggan, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
+              'id_transaksi, id_user, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian, user(id_user, nama, kategori, no_telp)')
           .in_('status_cucian', ['diproses', 'selesai'])
-          .ilike('nama_pelanggan, nomor_pelanggan', '%$query%')
+          .ilike('user.nama, user.no_telp', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
-          final nama = item['nama_pelanggan']?.toString() ?? '';
-          final id = item['transaksi_id']?.toString() ?? '';
-          final phone = item['nomor_pelanggan']?.toString() ?? '';
+          final idUser = item['id_user']?.toString() ?? '';
+          final nama =
+              item['user']['nama']?.toString() ?? ''; // Use 'user' key to access nested values
+          final noTelp = item['user']['no_telp']?.toString() ?? '';
+          final idTransaksi = item['id_transaksi']?.toString() ?? '';
           final berat = item['berat_laundry']?.toString() ?? '';
           final totalHarga = item['total_biaya']?.toString() ?? '';
           final metodePembayaran = item['metode_pembayaran']?.toString() ?? '';
@@ -207,16 +214,18 @@ class PengambilanLaundryController extends GetxController {
 
           // Menggunakan fungsi formatTotalHarga untuk mengonversi totalHarga
           final formattedTotalHarga = formatTotalHarga(totalHarga);
+          globalBiaya = totalHarga;
 
           return Pengambilan(
             nama: nama,
-            id: id,
-            phone: phone,
+            noTelp: noTelp,
+            idTransaksi: idTransaksi,
             berat: '$berat Kg',
             totalHarga: formattedTotalHarga,
             metodePembayaran: metodePembayaran,
             statusPembayaran: convertStatusPembayaran(statusPembayaran),
             statusCucian: statusCucian.toString().capitalizeFirst as String,
+            idUser: idUser,
           );
         }).toList();
       }
