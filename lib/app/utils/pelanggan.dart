@@ -14,8 +14,8 @@ class Pelanggan {
   factory Pelanggan.fromMap(Map<String, dynamic> map) {
     return Pelanggan(
       nama: map['nama'] as String,
-      id: map['id'] as String,
-      phone: map['phone'] as String, // Map the phone number
+      id: map['id_user'] as String,
+      phone: map['no_telp'] as String, // Map the phone number
       kategori: map['kategori'] as String,
     );
   }

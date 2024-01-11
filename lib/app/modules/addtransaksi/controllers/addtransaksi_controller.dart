@@ -84,6 +84,8 @@ class AddtransaksiController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController kategoriController = TextEditingController();
 
+  TextEditingController idUserController = TextEditingController();
+
   SupabaseClient client = Supabase.instance.client;
 
   Future<List<Pelanggan>> fetchdataPelanggan(String query) async {
@@ -91,17 +93,18 @@ class AddtransaksiController extends GetxController {
     try {
       final response = await client
           .from('user')
-          .select('nama, id, phone, kategori') // Include 'phone' in the select statement
+          .select(
+              'nama, id_user, no_telp, kategori') // Include 'phone' in the select statement
           .eq('role', 'Pelanggan')
-          .ilike('nama, phone, kategori', '%$query%')
+          .ilike('nama, no_telp, kategori', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
           // Ensure that 'nama', 'id', and 'phone' are treated as strings
           final nama = item['nama']?.toString() ?? '';
-          final id = item['id']?.toString() ?? '';
-          final phone = item['phone']?.toString() ?? '';
+          final id = item['id_user']?.toString() ?? '';
+          final phone = item['no_telp']?.toString() ?? '';
           final kategori = item['kategori']?.toString() ?? '';
 
           return Pelanggan(nama: nama, id: id, phone: phone, kategori: kategori);
@@ -145,9 +148,7 @@ class AddtransaksiController extends GetxController {
           "berat_laundry": double.tryParse(beratLaundryController.text),
           "total_biaya":
               numericTotalHarga.value.toStringAsFixed(0), // Round to 0 decimal places
-          "nama_pelanggan": nameController.text,
-          "nomor_pelanggan": phoneController.text,
-          "kategori_pelanggan": kategoriController.text,
+          "id_user": idUserController.text,
           "metode_laundry": getSelectedMetode(),
           "layanan_laundry": getSelectedLayanan(),
           "metode_pembayaran": getSelectedPembayaran(),
@@ -310,7 +311,7 @@ class AddtransaksiController extends GetxController {
     if (kembalian <= 0) {
       // Update kembalianController with an error message
       kembalianController.text = "Rp0";
-      sisaTagihan = currencyFormatter.format(kembalian);
+      sisaTagihan = currencyFormatter.format(totalBiaya);
 
       // Optionally, show a snackbar or dialog for user feedback
 

@@ -60,6 +60,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     phoneController: controller.phoneController,
                     kategoriController: controller.kategoriController,
                     addtransaksiController: controller,
+                    idUserController: controller.idUserController,
                   ),
                   const SizedBox(
                     height: 20,

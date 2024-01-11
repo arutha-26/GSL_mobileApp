@@ -7,7 +7,7 @@ class PelangganSearchWidget extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController kategoriController;
-
+  final TextEditingController idUserController;
   final AddtransaksiController addtransaksiController;
 
   PelangganSearchWidget({
@@ -16,6 +16,7 @@ class PelangganSearchWidget extends StatelessWidget {
     required this.phoneController,
     required this.kategoriController,
     required this.addtransaksiController,
+    required this.idUserController,
   }) : super(key: key);
 
   @override
@@ -29,17 +30,19 @@ class PelangganSearchWidget extends StatelessWidget {
       },
       displayStringForOption: (Pelanggan option) {
         if (option != null) {
+          final id = option.id ?? '';
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
           final kategori = option.kategori ?? '';
-          return '$name - $phone - $kategori';
+          return '$id - $name - $phone - $kategori';
         } else {
           return ''; // Return an empty string for null options
         }
       },
       onSelected: (Pelanggan selection) {
+        idUserController.text = selection.id ?? '';
         nameController.text = selection.nama ?? '';
-        phoneController.text = '${selection.phone}' ?? '';
+        phoneController.text = selection.phone ?? '';
         kategoriController.text = selection.kategori ?? '';
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
