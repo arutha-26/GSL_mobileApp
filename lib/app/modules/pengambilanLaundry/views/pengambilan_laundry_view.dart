@@ -42,19 +42,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // TextField(
-                  //   enabled: false,
-                  //   autocorrect: false,
-                  //   controller: controller.namaKaryawanC,
-                  //   textInputAction: TextInputAction.next,
-                  //   decoration: const InputDecoration(
-                  //     labelText: "Nama Karyawan",
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
                   SearchPengambilan(
                     idTransaksiController: controller.idTransaksiController,
                     idUserController: controller.idUserController,
@@ -67,17 +54,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     namaController: controller.namaController,
                     noTelpController: controller.noTelpController,
                   ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // TextField(
-                  //   keyboardType: TextInputType.none,
-                  //   controller: controller.idTransaksiController,
-                  //   decoration: const InputDecoration(
-                  //     labelText: "Id Transaksi",
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -239,7 +215,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-
                   Visibility(
                     visible: controller.statusPembayaran.value == 'belum_dibayar',
                     child: const SizedBox(

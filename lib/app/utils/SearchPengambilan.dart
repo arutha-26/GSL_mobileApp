@@ -48,7 +48,7 @@ class SearchPengambilan extends StatelessWidget {
           final metodePembayaran = option.metodePembayaran ?? '';
           final statusPembayaran = option.statusPembayaran ?? '';
           final statusCucian = option.statusCucian ?? '';
-          return '$idTransaksi-$nama-$noTelp-$berat-$totalHarga-$metodePembayaran-$statusPembayaran-$statusCucian';
+          return '$idTransaksi - $nama - $noTelp - $berat - $totalHarga - $metodePembayaran- $statusPembayaran - $statusCucian';
         } else {
           return ''; // Return an empty string for null options
         }

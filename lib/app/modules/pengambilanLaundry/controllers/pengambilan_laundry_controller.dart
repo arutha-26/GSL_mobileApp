@@ -11,18 +11,10 @@ class PengambilanLaundryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // beratLaundryController.addListener(() {
-    //   hitungTotalHarga();
-    // });
     formatNominal();
-    // nominalBayarController.addListener(getKembalian);
     nominalBayarController.addListener(() {
       getKembalian();
     });
-    // nominalBayarController.addListener(() {
-    //   formattedNominal.value = formatNumber(nominalBayarController.text);
-    // });
-    // Anda bisa menambahkan listener lain di sini
   }
 
   void clearInputs() {
@@ -115,52 +107,6 @@ class PengambilanLaundryController extends GetxController {
     });
   }
 
-  void getKembalian() {
-    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
-    cleanedInput = cleanedInput.replaceAll('.', '');
-
-    final formattedNominal =
-        "Rp${NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(double.parse(cleanedInput))}";
-
-    nominalBayarController.value = TextEditingValue(
-      text: formattedNominal,
-      selection: TextSelection.collapsed(offset: formattedNominal.length),
-    );
-
-    String cleanedInput2 = hargaTotalController.text.replaceAll(RegExp(r'[^\d.]'), '');
-    cleanedInput2 = cleanedInput2.replaceAll('.', '');
-
-    double nominalHarga = double.parse(cleanedInput) ?? 0.0;
-
-    double totalBiaya = 0.0; // Default value if the parsing fails
-    if (cleanedInput2.isNotEmpty) {
-      totalBiaya = double.tryParse(cleanedInput2) ?? 0.0;
-    }
-
-    if (kDebugMode) {
-      print('cleaninput2 value: ${hargaTotalController.text.toString()}');
-    }
-    double? biaya = double.tryParse(globalBiaya);
-    double kembalian = nominalHarga - biaya!;
-    double minus = biaya - nominalHarga;
-
-    final currencyFormatter =
-        NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
-
-    if (kembalian <= 0) {
-      kembalianController.text = "Rp0";
-      kembalian = -biaya;
-    } else {
-      kembalianController.text = currencyFormatter.format(kembalian);
-    }
-
-    if (kDebugMode) {
-      print(
-        "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian, globalBiaya: $biaya",
-      );
-    }
-  }
-
   // Fungsi untuk mengonversi nilai status_pembayaran
   String convertStatusPembayaran(String status) {
     if (status == 'belum_dibayar') {
@@ -214,7 +160,6 @@ class PengambilanLaundryController extends GetxController {
 
           // Menggunakan fungsi formatTotalHarga untuk mengonversi totalHarga
           final formattedTotalHarga = formatTotalHarga(totalHarga);
-          globalBiaya = totalHarga;
 
           return Pengambilan(
             nama: nama,
@@ -406,5 +351,51 @@ GREEN SPIRIT LAUNDRY
 
   void setStatusPembayaran(String status) {
     statusPembayaran.value = status;
+  }
+
+  void getKembalian() {
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    final formattedNominal =
+        "Rp${NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(double.parse(cleanedInput))}";
+
+    nominalBayarController.value = TextEditingValue(
+      text: formattedNominal,
+      selection: TextSelection.collapsed(offset: formattedNominal.length),
+    );
+
+    String cleanedInput2 = totalHargaController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput2 = cleanedInput2.replaceAll('.', '');
+
+    double nominalHarga = double.parse(cleanedInput) ?? 0.0;
+
+    double totalBiaya = 0.0; // Default value if the parsing fails
+    if (cleanedInput2.isNotEmpty) {
+      totalBiaya = double.tryParse(cleanedInput2) ?? 0.0;
+    }
+
+    if (kDebugMode) {
+      print('cleaninput2 value: ${hargaTotalController.text.toString()}');
+    }
+
+    double kembalian = nominalHarga - totalBiaya;
+    double minus = totalBiaya - nominalHarga;
+
+    final currencyFormatter =
+        NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
+
+    if (kembalian <= 0) {
+      kembalianController.text = "Rp0";
+      kembalian = -totalBiaya;
+    } else {
+      kembalianController.text = currencyFormatter.format(kembalian);
+    }
+
+    if (kDebugMode) {
+      print(
+        "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian, globalBiaya: $totalBiaya",
+      );
+    }
   }
 }
