@@ -50,7 +50,7 @@ class SearchPengambilan extends StatelessWidget {
           final statusCucian = option.statusCucian ?? '';
           return '$idTransaksi - $nama - $noTelp - $berat - $totalHarga - $metodePembayaran- $statusPembayaran - $statusCucian';
         } else {
-          return ''; // Return an empty string for null options
+          return '';
         }
       },
       onSelected: (Pengambilan selection) {

@@ -149,224 +149,11 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text('Update Data Dibawah ini!'),
-                  Visibility(
-                    visible: controller.statusCucianController.value == 'selesai',
-                    child: const SizedBox(
-                      height: 20,
-                    ),
-                  ),
-                  Visibility(
-                    visible: controller.statusCucianController.value == 'selesai',
-                    child: TextField(
-                      controller: controller.tanggalDiambilController,
-                      decoration: const InputDecoration(
-                        labelText: "Tanggal Diambil",
-                        border: OutlineInputBorder(),
-                      ),
-                      onTap: () {
-                        FocusScope.of(context)
-                            .requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                        selectDate(
-                            context,
-                            controller
-                                .tanggalDiambilController); // Call your date picker function
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Visibility(
-                    visible: controller.statusPembayaran.value == 'belum_dibayar',
-                    child: DropdownSearch<String>(
-                      popupProps: const PopupProps.menu(
-                        constraints: BoxConstraints(maxHeight: 180),
-                        // 60 are per data height
-                        showSelectedItems: true,
-                      ),
-                      items: const ["-", "Tunai", "Transfer"],
-                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: "Metode Pembayaran",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      onChanged: (String? value) {
-                        controller.setSelectedPembayaran(value);
-                      },
-                    ),
-                  ),
-                  Visibility(
-                      visible: controller.statusPembayaran.value == 'belum_dibayar',
-                      child: const SizedBox(height: 20)),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    controller: controller.nominalBayarController,
-                    decoration: const InputDecoration(
-                      labelText: "Nominal Bayar",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    keyboardType: TextInputType.none,
-                    controller: controller.kembalianController,
-                    decoration: const InputDecoration(
-                      labelText: "Kembalian",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  Visibility(
-                    visible: controller.statusPembayaran.value == 'belum_dibayar',
-                    child: const SizedBox(
-                      height: 20,
-                    ),
-                  ),
-                  Visibility(
-                    visible: controller.statusPembayaran.value == 'belum_dibayar',
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // Opsi "Sudah Dibayar"
-                        Obx(() => GestureDetector(
-                              onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: controller.statusPembayaran.value == 'sudah_dibayar'
-                                      ? Colors.green[100]
-                                      : Colors.transparent,
-                                  border: Border.all(
-                                    color: controller.statusPembayaran.value == 'sudah_dibayar'
-                                        ? Colors.green
-                                        : Colors.transparent,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Column(
-                                  children: [
-                                    Icon(Icons.payment, color: Colors.green),
-                                    Text('Sudah Dibayar'),
-                                  ],
-                                ),
-                              ),
-                            )),
-
-                        // Opsi "Belum Dibayar"
-                        Obx(() => GestureDetector(
-                              onTap: () => controller.setStatusPembayaran('belum_dibayar'),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: controller.statusPembayaran.value == 'belum_dibayar'
-                                      ? Colors.red[100]
-                                      : Colors.transparent,
-                                  border: Border.all(
-                                    color: controller.statusPembayaran.value == 'belum_dibayar'
-                                        ? Colors.red
-                                        : Colors.transparent,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Column(
-                                  children: [
-                                    Icon(Icons.payment, color: Colors.red),
-                                    Text('Belum Dibayar'),
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: controller.statusPembayaran.value == 'sudah_dibayar',
-                    child: const SizedBox(
-                      height: 20,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Opsi "Diproses"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusCucian('diproses'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusCucian.value == 'diproses'
-                                    ? Colors.blue[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusCucian.value == 'diproses'
-                                      ? Colors.blue
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.hourglass_empty, color: Colors.blue),
-                                  Text('Diproses'),
-                                ],
-                              ),
-                            ),
-                          )),
-
-                      // Opsi "Selesai"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusCucian('selesai'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusCucian.value == 'selesai'
-                                    ? Colors.green[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusCucian.value == 'selesai'
-                                      ? Colors.green
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.check_circle_outline, color: Colors.green),
-                                  Text('Selesai'),
-                                ],
-                              ),
-                            ),
-                          )),
-                      // Opsi "Diambil"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusCucian('diambil'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusCucian.value == 'diambil'
-                                    ? Colors.orange[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusCucian.value == 'diambil'
-                                      ? Colors.orange
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.done_all, color: Colors.orange),
-                                  Text('Diambil'),
-                                ],
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
                   Obx(() => ElevatedButton(
                         onPressed: () {
+                          print("Button Tapped!");
                           if (controller.isLoading.isFalse) {
-                            controller.updateTransaksi();
+                            controller.updateDateFieldVisibility();
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -374,10 +161,425 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           backgroundColor: const Color(0xFF22c55e), // Warna teks
                         ),
                         child: Text(
-                          controller.isLoading.isFalse ? "Kirim" : "Loading...",
+                          controller.isLoading.isFalse ? "Update Data Ini" : "Loading...",
                           style: const TextStyle(fontSize: 16),
                         ),
                       )),
+                  Obx(
+                    () => Visibility(
+                      visible: controller.isDateFieldVisible.value,
+                      child: Column(
+                        children: [
+                          // const CircularProgressIndicator(),
+                          const SizedBox(height: 20),
+                          const Text('Update Data Dibawah ini!'),
+                          const SizedBox(height: 20),
+                          if (controller.statusCucianController.text.toString() ==
+                              'Diproses') ...[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Opsi "Diproses"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diproses'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diproses'
+                                              ? Colors.blue[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diproses'
+                                                ? Colors.blue
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.hourglass_empty, color: Colors.blue),
+                                            Text('Diproses'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+
+                                // Opsi "Selesai"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'selesai'
+                                              ? Colors.green[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'selesai'
+                                                ? Colors.green
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.check_circle_outline,
+                                                color: Colors.green),
+                                            Text('Selesai'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                                // Opsi "Diambil"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diambil'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diambil'
+                                              ? Colors.orange[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diambil'
+                                                ? Colors.orange
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.done_all, color: Colors.orange),
+                                            Text('Diambil'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ] else if (controller.statusCucianController.text.toString() ==
+                                  'Selesai' &&
+                              controller.statusPembayaranController.text.toString() ==
+                                  "Belum Dibayar") ...[
+                            TextField(
+                              controller: controller.tanggalDiambilController,
+                              decoration: const InputDecoration(
+                                labelText: "Tanggal Diambil",
+                                border: OutlineInputBorder(),
+                              ),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(
+                                    new FocusNode()); // Prevent keyboard from appearing
+                                selectDate(
+                                    context,
+                                    controller
+                                        .tanggalDiambilController); // Call your date picker function
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            DropdownSearch<String>(
+                              popupProps: const PopupProps.menu(
+                                constraints: BoxConstraints(maxHeight: 180),
+                                // 60 are per data height
+                                showSelectedItems: true,
+                              ),
+                              items: const ["-", "Tunai", "Transfer"],
+                              dropdownDecoratorProps: const DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "Metode Pembayaran",
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              onChanged: (String? value) {
+                                controller.setSelectedPembayaran(value);
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            TextField(
+                              keyboardType: TextInputType.number,
+                              controller: controller.nominalBayarController,
+                              decoration: const InputDecoration(
+                                labelText: "Nominal Bayar",
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            TextField(
+                              keyboardType: TextInputType.none,
+                              controller: controller.kembalianController,
+                              decoration: const InputDecoration(
+                                labelText: "Kembalian",
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Opsi "Sudah Dibayar"
+                                Obx(() => GestureDetector(
+                                      onTap: () =>
+                                          controller.setStatusPembayaran('sudah_dibayar'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusPembayaran.value ==
+                                                  'sudah_dibayar'
+                                              ? Colors.green[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusPembayaran.value ==
+                                                    'sudah_dibayar'
+                                                ? Colors.green
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.payment, color: Colors.green),
+                                            Text('Sudah Dibayar'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+
+                                // Opsi "Belum Dibayar"
+                                Obx(() => GestureDetector(
+                                      onTap: () =>
+                                          controller.setStatusPembayaran('belum_dibayar'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusPembayaran.value ==
+                                                  'belum_dibayar'
+                                              ? Colors.red[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusPembayaran.value ==
+                                                    'belum_dibayar'
+                                                ? Colors.red
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.payment, color: Colors.red),
+                                            Text('Belum Dibayar'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Opsi "Diproses"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diproses'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diproses'
+                                              ? Colors.blue[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diproses'
+                                                ? Colors.blue
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.hourglass_empty, color: Colors.blue),
+                                            Text('Diproses'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+
+                                // Opsi "Selesai"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'selesai'
+                                              ? Colors.green[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'selesai'
+                                                ? Colors.green
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.check_circle_outline,
+                                                color: Colors.green),
+                                            Text('Selesai'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                                // Opsi "Diambil"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diambil'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diambil'
+                                              ? Colors.orange[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diambil'
+                                                ? Colors.orange
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.done_all, color: Colors.orange),
+                                            Text('Diambil'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ] else if (controller.statusCucianController.text.toString() ==
+                                  'Selesai' &&
+                              controller.statusPembayaranController.text.toString() ==
+                                  "Sudah Dibayar") ...[
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Opsi "Diproses"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diproses'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diproses'
+                                              ? Colors.blue[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diproses'
+                                                ? Colors.blue
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.hourglass_empty, color: Colors.blue),
+                                            Text('Diproses'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+
+                                // Opsi "Selesai"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'selesai'
+                                              ? Colors.green[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'selesai'
+                                                ? Colors.green
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.check_circle_outline,
+                                                color: Colors.green),
+                                            Text('Selesai'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                                // Opsi "Diambil"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diambil'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diambil'
+                                              ? Colors.orange[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diambil'
+                                                ? Colors.orange
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.done_all, color: Colors.orange),
+                                            Text('Diambil'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextField(
+                              controller: controller.tanggalDiambilController,
+                              decoration: const InputDecoration(
+                                labelText: "Tanggal Diambil",
+                                border: OutlineInputBorder(),
+                              ),
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(
+                                    new FocusNode()); // Prevent keyboard from appearing
+                                selectDate(
+                                    context,
+                                    controller
+                                        .tanggalDiambilController); // Call your date picker function
+                              },
+                            ),
+                          ],
+                          const SizedBox(height: 20),
+                          Obx(() => ElevatedButton(
+                                onPressed: () {
+                                  if (controller.isLoading.isFalse) {
+                                    controller.updateTransaksi();
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: const Color(0xFF22c55e), // Warna teks
+                                ),
+                                child: Text(
+                                  controller.isLoading.isFalse ? "Kirim" : "Loading...",
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               );
             }));

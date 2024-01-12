@@ -15,10 +15,42 @@ class PengambilanLaundryController extends GetxController {
     nominalBayarController.addListener(() {
       getKembalian();
     });
+    setupListeners();
+  }
+
+  void setupListeners() {
+    statusCucianController.addListener(() {
+      updateDateFieldVisibility();
+    });
+
+    statusPembayaranController.addListener(() {
+      updateDateFieldVisibility();
+    });
+  }
+
+  final RxBool isDateFieldVisible = false.obs;
+
+  void updateDateFieldVisibility() {
+    debugPrint('status Cucian: ${statusCucianController.text.toString()}');
+    debugPrint('status Pembayaran: ${statusPembayaranController.text.toString()}');
+
+    if (statusCucianController.text.toString() == 'Selesai') {
+      isDateFieldVisible.value = true;
+      debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
+    } else if (statusPembayaranController.text.toString() == 'Belum Dibayar') {
+      isDateFieldVisible.value = true;
+      debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
+    } else {
+      isDateFieldVisible.value = false;
+    }
   }
 
   void clearInputs() {
     namaKaryawanC.clear();
+    namaController.clear();
+    noTelpController.clear();
+    statusPembayaranController.clear();
+    statusCucianController.clear();
     idTransaksiController.clear();
     tanggalDiambilController.clear();
     beratLaundryController.clear();
@@ -27,9 +59,7 @@ class PengambilanLaundryController extends GetxController {
     phoneController.clear();
     beratController.clear();
     totalHargaController.clear();
-    selectedPembayaran.value = "-";
-    statusCucian.value = 'diproses';
-    statusPembayaran.value = 'belum_dibayar';
+    refresh();
   }
 
   @override
@@ -39,17 +69,18 @@ class PengambilanLaundryController extends GetxController {
     namaKaryawanC.dispose();
     idTransaksiController.dispose();
     nameController.dispose();
+    noTelpController.dispose();
+    statusPembayaranController.dispose();
+    statusCucianController.dispose();
     phoneController.dispose();
     tanggalDiambilController.dispose();
     beratLaundryController.dispose();
     hargaTotalController.dispose();
-    nameController.dispose();
-    beratLaundryController.removeListener(() {});
     super.onClose();
   }
 
-  RxString statusCucian = 'diproses'.obs;
-  RxString statusPembayaran = 'belum_dibayar'.obs;
+  RxString statusCucian = ''.obs;
+  RxString statusPembayaran = ''.obs;
   RxBool isLoading = false.obs;
   TextEditingController namaKaryawanC = TextEditingController();
   TextEditingController tanggalDiambilController = TextEditingController();
@@ -131,8 +162,6 @@ class PengambilanLaundryController extends GetxController {
     return hargaRupiah;
   }
 
-  String globalBiaya = "0";
-
   Future<List<Pengambilan>> fetchDataTransaksi(String query) async {
     List<Pengambilan> results = [];
 
@@ -200,7 +229,6 @@ class PengambilanLaundryController extends GetxController {
           dataTransaksi["tanggal_diambil"] = formatDate(tanggalDiambilController.text);
           dataTransaksi["metode_pembayaran"] = getSelectedPembayaran();
           dataTransaksi["status_pembayaran"] = statusPembayaran.value;
-          // Jika status_cucian == diambil, update semua data
           dataTransaksi["status_cucian"] = statusCucian.value;
           dataTransaksi["is_hidden"] = true;
           dataTransaksi["edit_at"] = DateTime.now().toString();
@@ -218,7 +246,7 @@ class PengambilanLaundryController extends GetxController {
         await client
             .from("transaksi")
             .update(dataTransaksi)
-            .match({"transaksi_id": idTransaksiController.text}).execute();
+            .match({"id_transaksi": idTransaksiController.text}).execute();
 
         // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
         String nomorPelanggan = phoneController.text;
