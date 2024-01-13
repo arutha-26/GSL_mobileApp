@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gsl/app/utils/SearchPengambilan.dart';
@@ -151,8 +152,10 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   ),
                   Obx(() => ElevatedButton(
                         onPressed: () {
-                          print("Button Tapped!");
-                          if (controller.isLoading.isFalse) {
+                          if (kDebugMode) {
+                            print("Button Tapped!");
+                          }
+                          if (controller.isUpdateDataLoading.isFalse) {
                             controller.updateDateFieldVisibility();
                           }
                         },
@@ -161,7 +164,9 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           backgroundColor: const Color(0xFF22c55e), // Warna teks
                         ),
                         child: Text(
-                          controller.isLoading.isFalse ? "Update Data Ini" : "Loading...",
+                          controller.isUpdateDataLoading.isFalse
+                              ? "Update Data"
+                              : "Loading...",
                           style: const TextStyle(fontSize: 16),
                         ),
                       )),
@@ -173,7 +178,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           // const CircularProgressIndicator(),
                           const SizedBox(height: 20),
                           const Text('Update Data Dibawah ini!'),
-                          const SizedBox(height: 20),
                           if (controller.statusCucianController.text.toString() ==
                               'Diproses') ...[
                             Row(
@@ -560,26 +564,26 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                               },
                             ),
                           ],
-                          const SizedBox(height: 20),
-                          Obx(() => ElevatedButton(
-                                onPressed: () {
-                                  if (controller.isLoading.isFalse) {
-                                    controller.updateTransaksi();
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                  backgroundColor: const Color(0xFF22c55e), // Warna teks
-                                ),
-                                child: Text(
-                                  controller.isLoading.isFalse ? "Kirim" : "Loading...",
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                              )),
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
+                  Obx(() => ElevatedButton(
+                        onPressed: () {
+                          if (controller.isKirimLoading.isFalse) {
+                            controller.updateTransaksi();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor: const Color(0xFF22c55e), // Warna teks
+                        ),
+                        child: Text(
+                          controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      )),
                 ],
               );
             }));

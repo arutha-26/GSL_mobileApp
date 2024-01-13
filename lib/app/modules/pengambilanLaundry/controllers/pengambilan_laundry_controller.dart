@@ -15,7 +15,8 @@ class PengambilanLaundryController extends GetxController {
     nominalBayarController.addListener(() {
       getKembalian();
     });
-    setupListeners();
+    // updateDateFieldVisibility();
+    // setupListeners();
   }
 
   void setupListeners() {
@@ -29,20 +30,27 @@ class PengambilanLaundryController extends GetxController {
   }
 
   final RxBool isDateFieldVisible = false.obs;
+  final RxBool isUpdateDataLoading = false.obs;
+  final RxBool isKirimLoading = false.obs;
 
-  void updateDateFieldVisibility() {
+  Future<void> updateDateFieldVisibility() async {
     debugPrint('status Cucian: ${statusCucianController.text.toString()}');
     debugPrint('status Pembayaran: ${statusPembayaranController.text.toString()}');
 
-    if (statusCucianController.text.toString() == 'Selesai') {
-      isDateFieldVisible.value = true;
+    isUpdateDataLoading.value = true; // Set loading to true while the update is in progress
+
+    await Future.delayed(
+        const Duration(seconds: 1)); // Simulate an async operation (replace with actual logic)
+
+    if (statusCucianController.text.toString() == 'Selesai' ||
+        statusPembayaranController.text.toString() == 'Belum Dibayar') {
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
-    } else if (statusPembayaranController.text.toString() == 'Belum Dibayar') {
       isDateFieldVisible.value = true;
-      debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
     } else {
       isDateFieldVisible.value = false;
     }
+
+    isUpdateDataLoading.value = false; // Set loading to false when the update is complete
   }
 
   void clearInputs() {
@@ -220,7 +228,7 @@ class PengambilanLaundryController extends GetxController {
 
   Future<void> updateTransaksi() async {
     if (namaKaryawanC.text.isNotEmpty) {
-      isLoading.value = true;
+      isKirimLoading.value = true;
       try {
         var dataTransaksi = {};
 
@@ -273,13 +281,13 @@ class PengambilanLaundryController extends GetxController {
           ],
         );
       } catch (e) {
-        isLoading.value = false;
+        isKirimLoading.value = false;
         Get.snackbar("ERROR", e.toString());
       }
     } else {
       Get.snackbar("ERROR", "Seluruh data harus terisi!");
     }
-    isLoading.value = false;
+    isKirimLoading.value = false;
     refresh();
   }
 
