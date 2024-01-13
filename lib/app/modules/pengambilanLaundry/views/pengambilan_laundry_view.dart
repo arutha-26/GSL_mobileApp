@@ -10,6 +10,15 @@ import '../controllers/pengambilan_laundry_controller.dart';
 class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
   PengambilanLaundryView({Key? key}) : super(key: key);
 
+  // In the method that navigates to the PengambilanLaundryPage
+  void navigateBack() {
+    // Clear input data before navigating back
+    controller.clearInputs();
+
+    // Navigate back
+    Get.back();
+  }
+
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
       context: context,

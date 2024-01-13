@@ -4,5 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class OwnerhomeController extends GetxController {
   SupabaseClient client = Supabase.instance.client;
 
-
+  void clearInputs() {
+    refresh();
+  }
 }

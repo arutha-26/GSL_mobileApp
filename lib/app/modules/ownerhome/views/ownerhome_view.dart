@@ -29,6 +29,14 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
     super.key,
   });
 
+  void navigateBack() {
+    // Clear input data before navigating back
+    controller.clearInputs();
+
+    // Navigate back
+    Get.back();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +133,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                               ),
                               GlassButton(
                                 onPressed: () {
+                                  Get.deleteAll();
                                   Get.put(PengambilanLaundryController());
                                   Get.to(() => PengambilanLaundryView());
                                 },
