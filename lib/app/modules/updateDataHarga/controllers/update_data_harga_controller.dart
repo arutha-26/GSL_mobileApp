@@ -15,7 +15,7 @@ class UpdateDataHargaController extends GetxController {
       print('Update button pressed');
     }
     try {
-      if (userData['id'] != null) {
+      if (userData['id_harga'] != null) {
         isLoading.value = true;
 
         String hargaKilo = updatedUserData['harga_kilo'].toString();
@@ -39,7 +39,7 @@ class UpdateDataHargaController extends GetxController {
         var response = await client
             .from("harga")
             .update(updateFields)
-            .match({"id": userData['id']}).execute();
+            .match({"id_harga": userData['id_harga']}).execute();
 
         isLoading.value = false; // Reset the loading state
 
@@ -47,6 +47,8 @@ class UpdateDataHargaController extends GetxController {
           Get.snackbar(
             'Berhasil',
             'Data Berhasil di Perbaharui',
+            colorText: Colors.white,
+            backgroundColor: Colors.indigoAccent,
             snackPosition: SnackPosition.BOTTOM,
           );
 
@@ -57,6 +59,7 @@ class UpdateDataHargaController extends GetxController {
 
           // Navigate back to the data pelanggan page
           Get.offAndToNamed(Routes.PANELTRANSAKSI);
+          // Get.deleteAll();
           refresh();
         } else {
           Get.snackbar(

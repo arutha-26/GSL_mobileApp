@@ -96,7 +96,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Id Harga: ${userData['id']}',
+                                    'Id Harga: ${userData['id_harga']}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -133,6 +133,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                           ],
                         ),
                         onTap: () {
+                          Get.deleteAll();
                           Get.toNamed(Routes.UPDATE_DATA_HARGA, arguments: userData);
                         },
                       ),

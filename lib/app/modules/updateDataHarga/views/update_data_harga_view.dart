@@ -32,7 +32,7 @@ class UpdateDataHargaView extends GetView<UpdateDataHargaController> {
                   height: 250,
                 ),
                 const SizedBox(height: 15),
-                _buildTextField('ID Harga', 'id', userData),
+                _buildTextField('ID Harga', 'id_harga', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Kategori Pelanggan', 'kategori_pelanggan', userData),
                 const SizedBox(height: 15),

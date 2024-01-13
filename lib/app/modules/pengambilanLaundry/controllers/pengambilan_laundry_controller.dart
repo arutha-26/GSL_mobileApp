@@ -46,11 +46,10 @@ class PengambilanLaundryController extends GetxController {
         statusPembayaranController.text.toString() == 'Belum Dibayar') {
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
       isDateFieldVisible.value = true;
+      isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
     } else {
       isDateFieldVisible.value = false;
     }
-
-    isUpdateDataLoading.value = false; // Set loading to false when the update is complete
   }
 
   void clearInputs() {
@@ -177,17 +176,16 @@ class PengambilanLaundryController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'id_transaksi, id_user, berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian, user(id_user, nama, kategori, no_telp)')
+              'id_transaksi, id_user(id_user, nama, no_telp), berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
           .in_('status_cucian', ['diproses', 'selesai'])
-          .ilike('user.nama, user.no_telp', '%$query%')
+          .ilike('id_user.nama, id_user.no_telp', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
-          final idUser = item['id_user']?.toString() ?? '';
-          final nama =
-              item['user']['nama']?.toString() ?? ''; // Use 'user' key to access nested values
-          final noTelp = item['user']['no_telp']?.toString() ?? '';
+          final idUser = item['id_user']['id_user']?.toString() ?? '';
+          final nama = item['id_user']['nama']?.toString() ?? '';
+          final noTelp = item['id_user']['no_telp']?.toString() ?? '';
           final idTransaksi = item['id_transaksi']?.toString() ?? '';
           final berat = item['berat_laundry']?.toString() ?? '';
           final totalHarga = item['total_biaya']?.toString() ?? '';
@@ -195,7 +193,7 @@ class PengambilanLaundryController extends GetxController {
           final statusPembayaran = item['status_pembayaran']?.toString() ?? '';
           final statusCucian = item['status_cucian']?.toString() ?? '';
 
-          // Menggunakan fungsi formatTotalHarga untuk mengonversi totalHarga
+          // Use a dedicated function to format totalHarga
           final formattedTotalHarga = formatTotalHarga(totalHarga);
 
           return Pengambilan(
@@ -206,7 +204,7 @@ class PengambilanLaundryController extends GetxController {
             totalHarga: formattedTotalHarga,
             metodePembayaran: metodePembayaran,
             statusPembayaran: convertStatusPembayaran(statusPembayaran),
-            statusCucian: statusCucian.toString().capitalizeFirst as String,
+            statusCucian: statusCucian.capitalizeFirst as String,
             idUser: idUser,
           );
         }).toList();
@@ -215,6 +213,7 @@ class PengambilanLaundryController extends GetxController {
       if (kDebugMode) {
         print('Exception during fetching data: $error');
       }
+      // Handle the error appropriately based on your application's requirements.
     }
     return results;
   }
@@ -223,7 +222,7 @@ class PengambilanLaundryController extends GetxController {
     List<dynamic> res =
         await client.from("user").select().match({"uid": client.auth.currentUser!.id});
     Map<String, dynamic> user = (res).first as Map<String, dynamic>;
-    namaKaryawanC.text = user["nama"];
+    namaKaryawanC.text = user["id_user"].toString();
   }
 
   Future<void> updateTransaksi() async {

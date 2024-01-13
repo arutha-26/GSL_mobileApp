@@ -42,19 +42,19 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  TextField(
-                    enabled: false,
-                    autocorrect: false,
-                    controller: controller.namaKaryawanC,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Nama Karyawan",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  // TextField(
+                  //   enabled: false,
+                  //   autocorrect: false,
+                  //   controller: controller.idKaryawanC,
+                  //   textInputAction: TextInputAction.next,
+                  //   decoration: const InputDecoration(
+                  //     labelText: "Id Karyawan",
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
                   PelangganSearchWidget(
                     nameController: controller.nameController,
                     phoneController: controller.phoneController,

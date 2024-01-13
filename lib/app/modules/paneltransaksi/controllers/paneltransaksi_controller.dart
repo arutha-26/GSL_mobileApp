@@ -31,8 +31,22 @@ class PaneltransaksiController extends GetxController {
         // Convert each item in the list to a Map<String, dynamic>
         data.value = response.map((item) => item as Map<String, dynamic>).toList();
 
-        // Sort data based on 'id' in ascending order
-        data.value.sort((a, b) => a['id'].compareTo(b['id']));
+        // Sort data based on 'id' in ascending order, handling null values
+        data.value.sort((a, b) {
+          final idA = a['id_harga'];
+          final idB = b['id_harga'];
+
+          // Handle null values by checking before calling compareTo
+          if (idA == null && idB == null) {
+            return 0; // both are null, considered equal
+          } else if (idA == null) {
+            return -1; // null is considered smaller than non-null
+          } else if (idB == null) {
+            return 1; // non-null is considered larger than null
+          } else {
+            return idA.compareTo(idB); // compare non-null values
+          }
+        });
 
         filteredData.value = List.from(data);
         if (kDebugMode) {
@@ -44,7 +58,6 @@ class PaneltransaksiController extends GetxController {
         }
       }
     } catch (error) {
-      // Handle other exceptions
       if (kDebugMode) {
         print('Error: $error');
       }

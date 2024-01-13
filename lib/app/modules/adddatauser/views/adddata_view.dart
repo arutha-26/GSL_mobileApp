@@ -98,14 +98,14 @@ class AdddataView extends GetView<AdddataController> {
           autocorrect: false,
           controller: controller.nohpC,
           textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.phone,
+          keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(14),
+            LengthLimitingTextInputFormatter(12),
           ],
           decoration: const InputDecoration(
             labelText: "No Telp",
-            hintText: "819213XXXXXX",
+            hintText: "0819339807XX",
             border: OutlineInputBorder(),
           ),
         ),

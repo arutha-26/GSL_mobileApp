@@ -113,7 +113,7 @@ class AdddataController extends GetxController {
           print('Alamat: ${alamatC.text}');
         }
         if (kDebugMode) {
-          print('Phone: ${'+62${nohpC.text}'}');
+          print('No Telp: ${nohpC.text}');
         }
         if (kDebugMode) {
           print('Kategori: ${getSelectedKategori()}');
@@ -131,7 +131,7 @@ class AdddataController extends GetxController {
           "nama": nameC.text,
           "role": getSelectedRole(),
           "alamat": alamatC.text,
-          "phone": nohpC.text,
+          "no_telp": nohpC.text,
           "kategori": getSelectedKategori(),
           "created_at": DateTime.now().toIso8601String(),
           "uid": res.user!.id,
@@ -162,10 +162,22 @@ class AdddataController extends GetxController {
         );
       } catch (e) {
         isLoading.value = false;
-        Get.snackbar("ERROR", e.toString());
+        Get.snackbar(
+          'ERROR',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
       }
     } else {
-      Get.snackbar("ERROR", "Seluruh data harus terisi!");
+      Get.snackbar(
+        'ERROR',
+        'Seluruh data harus terisi!',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
     }
     // refresh();
   }

@@ -28,7 +28,7 @@ class AddtransaksiController extends GetxController {
   }
 
   void clearInputs() {
-    namaKaryawanC.clear();
+    idKaryawanC.clear();
     tanggalDatangController.clear();
     tanggalSelesaiController.clear();
     beratLaundryController.clear();
@@ -51,7 +51,7 @@ class AddtransaksiController extends GetxController {
     clearInputs();
 
     // Dispose of TextEditingControllers
-    namaKaryawanC.dispose();
+    idKaryawanC.dispose();
     tanggalDatangController.dispose();
     tanggalSelesaiController.dispose();
     beratLaundryController.dispose();
@@ -72,7 +72,7 @@ class AddtransaksiController extends GetxController {
   RxString statusCucian = 'diproses'.obs;
   RxString statusPembayaran = 'belum_dibayar'.obs;
   RxBool isLoading = false.obs;
-  TextEditingController namaKaryawanC = TextEditingController();
+  TextEditingController idKaryawanC = TextEditingController();
   TextEditingController tanggalDatangController = TextEditingController();
   TextEditingController tanggalSelesaiController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
@@ -119,10 +119,23 @@ class AddtransaksiController extends GetxController {
   }
 
   Future<void> getDataKaryawan() async {
-    List<dynamic> res =
-        await client.from("user").select().match({"uid": client.auth.currentUser!.id});
-    Map<String, dynamic> user = (res).first as Map<String, dynamic>;
-    namaKaryawanC.text = user["nama"];
+    try {
+      List<dynamic> res =
+          await client.from("user").select().match({"uid": client.auth.currentUser!.id});
+
+      if (res.isNotEmpty) {
+        Map<String, dynamic> user = res.first as Map<String, dynamic>;
+        idKaryawanC.text = user["id_user"].toString();
+      } else {
+        if (kDebugMode) {
+          print("Data not found for current user ID");
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error fetching data: $e");
+      }
+    }
   }
 
   int getNumericValueFromKembalian() {
@@ -131,9 +144,7 @@ class AddtransaksiController extends GetxController {
   }
 
   Future<void> addTransaksi() async {
-    if (namaKaryawanC.text.isNotEmpty &&
-        beratLaundryController.text.isNotEmpty &&
-        hargaTotalController.text.isNotEmpty) {
+    if (beratLaundryController.text.isNotEmpty && hargaTotalController.text.isNotEmpty) {
       isLoading.value = true;
 
       String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
@@ -141,9 +152,10 @@ class AddtransaksiController extends GetxController {
 
       try {
         var dataTransaksi = {
-          "nama_karyawan_masuk": namaKaryawanC.text,
-          "tanggal_datang": formatDate(tanggalDatangController.text).toString(),
-          "tanggal_selesai": formatDate(tanggalSelesaiController.text).toString(),
+          "id_karyawan_masuk": idKaryawanC.text.toString(),
+          "tanggal_datang": formatDateWithCurrentTime(tanggalDatangController.text).toString(),
+          "tanggal_selesai":
+              formatDateWithCurrentTime(tanggalSelesaiController.text).toString(),
           "tanggal_diambil": null,
           "berat_laundry": double.tryParse(beratLaundryController.text),
           "total_biaya":
@@ -156,7 +168,7 @@ class AddtransaksiController extends GetxController {
           "kembalian": getNumericValueFromKembalian(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
-          "created_at": DateTime.now().toString(),
+          "created_at": DateTime.now().toIso8601String(),
           "is_hidden": false,
         };
 
@@ -191,10 +203,22 @@ class AddtransaksiController extends GetxController {
         );
       } catch (e) {
         isLoading.value = false;
-        Get.snackbar("ERROR", e.toString());
+        Get.snackbar(
+          'ERROR',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
       }
     } else {
-      Get.snackbar("ERROR", "Seluruh data harus terisi!");
+      Get.snackbar(
+        'ERROR',
+        "Seluruh data harus terisi!",
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
     }
     isLoading.value = false;
     refresh();
@@ -327,6 +351,23 @@ class AddtransaksiController extends GetxController {
     if (kDebugMode) {
       print(
           "Cleaned Input: $cleanedInput, Nominal Harga: $formattedNominal, Total Biaya: $totalBiaya, Kembalian: $kembalian");
+    }
+  }
+
+  String formatDateWithCurrentTime(String date) {
+    try {
+      // Get current date and time
+      DateTime now = DateTime.now();
+
+      // Format the date with current time
+      String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+      return formattedDate;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error formatting date with current time: $e");
+      }
+      return "";
     }
   }
 

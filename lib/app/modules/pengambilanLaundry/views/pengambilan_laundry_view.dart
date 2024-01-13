@@ -10,15 +10,6 @@ import '../controllers/pengambilan_laundry_controller.dart';
 class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
   PengambilanLaundryView({Key? key}) : super(key: key);
 
-  // In the method that navigates to the PengambilanLaundryPage
-  void navigateBack() {
-    // Clear input data before navigating back
-    controller.clearInputs();
-
-    // Navigate back
-    Get.back();
-  }
-
   Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -166,6 +157,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           }
                           if (controller.isUpdateDataLoading.isFalse) {
                             controller.updateDateFieldVisibility();
+                            controller.update();
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -188,7 +180,9 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           const SizedBox(height: 20),
                           const Text('Update Data Dibawah ini!'),
                           if (controller.statusCucianController.text.toString() ==
-                              'Diproses') ...[
+                                  'Diproses' &&
+                              controller.statusPembayaranController.text.toString() ==
+                                  "Belum Dibayar") ...[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -268,6 +262,123 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                     )),
                               ],
                             ),
+                            const SizedBox(height: 20),
+                            Obx(() => ElevatedButton(
+                                  onPressed: () {
+                                    if (controller.isKirimLoading.isFalse) {
+                                      controller.updateTransaksi();
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(400, 40),
+                                    foregroundColor: Colors.black,
+                                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                                  ),
+                                  child: Text(
+                                    controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                )),
+                          ] else if (controller.statusCucianController.text.toString() ==
+                                  'Diproses' &&
+                              controller.statusPembayaranController.text.toString() ==
+                                  "Sudah Dibayar") ...[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Opsi "Diproses"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diproses'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diproses'
+                                              ? Colors.blue[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diproses'
+                                                ? Colors.blue
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.hourglass_empty, color: Colors.blue),
+                                            Text('Diproses'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+
+                                // Opsi "Selesai"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'selesai'
+                                              ? Colors.green[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'selesai'
+                                                ? Colors.green
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.check_circle_outline,
+                                                color: Colors.green),
+                                            Text('Selesai'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                                // Opsi "Diambil"
+                                Obx(() => GestureDetector(
+                                      onTap: () => controller.setStatusCucian('diambil'),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: controller.statusCucian.value == 'diambil'
+                                              ? Colors.orange[100]
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                            color: controller.statusCucian.value == 'diambil'
+                                                ? Colors.orange
+                                                : Colors.transparent,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Column(
+                                          children: [
+                                            Icon(Icons.done_all, color: Colors.orange),
+                                            Text('Diambil'),
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Obx(() => ElevatedButton(
+                                  onPressed: () {
+                                    if (controller.isKirimLoading.isFalse) {
+                                      controller.updateTransaksi();
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(400, 40),
+                                    foregroundColor: Colors.black,
+                                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                                  ),
+                                  child: Text(
+                                    controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                )),
                           ] else if (controller.statusCucianController.text.toString() ==
                                   'Selesai' &&
                               controller.statusPembayaranController.text.toString() ==
@@ -468,6 +579,23 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                     )),
                               ],
                             ),
+                            const SizedBox(height: 20),
+                            Obx(() => ElevatedButton(
+                                  onPressed: () {
+                                    if (controller.isKirimLoading.isFalse) {
+                                      controller.updateTransaksi();
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(400, 40),
+                                    foregroundColor: Colors.black,
+                                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                                  ),
+                                  child: Text(
+                                    controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                )),
                           ] else if (controller.statusCucianController.text.toString() ==
                                   'Selesai' &&
                               controller.statusPembayaranController.text.toString() ==
@@ -572,27 +700,28 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                         .tanggalDiambilController); // Call your date picker function
                               },
                             ),
+                            const SizedBox(height: 20),
+                            Obx(() => ElevatedButton(
+                                  onPressed: () {
+                                    if (controller.isKirimLoading.isFalse) {
+                                      controller.updateTransaksi();
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(400, 40),
+                                    foregroundColor: Colors.black,
+                                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                                  ),
+                                  child: Text(
+                                    controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                )),
                           ],
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Obx(() => ElevatedButton(
-                        onPressed: () {
-                          if (controller.isKirimLoading.isFalse) {
-                            controller.updateTransaksi();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: const Color(0xFF22c55e), // Warna teks
-                        ),
-                        child: Text(
-                          controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      )),
                 ],
               );
             }));
