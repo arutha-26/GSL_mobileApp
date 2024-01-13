@@ -30,7 +30,7 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
                   height: 250,
                 ),
                 const SizedBox(height: 15),
-                _buildTextField('ID Pengguna', 'id', userData),
+                _buildTextField('ID Pengguna', 'id_user', userData),
                 _buildTextField('Role Pengguna', 'role', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Nama Pengguna', 'nama', userData),
@@ -39,7 +39,7 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
                 const SizedBox(height: 15),
                 _buildTextField('Kategori Pengguna', 'kategori', userData),
                 const SizedBox(height: 15),
-                _buildTextField('Nomor Pengguna', 'phone', userData),
+                _buildTextField('Nomor Pengguna', 'no_telp', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Alamat Pengguna', 'alamat', userData),
                 const SizedBox(height: 25),
@@ -53,7 +53,7 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: const Color(0xFF22c55e),
+                    backgroundColor: Colors.greenAccent,
                     minimumSize: const Size(150, 48),
                   ),
                   child: controller.isLoading.value
@@ -63,7 +63,7 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
                       : const Text(
                           'Update Data',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

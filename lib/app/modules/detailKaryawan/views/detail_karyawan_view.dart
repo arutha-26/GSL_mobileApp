@@ -50,7 +50,7 @@ class DetailKaryawanView extends GetView<DetailKaryawanController> {
               ),
               child: ListView(
                 shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(5),
                 children: [
                   Image.asset(
@@ -59,14 +59,14 @@ class DetailKaryawanView extends GetView<DetailKaryawanController> {
                     height: 250,
                   ),
                   const SizedBox(height: 5),
-                  TextRow(label: 'ID Pengguna', value: user['id']?.toString() ?? '-'),
+                  TextRow(label: 'ID Pengguna', value: user['id_user']?.toString() ?? '-'),
                   TextRow(label: 'Role Pengguna', value: user['role']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Nama Pengguna', value: user['nama']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Email Pengguna', value: user['email']?.toString() ?? '-'),
                   const SizedBox(height: 5),
-                  TextRow(label: 'Nomor Pengguna', value: '+62${user['phone']}' ?? '-'),
+                  TextRow(label: 'Nomor Pengguna', value: '${user['no_telp']}' ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(
                     label: 'Kategori Pengguna',
@@ -90,13 +90,13 @@ class DetailKaryawanView extends GetView<DetailKaryawanController> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.lightBlue,
+                      primary: Colors.greenAccent,
                       minimumSize: const Size(150, 48),
                     ),
                     child: const Text(
                       'Update Data',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black87,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

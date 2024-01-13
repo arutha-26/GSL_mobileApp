@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class UpdateDataPelangganController extends GetxController {
-
   RxBool isLoading = false.obs;
   RxMap<String, dynamic> updatedUserData = <String, dynamic>{}.obs;
   SupabaseClient client = Supabase.instance.client;
@@ -16,12 +15,12 @@ class UpdateDataPelangganController extends GetxController {
       print('Update button pressed');
     }
     try {
-      if (userData['id'] != null) {
+      if (userData['id_user'] != null) {
         isLoading.value = true;
 
         // Prepare the update fields
         Map<String, dynamic> updateFields = {
-          "phone": updatedUserData['phone'] ?? userData['phone'],
+          "no_telp": updatedUserData['no_telp'] ?? userData['no_telp'],
           "kategori": updatedUserData['kategori'] ?? userData['kategori'],
           "alamat": updatedUserData['alamat'] ?? userData['alamat'],
           "is_active": updatedUserData['is_active'] ?? userData['is_active'],
@@ -31,7 +30,7 @@ class UpdateDataPelangganController extends GetxController {
         var response = await client
             .from("user")
             .update(updateFields)
-            .match({"id": userData['id']}).execute();
+            .match({"id_user": userData['id_user']}).execute();
 
         isLoading.value = false; // Reset the loading state
 
@@ -43,7 +42,9 @@ class UpdateDataPelangganController extends GetxController {
           );
 
           // Log the updated data to the console
-          print('Updated data: $updatedUserData');
+          if (kDebugMode) {
+            print('Updated data: $updatedUserData');
+          }
 
           // Navigate back to the data pelanggan page
           Get.offAndToNamed(Routes.DATAPELANGGAN);

@@ -59,13 +59,13 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                     height: 250,
                   ),
                   const SizedBox(height: 5),
-                  TextRow(label: 'ID User', value: user['id']?.toString() ?? '-'),
+                  TextRow(label: 'ID User', value: user['id_user']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Nama Pelanggan', value: user['nama']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Email Pelanggan', value: user['email']?.toString() ?? '-'),
                   const SizedBox(height: 5),
-                  TextRow(label: 'Nomor Pelanggan', value: '+62${user['phone']}' ?? '-'),
+                  TextRow(label: 'Nomor Pelanggan', value: '${user['no_telp']}' ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(
                     label: 'Kategori Pelanggan',
@@ -84,13 +84,13 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.lightBlue,
+                      backgroundColor: Colors.greenAccent,
                       minimumSize: const Size(150, 48),
                     ),
                     child: const Text(
                       'Update Data',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black87,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

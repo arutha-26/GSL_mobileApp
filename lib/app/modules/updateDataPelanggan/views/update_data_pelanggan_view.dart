@@ -30,13 +30,13 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
                   height: 250,
                 ),
                 const SizedBox(height: 15),
-                _buildTextField('ID Pelanggan', 'id', userData),
+                _buildTextField('ID Pelanggan', 'id_user', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Nama Pelanggan', 'nama', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Email Pelanggan', 'email', userData),
                 const SizedBox(height: 15),
-                _buildTextField('Nomor Pelanggan', 'phone', userData),
+                _buildTextField('Nomor Pelanggan', 'no_telp', userData),
                 const SizedBox(height: 15),
                 _buildDropdownField('Kategori Pelanggan', 'kategori', userData),
                 const SizedBox(height: 15),
@@ -52,7 +52,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                    backgroundColor: Colors.greenAccent, // Warna teks
                     minimumSize: const Size(150, 48),
                   ),
                   child: controller.isLoading.value
@@ -62,7 +62,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
                       : const Text(
                           'Update Data',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

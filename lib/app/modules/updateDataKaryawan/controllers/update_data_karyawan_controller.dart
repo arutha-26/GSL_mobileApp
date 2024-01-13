@@ -11,14 +11,16 @@ class UpdateDataKaryawanController extends GetxController {
   SupabaseClient client = Supabase.instance.client;
 
   Future<void> updateUserData(Map<String, dynamic> userData) async {
-    print('Update button pressed');
+    if (kDebugMode) {
+      print('Update button pressed');
+    }
     try {
-      if (userData['id'] != null) {
+      if (userData['id_user'] != null) {
         isLoading.value = true;
 
         // Prepare the update fields
         Map<String, dynamic> updateFields = {
-          "phone": updatedUserData['phone'] ?? userData['phone'],
+          "no_telp": updatedUserData['no_telp'] ?? userData['no_telp'],
           "alamat": updatedUserData['alamat'] ?? userData['alamat'],
           "is_active": updatedUserData['is_active'] ?? userData['is_active'],
           "edit_at": DateTime.now().toString(),
@@ -27,7 +29,7 @@ class UpdateDataKaryawanController extends GetxController {
         var response = await client
             .from("user")
             .update(updateFields)
-            .match({"id": userData['id']}).execute();
+            .match({"id_user": userData['id_user']}).execute();
 
         isLoading.value = false; // Reset the loading state
 

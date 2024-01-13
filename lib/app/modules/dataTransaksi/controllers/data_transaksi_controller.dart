@@ -31,7 +31,7 @@ class DataTransaksiController extends GetxController {
       if (response != null && response.data is List) {
         data.value = (response.data as List)
             .map<Map<String, dynamic>>((item) {
-              final editAt = DateTime.parse(item['tanggal_datang'] as String);
+              final editAt = DateTime.parse(item['tanggal_datang']);
               final formattedDate = '${editAt.day}-${editAt.month}-${editAt.year}';
               final berat = (item['berat_laundry'] as num);
               final formattedBerat = '$berat Kg';
@@ -39,9 +39,7 @@ class DataTransaksiController extends GetxController {
               NumberFormat currencyFormatter =
                   NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
               final formatHarga = currencyFormatter.format(harga);
-
-              final nomor = (item['nomor_pelanggan'] as String);
-              final formattedNomor = '+62$nomor';
+              final nomor = (item['no_telp'] as String);
               final cucian = (item['status_cucian'] as String);
               final formattedCucian = cucian.capitalizeFirst;
               final statusPembayaran = item['status_pembayaran'] as String;
@@ -49,8 +47,8 @@ class DataTransaksiController extends GetxController {
                   statusPembayaran == 'sudah_dibayar' ? 'Sudah Dibayar' : 'Belum Dibayar';
 
               return {
-                'transaksi_id': item['transaksi_id'],
-                'nama_pelanggan': item['nama_pelanggan'],
+                'id_transaksi': item['id_transaksi'],
+                // 'nama': item['nama'],
                 'total_biaya': formatHarga,
                 'tanggal_datang': formattedDate,
               };
@@ -62,7 +60,7 @@ class DataTransaksiController extends GetxController {
 
         final List<Map<String, dynamic>> newData = [];
 
-        final itemsPerPage = 10;
+        const itemsPerPage = 10;
         final startIdx = (page - 1) * itemsPerPage;
 
         if (startIdx < data.length) {
@@ -98,11 +96,11 @@ class DataTransaksiController extends GetxController {
   }
 
   final Map<String, String> columnNames = {
-    'transaksi_id': 'ID',
+    'id_transaksi': 'Id Transaksi',
     'nama_pelanggan': 'Nama Pelanggan',
     'nomor_pelanggan': 'Nomor Pelanggan',
     'kategori_pelanggan': 'Kategori Pelanggan',
-    'nama_karyawan_masuk': 'Nama Karyawan Penerima',
+    'id_karyawan_masuk': 'Id Karyawan Penerima',
     'metode_laundry': 'Metode Laundry',
     'layanan_laundry': 'Layanan Laundry',
     'berat_laundry': 'Berat Laundry',

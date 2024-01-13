@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -10,11 +11,9 @@ class DetailKaryawanController extends GetxController {
 
   Future<Map<String, dynamic>> getdatapelanggan(Map<String, dynamic> userData) async {
     try {
-      if (userData['id'] != null) {
-        var response = await client
-            .from("user")
-            .select()
-            .match({"id": userData['id'].toString()}) // Convert to string if necessary
+      if (userData['id_user'] != null) {
+        var response = await client.from("user").select().match(
+                {"id_user": userData['id_user'].toString()}) // Convert to string if necessary
             .execute();
 
         if (response.status == 200 && response.data != null) {
@@ -25,7 +24,9 @@ class DetailKaryawanController extends GetxController {
         }
       }
     } catch (error) {
-      print('Error fetching user data: $error');
+      if (kDebugMode) {
+        print('Error fetching user data: $error');
+      }
     }
     return {}; // Return an empty map in case of an error or missing data
   }
@@ -34,7 +35,7 @@ class DetailKaryawanController extends GetxController {
     try {
       var response = await client
           .from("user")
-          .update({"is_active": newStatus}).match({"id": userId}).execute();
+          .update({"is_active": newStatus}).match({"id_user": userId}).execute();
 
       if (response.status == 200 || response.status == 201 || response.status == 204) {
         // Data updated successfully
@@ -42,11 +43,15 @@ class DetailKaryawanController extends GetxController {
         Get.offNamed(Routes.DATA_KARYAWAN);
       } else {
         // Handle the case when the update fails
-        print('Failed to update user data');
+        if (kDebugMode) {
+          print('Failed to update user data');
+        }
       }
     } catch (error) {
       // Handle errors
-      print('Error updating user data: $error');
+      if (kDebugMode) {
+        print('Error updating user data: $error');
+      }
     }
   }
 }

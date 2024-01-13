@@ -62,19 +62,20 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             }
 
             List<String> hiddenColumns = [
-              'transaksi_id',
+              'id_transaksi',
               'tanggal_selesai',
+              'id_user',
               'created_at',
               'is_hidden',
               'tanggal_diambil',
-              'nama_karyawan_keluar',
+              'id_karyawan_keluar',
               'status_cucian',
               'status_pembayaran',
               'berat_laundry',
               'layanan_laundry',
               'metode_laundry',
               'kategori_pelanggan',
-              'nama_karyawan_masuk',
+              'id_karyawan_masuk',
               'nomor_pelanggan'
             ];
 
@@ -83,7 +84,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               ...controller.data[0].keys
                   .where((key) =>
                       !hiddenColumns.contains(key) &&
-                      key != 'id') // Exclude 'id' from being displayed
+                      key != 'id_transaksi') // Exclude 'id' from being displayed
                   .map((key) => DataColumn(
                         label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
                       ))
