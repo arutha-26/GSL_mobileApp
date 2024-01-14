@@ -48,8 +48,8 @@ class UpdateDataHargaView extends GetView<UpdateDataHargaController> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
-                    backgroundColor: const Color(0xFF22c55e),
-                    minimumSize: const Size(150, 48),
+                    backgroundColor: Colors.greenAccent,
+                    minimumSize: const Size(350, 45),
                   ),
                   child: controller.isLoading.value
                       ? const CircularProgressIndicator(

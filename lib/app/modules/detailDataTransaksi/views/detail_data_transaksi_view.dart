@@ -1,14 +1,6 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 
 import '../controllers/detail_data_transaksi_controller.dart';
 
@@ -171,24 +163,31 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
               ),
             ),
             ElevatedButton(
-                onPressed: () async {
-                  if (controller.getDataTransaksi(dataPanel).isBlank == false) {
-                    await generateAndPrintInvoicePDF(dataPanel);
-                  } else {
-                    // Show a message that there's no data to generate an invoice
-                    // You can customize this based on your requirements
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('No data available to generate an invoice.'),
-                      ),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: const Color(0xFF22c55e),
-                ),
-                child: const Text('Cetak Invoice')),
+              onPressed: () async {
+                // Await the result of getDataTransaksi
+                Map<String, dynamic> data = await controller.getDataTransaksi(dataPanel);
+
+                // Check if data is not blank
+                if (data.isNotEmpty) {
+                  // Now that you have the data, call generateAndOpenInvoicePDF
+                  await controller.generateAndOpenInvoicePDF(data);
+                } else {
+                  Get.snackbar(
+                    'Error',
+                    'Data Tidak Ditemukan, Gagal Mencetak Invoice!',
+                    snackPosition: SnackPosition.BOTTOM,
+                    colorText: Colors.white,
+                    backgroundColor: Colors.red,
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.greenAccent,
+                minimumSize: const Size(350, 45),
+              ),
+              child: const Text('Cetak Invoice'),
+            )
           ]);
         },
       ),
@@ -233,142 +232,4 @@ class TextRow extends StatelessWidget {
       ],
     );
   }
-}
-
-Future<void> generateAndOpenInvoicePDF(data) async {
-  final randomInvoiceNumber = Random().nextInt(99999) + 10000;
-  // Generate PDF
-  final pdf = pw.Document();
-
-  // Add header with company information and invoice number
-  pdf.addPage(
-    pw.MultiPage(
-      pageFormat: PdfPageFormat.roll80,
-      build: (context) => [
-        pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text('Green Spirit Laundry'),
-                pw.Text(
-                  'Jl. Pura Masuka Gg. Jepun, Ungasan,\nKec. Kuta Sel., Kabupaten Badung, Bali 80361',
-                ),
-                pw.Text('Telp (+6281 23850 7062)'),
-              ],
-            ),
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.end,
-              children: [
-                pw.Header(
-                  level: 0,
-                  child: pw.Text('Id Invoice: ${data['id_transaksi']?.toString() ?? '-'}'),
-                ),
-              ],
-            ),
-          ],
-        ),
-        pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.end,
-          crossAxisAlignment: pw.CrossAxisAlignment.end,
-          children: [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.end,
-              children: [
-                pw.Text(
-                    'Nama Pelanggan: ${data['id_user']?.toString().capitalizeFirst ?? '-'}'),
-                pw.Text(
-                  'Alamat Pelanggan: ${data['id_user']?.toString() ?? '-'}',
-                ),
-                pw.Text('Telp (${data['id_user']?.toString() ?? '-'}'),
-              ],
-            ),
-          ],
-        ),
-        pw.SizedBox(height: 20),
-        pw.Column(
-          children: [
-            pw.Text('Id Transaksi', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['id_transaksi']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Tanggal Datang', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['tanggal_datang']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Metode Laundry', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['metode_laundry']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Layanan Laundry', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['layanan_laundry']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Berat Laundry', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['berat_laundry']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Status Cucian', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['statu_cucian']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Status Pembayaran', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['status_pembayaran']?.toString().capitalizeFirst ?? '-'),
-            pw.Text('Total Biaya', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text(data['total_biaya']?.toString().capitalizeFirst ?? '-'),
-          ],
-        ),
-        pw.SizedBox(height: 20),
-        pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: pw.CrossAxisAlignment.center,
-          children: [
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Text(
-                  'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                  '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                  'CP: Green Spirit Laundry - +62897913414121121',
-                ),
-              ],
-            ),
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.end,
-              children: [
-                pw.Text('Tanggal: ${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
-                pw.Text(data['id_user']?.toString().capitalizeFirst ?? '-'),
-                pw.SizedBox(height: 50),
-                pw.Text('Karyawan Green Spirit Laundry'),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-
-  // Save PDF to a temporary file
-  final output = await getTemporaryDirectory();
-  final file = File('${output.path}/invoice.pdf');
-  await file.writeAsBytes(await pdf.save());
-
-  // Open the generated PDF file
-  OpenFile.open(file.path);
-}
-
-Future<void> generateAndPrintInvoicePDF(data) async {
-  final randomInvoiceNumber = Random().nextInt(99999) + 10000;
-
-  Printing.layoutPdf(
-    onLayout: (PdfPageFormat format) async {
-      return await Printing.convertHtml(
-        format: format,
-        html: '''
-          <html>
-            <head>
-              <style>
-                /* Add your custom styles here */
-              </style>
-            </head>
-            <body>
-              <!-- Your HTML content here -->
-              <h1>Green Spirit Laundry</h1>
-              <!-- ... your existing content ... -->
-            </body>
-          </html>
-        ''',
-      );
-    },
-  );
 }

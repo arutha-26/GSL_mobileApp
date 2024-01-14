@@ -65,6 +65,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
 
             List<String> hiddenColumns = [
               'nomor_urut',
+              'alamat',
               'id_transaksi',
               'tanggal_selesai',
               'id_user',
