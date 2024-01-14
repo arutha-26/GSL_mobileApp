@@ -22,7 +22,8 @@ class DataTransaksiController extends GetxController {
 
       final response = await client
           .from('transaksi')
-          .select('*')
+          .select(
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
           .lte('tanggal_datang', '${endDate.value.toLocal().add(const Duration(days: 1))}')
           .order('tanggal_datang', ascending: true)
@@ -31,27 +32,48 @@ class DataTransaksiController extends GetxController {
       if (response != null && response.data is List) {
         data.value = (response.data as List)
             .map<Map<String, dynamic>>((item) {
-              final editAt = DateTime.parse(item['tanggal_datang']);
-              final formattedDate = '${editAt.day}-${editAt.month}-${editAt.year}';
-              final berat = (item['berat_laundry'] as num);
-              final formattedBerat = '$berat Kg';
-              final harga = (item['total_biaya'] as num);
-              NumberFormat currencyFormatter =
-                  NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
-              final formatHarga = currencyFormatter.format(harga);
-              final nomor = (item['no_telp'] as String);
-              final cucian = (item['status_cucian'] as String);
-              final formattedCucian = cucian.capitalizeFirst;
-              final statusPembayaran = item['status_pembayaran'] as String;
-              final formattedStatusP =
-                  statusPembayaran == 'sudah_dibayar' ? 'Sudah Dibayar' : 'Belum Dibayar';
+              try {
+                final editAt = DateTime.parse(item['tanggal_datang']);
+                final formattedDate = '${editAt.day}-${editAt.month}-${editAt.year}';
+                final berat = (item['berat_laundry'] as num?) ?? 0;
+                final formattedBerat = '$berat Kg';
+                final harga = (item['total_biaya'] as num?) ?? 0;
+                NumberFormat currencyFormatter =
+                    NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
+                final formatHarga = currencyFormatter.format(harga);
+                final cucian = (item['status_cucian'] as String?) ?? 'N/A';
+                final formattedCucian = cucian.capitalizeFirst;
+                final statusPembayaran = item['status_pembayaran'] as String? ?? 'N/A';
+                final formattedStatusP =
+                    statusPembayaran == 'sudah_dibayar' ? 'Sudah Dibayar' : 'Belum Dibayar';
+                final nama = item['id_user']['nama']?.toString().capitalizeFirst ?? '';
+                final noTelp = item['id_user']['no_telp']?.toString() ?? '';
+                final alamat = item['id_user']['alamat']?.toString() ?? '';
+                final idKM = item['id_karyawan_masuk']?.toString() ?? '';
+                final idKK = item['id_karyawan_keluar']?.toString() ?? '';
 
-              return {
-                'id_transaksi': item['id_transaksi'],
-                // 'nama': item['nama'],
-                'total_biaya': formatHarga,
-                'tanggal_datang': formattedDate,
-              };
+                return {
+                  'nama': nama,
+                  'no_telp': noTelp,
+                  'alamat': alamat,
+                  'id_transaksi': item['id_transaksi'],
+                  'total_biaya': formatHarga,
+                  'tanggal_datang': formattedDate,
+                  'berat_laundry': formattedBerat,
+                  'status_cucian': formattedCucian,
+                  'status_pembayaran': formattedStatusP,
+                  'id_karyawan_masuk': idKM.toString(),
+                  'id_karyawan_keluar': idKK.toString(),
+                };
+              } catch (e) {
+                if (kDebugMode) {
+                  print('Error processing item: $item');
+                }
+                if (kDebugMode) {
+                  print('Error details: $e');
+                }
+                return {}; // Return an empty map for problematic items
+              }
             })
             .where((item) => item.isNotEmpty)
             .toList();

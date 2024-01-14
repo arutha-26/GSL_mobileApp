@@ -8,6 +8,8 @@ import '../controllers/data_transaksi_controller.dart';
 class DataTransaksiView extends GetView<DataTransaksiController> {
   DataTransaksiView({super.key});
 
+  final ScrollController _scrollController = ScrollController();
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
@@ -62,6 +64,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             }
 
             List<String> hiddenColumns = [
+              'nomor_urut',
               'id_transaksi',
               'tanggal_selesai',
               'id_user',
@@ -76,7 +79,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               'metode_laundry',
               'kategori_pelanggan',
               'id_karyawan_masuk',
-              'nomor_pelanggan'
+              'no_telp'
             ];
 
             List<DataColumn> columns = [
@@ -140,6 +143,8 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Scrollbar(
+                controller: _scrollController,
+                // Provide the ScrollController here
                 thickness: 5,
                 radius: const Radius.circular(20),
                 scrollbarOrientation: ScrollbarOrientation.bottom,
@@ -147,6 +152,8 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                 trackVisibility: true,
                 interactive: true,
                 child: SingleChildScrollView(
+                  controller: _scrollController,
+                  // Pass the same ScrollController to your scrollable widget
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
                     columns: columns,
