@@ -16,7 +16,7 @@ class StatusCucianTransaksiController extends GetxController {
 
     filteredData.assignAll(
       data.where((user) =>
-          user['nama_pelanggan'].toString().toLowerCase().contains(query.toLowerCase())),
+          user['id_user']['nama'].toString().toLowerCase().contains(query.toLowerCase())),
     );
   }
 
@@ -44,8 +44,11 @@ class StatusCucianTransaksiController extends GetxController {
   Future<void> fetchData() async {
     try {
       isLoading.value = true;
-      final response =
-          await client.from('transaksi').select('*').eq('status_cucian', 'diproses');
+      final response = await client
+          .from('transaksi')
+          .select(
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
+          .eq('status_cucian', 'diproses');
       isLoading.value = false;
 
       if (response != null && response is List) {

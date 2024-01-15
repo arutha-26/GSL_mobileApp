@@ -176,7 +176,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
 
             List<String> dates = List.generate(transactionsData.length, (index) {
               DateTime date = firstDayOfSelectedMonth.add(Duration(days: index));
-              return DateFormat('dd-MM-yy').format(date); // Format as 'Day-Month'
+              return DateFormat('dd').format(date); // Format as 'Day-Month'
             });
 
             return SizedBox(

@@ -91,7 +91,7 @@ class StatusCucianTransaksiView extends GetView<StatusCucianTransaksiController>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Id Transaksi: ${userData['transaksi_id']}',
+                                      'Id Transaksi: ${userData['id_transaksi']}',
                                       style: TextStyle(
                                         color: userData['is_active'] == true
                                             ? Colors.black
@@ -102,7 +102,7 @@ class StatusCucianTransaksiView extends GetView<StatusCucianTransaksiController>
                                       ),
                                     ),
                                     Text(
-                                      'Nama: ${userData['nama_pelanggan']}',
+                                      'Nama: ${userData['id_user']['nama']}',
                                       style: TextStyle(
                                         color: userData['is_active'] == true
                                             ? Colors.black
@@ -113,7 +113,7 @@ class StatusCucianTransaksiView extends GetView<StatusCucianTransaksiController>
                                       ),
                                     ),
                                     Text(
-                                      'Status Cucian: ${userData['status_cucian']}',
+                                      'Status Cucian: ${userData['status_cucian'].toString().capitalizeFirst}',
                                       style: TextStyle(
                                         color: userData['is_active'] == true
                                             ? Colors.black

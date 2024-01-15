@@ -39,7 +39,7 @@ class BarChartSample3State extends State<BarChartSample3> {
               barGroups: _createBarGroups(widget.transactionsPerDay),
               gridData: const FlGridData(show: false),
               alignment: BarChartAlignment.spaceAround,
-              maxY: 35,
+              maxY: 150,
               backgroundColor: const Color(0xffc6ded1),
             ),
           ),

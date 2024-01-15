@@ -125,7 +125,7 @@ class DashboardOwnerController extends GetxController {
 
   Future<void> fetchDataTodayTransactions() async {
     try {
-      DateTime now = DateTime.now().toUtc();
+      DateTime now = DateTime.now();
       String startDate = "${DateFormat('yyyy-MM-dd').format(now)}T00:00:00";
       String endDate = "${DateFormat('yyyy-MM-dd').format(now)}T23:59:59";
 

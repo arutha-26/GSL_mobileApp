@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/transaksi_hari_ini_controller.dart';
 
@@ -67,12 +68,16 @@ class TransaksiHariIniView extends GetView<TransaksiHariIniController> {
                   itemCount: controller.filteredData.length,
                   itemBuilder: (context, index) {
                     var userData = controller.filteredData[index];
+
+                    String dateString = userData['tanggal_datang'];
+                    DateTime dateTime = DateTime.parse(dateString);
+
+                    String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
+
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: Card(
-                        color: userData['status_cucian'] == 'diproses'
-                            ? Colors.teal
-                            : Colors.greenAccent,
+                        color: Colors.greenAccent,
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(8.0),
                           title: Row(
@@ -91,7 +96,7 @@ class TransaksiHariIniView extends GetView<TransaksiHariIniController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Id Transaksi: ${userData['transaksi_id']}',
+                                      'Id Transaksi: ${userData['id_transaksi']}',
                                       style: TextStyle(
                                         color: userData['is_active'] == true
                                             ? Colors.black
@@ -102,7 +107,7 @@ class TransaksiHariIniView extends GetView<TransaksiHariIniController> {
                                       ),
                                     ),
                                     Text(
-                                      'Nama: ${userData['nama_pelanggan']}',
+                                      'Nama: ${userData['id_user']['nama']}',
                                       style: TextStyle(
                                         color: userData['is_active'] == true
                                             ? Colors.black
@@ -113,7 +118,7 @@ class TransaksiHariIniView extends GetView<TransaksiHariIniController> {
                                       ),
                                     ),
                                     Text(
-                                      'Tanggal Datang: ${userData['tanggal_datang']}',
+                                      'Tanggal Datang: $formattedDate',
                                       style: TextStyle(
                                         color: userData['is_active'] == true
                                             ? Colors.black
