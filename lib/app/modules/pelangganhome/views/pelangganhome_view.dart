@@ -181,9 +181,29 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
         Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
-        child: ListTile(
-          title: const Text('Status Cucian'),
-          subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Status Cucian'),
+            subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+          ),
         ),
       ),
     );
@@ -195,9 +215,29 @@ class PelangganhomeView extends GetView<PelangganhomeController> {
         Get.toNamed(Routes.PELANGGAN_TRANSAKSI);
       },
       child: Card(
-        child: ListTile(
-          title: const Text('Transaksi Hari Ini'),
-          subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Transaksi Hari Ini'),
+            subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+          ),
         ),
       ),
     );

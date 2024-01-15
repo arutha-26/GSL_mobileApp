@@ -77,7 +77,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        controller.nameC.text,
+                        controller.nameC.text.capitalizeFirst.toString(),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -133,7 +133,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.green), // Warna latar belakang tombol
+                          Colors.greenAccent), // Warna latar belakang tombol
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.black), // Warna teks tombol
                     ),

@@ -4,14 +4,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// TODO
-/*
-REBUILT DATABASE
-SELESAIKAN INI
-BUATKAN HISTORY NYA CARD WIDTH SESUAI LAYAR
-JOIN TABLE USER DAN TRANSAKSI
-*/
-
 class PelangganhomeController extends GetxController {
   SupabaseClient client = Supabase.instance.client;
 
@@ -51,9 +43,10 @@ class PelangganhomeController extends GetxController {
 
       final response = await client
           .from('transaksi')
-          .select('*')
+          .select(
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .eq('status_cucian', 'diproses')
-          .eq('nama_pelanggan', namaPelanggan)
+          .eq('id_user.nama', namaPelanggan)
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
@@ -109,9 +102,10 @@ class PelangganhomeController extends GetxController {
       if (namaPelanggan != null) {
         final response = await client
             .from('transaksi')
-            .select('*')
+            .select(
+                'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
             .eq('status_pembayaran', 'belum_dibayar')
-            .eq('nama_pelanggan', namaPelanggan)
+            .eq('id_user.nama', namaPelanggan)
             .execute();
 
         if (response.status == 200 && response.data != null && response.data is List) {
@@ -150,10 +144,11 @@ class PelangganhomeController extends GetxController {
 
       final response = await client
           .from('transaksi')
-          .select('*')
+          .select(
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .gte('tanggal_datang', startDate)
           .lte('tanggal_datang', endDate)
-          .eq('nama_pelanggan', namaPelanggan)
+          .eq('id_user.nama', namaPelanggan)
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
@@ -186,9 +181,10 @@ class PelangganhomeController extends GetxController {
 
       final response = await client
           .from('transaksi')
-          .select('*')
+          .select(
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .eq('status_pembayaran', 'sudah_dibayar')
-          .eq('nama_pelanggan', namaPelanggan)
+          .eq('id_user.nama', namaPelanggan)
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
@@ -217,9 +213,6 @@ class PelangganhomeController extends GetxController {
   }
 
   RxString userRole = RxString('');
-  RxInt selectedIndexOwner = 0.obs;
-  RxInt selectedIndexKaryawan = 0.obs;
-  RxInt selectedIndexPelanggan = 0.obs;
 
   Future<void> getUserRole() async {
     try {
@@ -233,7 +226,7 @@ class PelangganhomeController extends GetxController {
       }
 
       var response =
-      await client.from('user').select('role').eq('uid', uid).single().execute();
+          await client.from('user').select('role').eq('uid', uid).single().execute();
 
       if (response.data != null && response.data.isNotEmpty) {
         userRole.value = response.data['role'] as String? ?? '';

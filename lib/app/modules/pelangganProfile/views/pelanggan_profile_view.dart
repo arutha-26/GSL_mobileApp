@@ -3,14 +3,13 @@ import 'package:get/get.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
-import '../../../utils/bottom_navbar_karyawan.dart';
+import '../../../utils/bottom_navbar_pelanggan.dart';
 import '../controllers/pelanggan_profile_controller.dart';
 
 class PelangganProfileView extends GetView<PelangganProfileController> {
   PelangganProfileView({super.key});
 
   final authC = Get.find<AuthController>();
-  int tabNow = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +70,7 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        controller.nameC.text,
+                        controller.nameC.text.capitalizeFirst.toString(),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -127,7 +126,7 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.green), // Warna latar belakang tombol
+                          Colors.greenAccent), // Warna latar belakang tombol
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.black), // Warna teks tombol
                     ),
@@ -138,7 +137,7 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
             );
           }),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 1,
+        currentIndex: 2,
         onTap: (index) {
           // Handle navigation using Get
           switch (index) {
@@ -146,6 +145,9 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
               Get.offAllNamed(Routes.PELANGGANHOME);
               break;
             case 1:
+              Get.offAllNamed(Routes.PELANGGAN_DASBOARD);
+              break;
+            case 2:
               Get.offAllNamed(Routes.PELANGGAN_PROFILE);
               break;
             default:

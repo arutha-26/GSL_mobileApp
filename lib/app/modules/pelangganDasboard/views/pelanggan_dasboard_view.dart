@@ -30,7 +30,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
       body: Column(
         children: [
           // const Text(
-          //   'Selamat Datang di Green Spirit Laundry',
+          //   'Selamat Datang di greenAccent Spirit Laundry',
           //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           // ),
           // CarouselSlider(
@@ -82,7 +82,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                               ? 'Lunas'
                               : 'Belum Lunas';
                       // Determine card color based on IS_HIDDEN
-                      final cardColor = isHidden ? Colors.green[600] : Colors.red[400];
+                      final cardColor = isHidden ? Colors.greenAccent : Colors.redAccent;
 
                       return Card(
                         color: cardColor,
@@ -122,7 +122,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                           Text(
                                             'Tanggal Diambil: ${transaction['tanggal_diambil'] != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(transaction['tanggal_diambil'])) : '-'}',
                                             style: TextStyle(
-                                              color: cardColor == Colors.green
+                                              color: cardColor == Colors.greenAccent
                                                   ? Colors.black
                                                   : Colors.white,
                                             ),
@@ -131,10 +131,10 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        'ID Transaksi: ${transaction['transaksi_id']}',
+                                        'ID Transaksi: ${transaction['id_transaksi']}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: cardColor == Colors.green
+                                          color: cardColor == Colors.greenAccent
                                               ? Colors.black
                                               : Colors.white,
                                         ),
@@ -142,7 +142,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       Text(
                                         'Total Berat Laundry: ${transaction['berat_laundry']} kg',
                                         style: TextStyle(
-                                          color: cardColor == Colors.green
+                                          color: cardColor == Colors.greenAccent
                                               ? Colors.black
                                               : Colors.white,
                                         ),
@@ -150,7 +150,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       Text(
                                         'Total Biaya: Rp${NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0).format(transaction['total_biaya'] as int)}',
                                         style: TextStyle(
-                                          color: cardColor == Colors.green
+                                          color: cardColor == Colors.greenAccent
                                               ? Colors.black
                                               : Colors.white,
                                         ),
@@ -158,7 +158,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       Text(
                                         'Metode Pembayaran: ${transaction['metode_pembayaran']}',
                                         style: TextStyle(
-                                          color: cardColor == Colors.green
+                                          color: cardColor == Colors.greenAccent
                                               ? Colors.black
                                               : Colors.white,
                                         ),
@@ -166,7 +166,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       Text(
                                         'Status Pembayaran: $statusPembayaran',
                                         style: TextStyle(
-                                          color: cardColor == Colors.green
+                                          color: cardColor == Colors.greenAccent
                                               ? Colors.black
                                               : Colors.white,
                                         ),

@@ -158,7 +158,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      'ID Transaksi: ${transaction['transaksi_id']}',
+                                      'ID Transaksi: ${transaction['id_transaksi']}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: cardColor == Colors.green
@@ -167,7 +167,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                                       ),
                                     ),
                                     Text(
-                                      'Status Cucian: ${transaction['status_cucian']}',
+                                      'Status Cucian: ${transaction['status_cucian'].toString().capitalizeFirst}',
                                       style: TextStyle(
                                           color: cardColor == Colors.green
                                               ? Colors.black

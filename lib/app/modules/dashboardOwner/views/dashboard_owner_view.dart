@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:intl/intl.dart';
 
 import '../../../routes/app_pages.dart';
@@ -101,9 +102,29 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
         Get.toNamed(Routes.STATUS_CUCIAN_TRANSAKSI);
       },
       child: Card(
-        child: ListTile(
-          title: const Text('Status Cucian'),
-          subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Status Cucian'),
+            subtitle: Obx(() => Text('${controller.count.value} dalam proses')),
+          ),
         ),
       ),
     );
@@ -116,10 +137,29 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
         Get.offAllNamed(Routes.OWNERHOME);
       },
       child: Card(
-        color: Colors.redAccent,
-        child: ListTile(
-          title: const Text('Transaksi\nBelum Lunas'),
-          subtitle: Obx(() => Text('Rp${controller.formattedTotalDebt.value}')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Transaksi\nBelum Lunas'),
+            subtitle: Obx(() => Text('Rp${controller.formattedTotalDebt.value}')),
+          ),
         ),
       ),
     );
@@ -132,10 +172,29 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
         Get.offAllNamed(Routes.OWNERHOME);
       },
       child: Card(
-        color: Colors.greenAccent,
-        child: ListTile(
-          title: const Text('Transaksi\nLunas'),
-          subtitle: Obx(() => Text('Rp${controller.formattedTotalPaid.value}')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Transaksi\nLunas'),
+            subtitle: Obx(() => Text('Rp${controller.formattedTotalPaid.value}')),
+          ),
         ),
       ),
     );
@@ -148,9 +207,29 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
         Get.toNamed(Routes.TRANSAKSI_HARI_INI);
       },
       child: Card(
-        child: ListTile(
-          title: const Text('Transaksi Hari Ini'),
-          subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+        // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
+        color: Colors.white,
+        // Gunakan warna transparan karena LinearGradient akan menangani latar belakang
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 5.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0x000891b2).withOpacity(0.1),
+                const Color(0x004ade80).withOpacity(0.4),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: ListTile(
+            title: const Text('Transaksi Hari Ini'),
+            subtitle: Obx(() => Text('${controller.todayTransactionCount.value} transaksi')),
+          ),
         ),
       ),
     );
@@ -235,6 +314,73 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
           }),
         ),
       ],
+    );
+  }
+}
+
+class GlassButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String label;
+  final Color color;
+  final String iconPath;
+
+  GlassButton({
+    required this.onPressed,
+    required this.label,
+    required this.color,
+    required this.iconPath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassmorphicContainer(
+      width: double.infinity,
+      height: double.infinity,
+      borderRadius: 10,
+      blur: 10,
+      alignment: Alignment.center,
+      border: 2,
+      linearGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color(0x000891b2).withOpacity(0.1),
+          const Color(0x004ade80).withOpacity(0.4),
+        ],
+      ),
+      borderGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.greenAccent.withOpacity(0.1),
+          Colors.black12.withOpacity(0.4),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              iconPath,
+              height: 30,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 12, color: Colors.black),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

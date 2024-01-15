@@ -94,6 +94,8 @@ class LoginpageController extends GetxController {
     if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       isLoading.value = true;
       try {
+        emailC.text.toLowerCase();
+
         await client.auth.signInWithPassword(email: emailC.text, password: passwordC.text);
         isLoading.value = false;
 
