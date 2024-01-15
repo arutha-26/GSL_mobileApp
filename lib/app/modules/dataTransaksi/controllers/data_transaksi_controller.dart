@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,15 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DataTransaksiController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    getDataKaryawan();
+    if (kDebugMode) {
+      print('Nama Karyawan setelah getDataKaryawan(): ${namaKaryawanC.text}');
+    }
+  }
+
   String formatDate(String date) {
     try {
       // Assuming date is in YYYY-MM-DD format
@@ -37,6 +47,7 @@ class DataTransaksiController extends GetxController {
 
   RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
   RxInt currentPage = 1.obs;
+  TextEditingController namaKaryawanC = TextEditingController();
 
   Rx<DateTime> startDate = Rx(DateTime.now());
   Rx<DateTime> endDate = Rx(DateTime.now());
@@ -257,15 +268,35 @@ class DataTransaksiController extends GetxController {
     }
   }
 
+  Future<void> getDataKaryawan() async {
+    List<dynamic> res =
+        await client.from("user").select().match({"uid": client.auth.currentUser!.id});
+    Map<String, dynamic> user = (res).first as Map<String, dynamic>;
+    namaKaryawanC.text = user["nama"];
+  }
+
   Future<void> generateAndOpenInvoicePDF(List<Map<String, dynamic>> data) async {
     final randomInvoiceNumber = Random().nextInt(99999) + 10000;
+    await getDataKaryawan();
+    if (kDebugMode) {
+      print('Nama Karyawan setelah getDataKaryawan(): ${namaKaryawanC.text}');
+    }
+
+    final unpaidData =
+        data.where((item) => item['status_pembayaran'] == 'Belum Dibayar').toList();
+    final totalUnpaid = unpaidData.fold<double>(
+      0.0,
+      (total, item) => total + (double.tryParse(item['total_biaya'].toString()) ?? 0.0),
+    );
     // Generate PDF
     final pdf = pw.Document();
+    // Declare rowIndex inside the function
+    int rowIndex = 1;
 
     // Add header with company information and invoice number
     pdf.addPage(
       pw.MultiPage(
-        pageFormat: PdfPageFormat.a4.landscape,
+        pageFormat: PdfPageFormat.a3.landscape,
         build: (context) => [
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -284,61 +315,93 @@ class DataTransaksiController extends GetxController {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
-                  pw.Header(
-                    level: 0,
-                    child: pw.Text('Invoice Number: $randomInvoiceNumber'),
-                  ),
+                  pw.Text('Invoice Periode',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(
+                      '${formatDate(startDate.toString())} - ${formatDate(endDate.toString())}'),
                 ],
               ),
             ],
           ),
           pw.SizedBox(height: 20),
           pw.Table(
+            defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
+            // defaultColumnWidth: const pw.IntrinsicColumnWidth(),
+            columnWidths: {
+              0: const pw.FlexColumnWidth(1),
+              1: const pw.FlexColumnWidth(2),
+              2: const pw.FlexColumnWidth(2),
+              3: const pw.FlexColumnWidth(2),
+              4: const pw.FlexColumnWidth(2),
+              5: const pw.FlexColumnWidth(2),
+              6: const pw.FlexColumnWidth(2),
+              7: const pw.FlexColumnWidth(2),
+              8: const pw.FlexColumnWidth(2),
+              9: const pw.FlexColumnWidth(2),
+              10: const pw.FlexColumnWidth(2),
+            },
             border: pw.TableBorder.all(), // Add borders to the table
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text('Id Transaksi', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Nama Pelanggan',
+                  pw.Text('No.',
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Id\nTransaksi',
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Nama\nPelanggan',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   // pw.Text('Alamat Pelanggan',
                   //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('No Telp', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Tanggal Datang',
+                  pw.Text('No\nTelp',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Metode Laundry',
+                  pw.Text('Tanggal\nDatang',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Layanan Laundry',
+                  pw.Text('Metode\nLaundry',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Berat Laundry',
+                  pw.Text('Layanan\nLaundry',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Status Cucian',
+                  pw.Text('Berat\nLaundry',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Status Pembayaran',
+                  pw.Text('Status\nCucian',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Total Biaya', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Status\nPembayaran',
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Total\nBiaya',
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               for (var data in data)
+
+                // for (int index = 0; index < data.length; index++)
                 pw.TableRow(
                   // Apply red color for unpaid rows
-                  decoration: (data['status_pembayaran'] == 'belum_dibayar')
-                      ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFF0000))
+                  decoration: (data['status_pembayaran'] == 'Belum Dibayar')
+                      ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
                       : null,
                   children: [
-                    pw.Text('${data['id_transaksi']}'),
-                    pw.Text('${data['nama']}'),
+                    centeredText('${rowIndex++}'),
+                    centeredText('${data['id_transaksi']}'),
+                    centeredText('${data['nama']}'),
                     // pw.Text('${data['alamat']}'),
-                    pw.Text('${data['no_telp']}'),
-                    pw.Text(formatDate(data['tanggal_datang'])),
-                    pw.Text(data['metode_laundry']),
-                    pw.Text(data['layanan_laundry']),
-                    pw.Text('${data['berat_laundry']}Kg'),
-                    pw.Text(data['status_cucian'] ?? "Error Data"),
-                    pw.Text(data['status_pembayaran'] == 'sudah_dibayar'
-                        ? 'Sudah Dibayar'
-                        : 'Belum Dibayar'),
-                    pw.Text(formatCurrency(
+                    centeredText('${data['no_telp']}'),
+                    centeredText(formatDate(data['tanggal_datang'])),
+                    centeredText(data['metode_laundry']),
+                    centeredText(data['layanan_laundry']),
+                    centeredText('${data['berat_laundry']}'),
+                    centeredText(data['status_cucian'] ?? "Error Data"),
+                    centeredText(data['status_pembayaran']),
+                    centeredText(formatCurrency(
                         double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
                   ],
                 ),
@@ -352,24 +415,17 @@ class DataTransaksiController extends GetxController {
                   pw.Container(),
                   pw.Container(),
                   pw.Container(),
+                  pw.Container(),
+                  pw.Container(),
+                  pw.Container(),
                   pw.Container(
                     alignment: pw.Alignment.center,
                     child: pw.Text('Total\n(Belum Dibayar)',
+                        textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     width: 50, // Merge cells for the total label
                   ),
-                  pw.Text(
-                    formatCurrency(
-                      data
-                          .where((data) => data['status_pembayaran'] == 'belum_dibayar')
-                          .fold<double>(
-                            0.0,
-                            (total, data) =>
-                                total +
-                                (double.tryParse(data['total_biaya'].toString()) ?? 0.0),
-                          ),
-                    ),
-                  ),
+                  pw.Text(textAlign: pw.TextAlign.center, formatCurrency(totalUnpaid)),
                 ],
               ),
             ],
@@ -397,9 +453,9 @@ class DataTransaksiController extends GetxController {
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
                   pw.Text(
-                    'Tanggal: ${DateFormat('dd-MM-yyyy').format(DateTime.now())}',
+                    '${DateFormat('dd-MM-yyyy').format(DateTime.now())}',
                   ),
-                  // pw.Text(controller.namaKaryawanC.text),
+                  pw.Text(namaKaryawanC.text.toString()),
                   pw.SizedBox(height: 50),
                   pw.Text('Karyawan Green Spirit Laundry'),
                 ],
@@ -417,6 +473,21 @@ class DataTransaksiController extends GetxController {
 
     // Open the generated PDF file
     OpenFile.open(file.path);
+  }
+
+  pw.Widget _colspanText(String text, {int colspan = 1, pw.FontWeight? fontWeight}) {
+    return pw.Container(
+      alignment: pw.Alignment.center,
+      child: pw.Text(text, style: pw.TextStyle(fontWeight: fontWeight)),
+      width: colspan * 100.0, // Sesuaikan dengan lebar yang diinginkan
+    );
+  }
+
+  pw.Widget centeredText(String text, {pw.FontWeight? fontWeight}) {
+    return pw.Container(
+      alignment: pw.Alignment.center,
+      child: pw.Text(text, style: pw.TextStyle(fontWeight: fontWeight)),
+    );
   }
 
   final Map<String, String> columnNames = {
