@@ -1,5 +1,5 @@
 class InvoiceData {
-  final String namaPelanggan;
+  // final String namaPelanggan;
   final String nomorPelanggan;
   // final String alamatPelanggan;
   final int idTransaksi;
@@ -12,7 +12,7 @@ class InvoiceData {
   final String statusPembayaran;
 
   InvoiceData({
-    required this.namaPelanggan,
+    // required this.namaPelanggan,
     required this.nomorPelanggan,
     // required this.alamatPelanggan,
     required this.idTransaksi,
@@ -27,10 +27,10 @@ class InvoiceData {
 
   factory InvoiceData.fromMap(Map<String, dynamic> map) {
     return InvoiceData(
-      namaPelanggan: map['nama_pelanggan'] as String? ?? '',
-      nomorPelanggan: map['nomor_pelanggan'] as String? ?? '',
+      // namaPelanggan: map['id_user.nama'] as String? ?? '',
+      nomorPelanggan: map['no_telp'] as String? ?? '',
       // alamatPelanggan: map['alamat'] as String? ?? '',
-      idTransaksi: map['transaksi_id'] as int? ?? 0,
+      idTransaksi: map['id_transaksi'] as int? ?? 0,
       tanggalDatang: map['tanggal_datang'] as String? ?? '',
       metodeLaundry: map['metode_laundry'] as String? ?? '',
       layananLaundry: map['layanan_laundry'] as String? ?? '',

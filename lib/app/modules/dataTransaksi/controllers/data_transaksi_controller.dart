@@ -475,14 +475,6 @@ class DataTransaksiController extends GetxController {
     OpenFile.open(file.path);
   }
 
-  pw.Widget _colspanText(String text, {int colspan = 1, pw.FontWeight? fontWeight}) {
-    return pw.Container(
-      alignment: pw.Alignment.center,
-      child: pw.Text(text, style: pw.TextStyle(fontWeight: fontWeight)),
-      width: colspan * 100.0, // Sesuaikan dengan lebar yang diinginkan
-    );
-  }
-
   pw.Widget centeredText(String text, {pw.FontWeight? fontWeight}) {
     return pw.Container(
       alignment: pw.Alignment.center,

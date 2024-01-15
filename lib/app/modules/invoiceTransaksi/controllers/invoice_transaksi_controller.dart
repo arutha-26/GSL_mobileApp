@@ -46,17 +46,18 @@ class InvoiceTransaksiController extends GetxController {
     try {
       final response = await client
           .from('user')
-          .select('nama, id, phone, kategori') // Include 'phone' in the select statement
+          .select(
+              'nama, id_user, no_telp, kategori') // Include 'phone' in the select statement
           .eq('role', 'Pelanggan')
-          .ilike('nama, phone, kategori', '%$query%')
+          .ilike('nama, no_telp, kategori', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
           // Ensure that 'nama', 'id', and 'phone' are treated as strings
           final nama = item['nama']?.toString() ?? '';
-          final id = item['id']?.toString() ?? '';
-          final phone = item['phone']?.toString() ?? '';
+          final id = item['id_user']?.toString() ?? '';
+          final phone = item['no_telp']?.toString() ?? '';
           final kategori = item['kategori']?.toString() ?? '';
 
           return Pelanggan(nama: nama, id: id, phone: phone, kategori: kategori);
@@ -95,21 +96,24 @@ class InvoiceTransaksiController extends GetxController {
       // Perform data fetching for transaksi
       final transaksiResponse = await client
           .from('transaksi')
-          .select()
-          .eq('nama_pelanggan', namaPelanggan)
+          .select(
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
+          .eq('id_user.nama', namaPelanggan)
           .gte('tanggal_datang', formatDatetwo(startDateFormatted)) // Adjust as needed
           .lte('tanggal_datang', formatDatetwo(endDateFormatted)) // Adjust as needed
           .execute();
 
       // Perform data fetching for user
       final userResponse =
-          await client.from('user').select('alamat').eq('nama', namaPelanggan).execute();
+          await client.from('user').select('*').eq('nama', namaPelanggan).execute();
 
       if (userResponse.status == 200 &&
           userResponse.data != null &&
           userResponse.data is List) {
         // Set the alamatPelangganController value
         alamatPelangganController.text = (userResponse.data?.first['alamat'] as String?) ?? '';
+        nameController.text = (userResponse.data?.first['nama'] as String?) ?? '';
+        phoneController.text = (userResponse.data?.first['no_telp'] as String?) ?? '';
       } else {
         // Handle the case where user data is not available
         alamatPelangganController.text = '';
@@ -120,7 +124,9 @@ class InvoiceTransaksiController extends GetxController {
         print('End Date: $endDateFormatted');
         print('Start Date: $startDateController.value');
         print('End Date: $endDateController.value');
-        print('user data nih:$alamatPelangganController');
+        print('user data alamat nih:$alamatPelangganController');
+        print('user data nama nih:$nameController');
+        print('user data no_telp nih:$phoneController');
       }
 
       if (transaksiResponse.status == 200 &&

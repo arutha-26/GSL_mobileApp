@@ -9,6 +9,7 @@ class InvoiceTransaksiDataView extends GetView<InvoiceTransaksiDataController> {
 
   InvoiceTransaksiDataView({required this.invoiceData, Key? key}) : super(key: key);
 
+  // TIDAK TERPAKAI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +28,7 @@ class InvoiceTransaksiDataView extends GetView<InvoiceTransaksiDataController> {
               itemCount: controller.invoiceData.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title:
-                      Text('Transaction ID: ${controller.invoiceData[index].namaPelanggan}'),
+                  title: Text('Transaction ID: ${controller.nameController.text.toString()}'),
                   subtitle: Text('Amount: ${controller.invoiceData[index].idTransaksi}'),
                 );
               },

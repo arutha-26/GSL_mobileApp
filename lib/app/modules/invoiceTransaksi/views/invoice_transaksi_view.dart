@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +24,10 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
       context: context,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
-      // initialDateRange: DateTimeRange(
-      //   start: DateTime.now(),
-      //   end: DateTime.now(),
-      // ),
+      initialDateRange: DateTimeRange(
+        start: DateTime.now(),
+        end: DateTime.now(),
+      ),
     );
 
     if (picked != null) {
@@ -62,14 +61,14 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
   }
 
   Future<void> generateAndOpenInvoicePDF() async {
-    final randomInvoiceNumber = Random().nextInt(99999) + 10000;
+    // final randomInvoiceNumber = Random().nextInt(99999) + 10000;
     // Generate PDF
     final pdf = pw.Document();
 
     // Add header with company information and invoice number
     pdf.addPage(
       pw.MultiPage(
-        pageFormat: PdfPageFormat.a4.landscape,
+        pageFormat: PdfPageFormat.a3.landscape,
         build: (context) => [
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -88,28 +87,30 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
-                  pw.Header(
-                    level: 0,
-                    child: pw.Text('Invoice Number: $randomInvoiceNumber'),
-                  ),
+                  pw.Text('Invoice Periode',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(
+                      '${formatDate(controller.startDate.toString())} - ${formatDate(controller.endDate.toString())}'),
                 ],
               ),
             ],
           ),
+          pw.SizedBox(height: 20),
           pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.end,
-            crossAxisAlignment: pw.CrossAxisAlignment.end,
+            mainAxisAlignment: pw.MainAxisAlignment.start,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text(
-                      'Nama Pelanggan: ${controller.invoiceData.isNotEmpty ? controller.invoiceData[0].namaPelanggan : ''}'),
+                  pw.Text('Data Pelanggan',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Nama Pelanggan: ${controller.nameController.text}'),
                   pw.Text(
                     'Alamat Pelanggan: ${controller.alamatPelangganController.text}',
                   ),
                   pw.Text(
-                    'Telp (+62${controller.invoiceData.isNotEmpty ? controller.invoiceData[0].nomorPelanggan : ''})',
+                    'Telp (${controller.phoneController.text})',
                   ),
                 ],
               ),
@@ -121,20 +122,30 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
             children: [
               pw.TableRow(
                 children: [
-                  pw.Text('Id Transaksi', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Id Transaksi',
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('Tanggal Datang',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('Metode Laundry',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('Layanan Laundry',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('Berat Laundry',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('Status Cucian',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text('Status Pembayaran',
+                      textAlign: pw.TextAlign.center,
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Total Biaya', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Total Biaya',
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               for (var data in controller.invoiceData)
@@ -144,16 +155,21 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                       ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
                       : null,
                   children: [
-                    pw.Text('${data.idTransaksi}'),
-                    pw.Text(formatDate(data.tanggalDatang)),
-                    pw.Text(data.metodeLaundry),
-                    pw.Text(data.layananLaundry),
-                    pw.Text('${data.beratLaundry}Kg'),
-                    pw.Text(data.statusCucian.capitalizeFirst ?? "Error Data"),
-                    pw.Text(data.statusPembayaran == 'sudah_dibayar'
-                        ? 'Sudah Dibayar'
-                        : 'Belum Dibayar'),
+                    pw.Text(textAlign: pw.TextAlign.center, '${data.idTransaksi}'),
+                    pw.Text(textAlign: pw.TextAlign.center, formatDate(data.tanggalDatang)),
+                    pw.Text(textAlign: pw.TextAlign.center, data.metodeLaundry),
+                    pw.Text(textAlign: pw.TextAlign.center, data.layananLaundry),
+                    pw.Text(textAlign: pw.TextAlign.center, '${data.beratLaundry}Kg'),
                     pw.Text(
+                        textAlign: pw.TextAlign.center,
+                        data.statusCucian.capitalizeFirst ?? "Error Data"),
+                    pw.Text(
+                        textAlign: pw.TextAlign.center,
+                        data.statusPembayaran == 'sudah_dibayar'
+                            ? 'Sudah Dibayar'
+                            : 'Belum Dibayar'),
+                    pw.Text(
+                        textAlign: pw.TextAlign.center,
                         formatCurrency(double.tryParse(data.totalBiaya.toString()) ?? 0.0)),
                   ],
                 ),
@@ -170,10 +186,12 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                   pw.Container(
                     alignment: pw.Alignment.center,
                     child: pw.Text('Total\n(Belum Dibayar)',
+                        textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     width: 50, // Merge cells for the total label
                   ),
                   pw.Text(
+                    textAlign: pw.TextAlign.center,
                     formatCurrency(
                       controller.invoiceData
                           .where((data) => data.statusPembayaran == 'belum_dibayar')
@@ -420,7 +438,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Nama Pelanggan: ${data.namaPelanggan}"),
+            Text("Nama Pelanggan: ${controller.nameController.text.toString()}"),
             Text("Alamat: ${controller.alamatPelangganController.text}"),
             Text("Tanggal Datang: ${formatDate(data.tanggalDatang)}"),
             // Add more ListTile widgets for other data fields
