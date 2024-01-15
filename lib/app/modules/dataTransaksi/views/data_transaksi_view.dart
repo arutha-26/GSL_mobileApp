@@ -41,6 +41,8 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
         centerTitle: true,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ElevatedButton(
               onPressed: () => _selectDate(context),
@@ -53,6 +55,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
           Obx(() {
             if (controller.isLoading.isTrue) {
               return const Center(
+                heightFactor: 20,
                 child: CircularProgressIndicator(),
               );
             }
@@ -91,8 +94,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                       key != 'id_transaksi') // Exclude 'id' from being displayed
                   .map((key) => DataColumn(
                         label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
-                      ))
-                  .toList(),
+                      )),
             ];
 
             List<DataRow> rows = controller.data
@@ -133,7 +135,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                               }
                             },
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   );
@@ -168,43 +170,103 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
       ),
       floatingActionButton: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ElevatedButton(
+        child: Container(
+          alignment: Alignment.center,
+          width: 380,
+          height: 150,
+          // color: Colors.greenAccent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            verticalDirection: VerticalDirection.down,
+            children: [
+              ElevatedButton(
                 onPressed: () async {
-                  if (controller.currentPage.value > 1) {
-                    controller.currentPage--;
-                    await controller.fetchDataWithDateRange(
-                        page: controller.currentPage.value);
-                    controller.data.refresh();
+                  try {
+                    await controller.fetchAllDataForPDF2();
+
+                    if (controller.data.isNotEmpty) {
+                      controller.generateAndOpenInvoicePDF(controller.printDataInvoice);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No data available to generate an invoice.'),
+                        ),
+                      );
+                    }
+                  } catch (error) {
+                    if (kDebugMode) {
+                      print('Error generating PDF: $error');
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                  maximumSize: const Size(310, 40),
                   foregroundColor: Colors.black,
                   backgroundColor: const Color(0xFF22c55e),
                 ),
-                child: const Icon(Icons.arrow_back)),
-            const SizedBox(width: 10),
-            ElevatedButton(
-                onPressed: () async {
-                  controller.currentPage++;
-                  await controller.fetchDataWithDateRange(page: controller.currentPage.value);
-                  controller.data.refresh();
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: const Color(0xFF22c55e),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.print),
+                    SizedBox(width: 8), // Adjust the spacing between icon and text
+                    Text('Print Data Transaksi'),
+                  ],
                 ),
-                child: const Icon(Icons.arrow_forward)),
-            const SizedBox(width: 10),
-            Obx(() {
-              return Text(
-                'Halaman: ${controller.currentPage} / Total Data: ${controller.totalDataCount}',
-                style: const TextStyle(fontSize: 16),
-              );
-            }),
-          ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (controller.currentPage.value > 1) {
+                          controller.currentPage--;
+                          await controller.fetchDataWithDateRange(
+                              page: controller.currentPage.value);
+                          controller.data.refresh();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(150, 40),
+                        foregroundColor: Colors.black,
+                        backgroundColor: const Color(0xFF22c55e),
+                      ),
+                      child: const Icon(Icons.arrow_back)),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                      onPressed: () async {
+                        controller.currentPage++;
+                        await controller.fetchDataWithDateRange(
+                            page: controller.currentPage.value);
+                        controller.data.refresh();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(150, 40),
+                        foregroundColor: Colors.black,
+                        backgroundColor: const Color(0xFF22c55e),
+                      ),
+                      child: const Icon(Icons.arrow_forward)),
+                  const SizedBox(width: 10),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  Obx(() {
+                    return Text(
+                      'Halaman: ${controller.currentPage} / Total Data: ${controller.totalDataCount}',
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  }),
+                ],
+              ),
+              const SizedBox(width: 10),
+            ],
+          ),
         ),
       ),
     );
