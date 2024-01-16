@@ -56,10 +56,17 @@ class DashboardOwnerController extends GetxController {
 
   Future<void> fetchDataHutang() async {
     try {
+      DateTime now = DateTime.now();
+      DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+      DateTime lastDayOfMonth =
+          DateTime(now.year, now.month + 1, 1); // Use the first day of the next month
+
       final response = await client
           .from('transaksi')
           .select('*')
           .eq('status_pembayaran', 'belum_dibayar')
+          .gte('tanggal_datang', firstDayOfMonth)
+          .lte('tanggal_datang', lastDayOfMonth)
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {

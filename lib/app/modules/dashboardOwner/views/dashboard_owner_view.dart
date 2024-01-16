@@ -26,28 +26,31 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
           ),
         ],
       ),
-      body: Obx(() {
-        if (controller.isLoading.isTrue) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Image.asset('images/banner_1.png'),
-                _buildStatusAndDebtsCard(),
-                _buildProfitAndTransactionCountCard(),
-                const SizedBox(height: 10),
-                const Text(
-                  'Grafik Transaksi Bulanan',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                _buildMonthlyTransactionsGraph(),
-                // _buildMonthlyIncomeGraph(),
-              ],
-            ),
-          );
-        }
-      }),
+      body: FutureBuilder(
+          future: controller.refreshData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Image.asset('images/banner_1.png'),
+                  _buildStatusAndDebtsCard(),
+                  _buildProfitAndTransactionCountCard(),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Grafik Transaksi Bulanan',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  _buildMonthlyTransactionsGraph(),
+                  // _buildMonthlyIncomeGraph(),
+                ],
+              ),
+            );
+          }),
       bottomNavigationBar: BottomNavBar(
         currentIndex: 1,
         onTap: (index) {
