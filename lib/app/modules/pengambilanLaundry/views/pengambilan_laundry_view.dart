@@ -22,6 +22,25 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
     }
   }
 
+  Widget _buildInfoRow(String labelText, TextEditingController controller) {
+    return Row(
+      children: [
+        Text(
+          labelText,
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            textAlign: TextAlign.end,
+            controller.text,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,97 +77,32 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextField(
-                    keyboardType: TextInputType.none,
-                    controller: controller.namaController,
-                    decoration: const InputDecoration(
-                      labelText: "Nama Pelanggan",
-                      border: OutlineInputBorder(),
+                  Card(
+                    elevation: 4, // Adjust the elevation as needed
+                    margin: const EdgeInsets.all(10), // Add margin as needed
+                    color: const Color(0xFFB0DCB9),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          _buildInfoRow("Nama Pelanggan", controller.namaController),
+                          const SizedBox(height: 20),
+                          _buildInfoRow("Nomor Pelanggan", controller.noTelpController),
+                          const SizedBox(height: 20),
+                          _buildInfoRow("Berat Laundry", controller.beratController),
+                          const SizedBox(height: 20),
+                          _buildInfoRow("Total Harga", controller.totalHargaController),
+                          const SizedBox(height: 20),
+                          _buildInfoRow(
+                              "Metode Pembayaran", controller.metodePembayaranController),
+                          const SizedBox(height: 20),
+                          _buildInfoRow(
+                              "Status Pembayaran", controller.statusPembayaranController),
+                          const SizedBox(height: 20),
+                          _buildInfoRow("Status Cucian", controller.statusCucianController),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.none,
-                    controller: controller.noTelpController,
-                    decoration: const InputDecoration(
-                      labelText: "Nomor Pelanggan",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    autocorrect: false,
-                    controller: controller.beratController,
-                    // controller diubah
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.none,
-                    decoration: const InputDecoration(
-                      labelText: "Berat Laundry",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    autocorrect: false,
-                    // enabled: false,
-                    keyboardType: TextInputType.none,
-                    controller: controller.totalHargaController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Total Harga",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    autocorrect: false,
-                    // enabled: false,
-                    keyboardType: TextInputType.none,
-                    controller: controller.metodePembayaranController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Metode Pembayaran",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    autocorrect: false,
-                    // enabled: false,
-                    keyboardType: TextInputType.none,
-                    controller: controller.statusPembayaranController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Status Pembayaran",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    autocorrect: false,
-                    // enabled: false,
-                    keyboardType: TextInputType.none,
-                    controller: controller.statusCucianController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Status Cucian",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
                   ),
                   Obx(() => ElevatedButton(
                         onPressed: () {

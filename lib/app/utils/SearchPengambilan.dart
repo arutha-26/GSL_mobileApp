@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gsl/app/modules/pengambilanLaundry/controllers/pengambilan_laundry_controller.dart';
 import 'package:gsl/app/utils/pengambilan.dart';
 
@@ -63,6 +64,7 @@ class SearchPengambilan extends StatelessWidget {
         metodePembayaranController.text = selection.metodePembayaran ?? '';
         statusPembayaranControlller.text = selection.statusPembayaran ?? '';
         statusCucianController.text = selection.statusCucian ?? '';
+        Get.forceAppUpdate();
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
         return TextField(

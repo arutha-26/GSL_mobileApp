@@ -209,7 +209,7 @@ class DataTransaksiController extends GetxController {
         // Set data.value to newData
         data.value = newData;
 
-        return paginateData(newData);
+        return newData;
       } else {
         if (kDebugMode) {
           print('Error: Invalid data format');
@@ -252,7 +252,7 @@ class DataTransaksiController extends GetxController {
 
       // Fetch all data for PDF generation and get paginated data for UI
       final List<Map<String, dynamic>> paginatedData = await fetchAllDataForPDF();
-      totalDataCount.value = data.length;
+      totalDataCount.value = paginatedData.length;
 
       data.value = paginateData(paginatedData, page: page);
 

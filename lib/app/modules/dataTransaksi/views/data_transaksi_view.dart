@@ -13,6 +13,8 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
+      // confirmText: "Filter",
+      saveText: "Filter",
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
       initialDateRange: DateTimeRange(
@@ -225,7 +227,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                           controller.currentPage--;
                           await controller.fetchDataWithDateRange(
                               page: controller.currentPage.value);
-                          controller.data.refresh();
+                          // controller.data.refresh(); // Tidak perlu disegarkan di sini, jika sudah diakomodasi dalam fetchDataWithDateRange
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -233,7 +235,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                         foregroundColor: Colors.black,
                         backgroundColor: const Color(0xFF22c55e),
                       ),
-                      child: const Icon(Icons.arrow_back)),
+                      child: const Text("Sebelumnya")),
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () async {
@@ -247,7 +249,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                         foregroundColor: Colors.black,
                         backgroundColor: const Color(0xFF22c55e),
                       ),
-                      child: const Icon(Icons.arrow_forward)),
+                      child: const Text("Selanjutnya")),
                   const SizedBox(width: 10),
                 ],
               ),

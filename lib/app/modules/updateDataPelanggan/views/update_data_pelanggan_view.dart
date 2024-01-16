@@ -123,7 +123,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
 
   Widget _buildTextField(String label, String field, Map<String, dynamic> userData) {
     return TextFormField(
-      enabled: ['phone', 'kategori', 'alamat'].contains(field),
+      enabled: ['kategori', 'alamat', 'no_telp'].contains(field),
       initialValue: userData[field]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,

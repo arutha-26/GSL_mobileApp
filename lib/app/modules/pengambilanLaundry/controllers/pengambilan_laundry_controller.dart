@@ -176,7 +176,7 @@ class PengambilanLaundryController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'id_transaksi,berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian, id_user(id_user, nama, no_telp)')
+              'id_transaksi, id_user!inner(id_user, nama, no_telp), berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
           .in_('status_cucian', ['diproses', 'selesai'])
           .ilike('id_user.nama, id_user.no_telp', '%$query%')
           .execute();
@@ -184,8 +184,8 @@ class PengambilanLaundryController extends GetxController {
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
           print(item);
-          final idUser = item['id_user']?['id_user']?.toString() ?? '';
-          final nama = item['id_user']?['nama']?.toString() ?? '';
+          final idUser = item['id_user']?['id_user'].toString() ?? '';
+          final nama = item['id_user']?['nama']?.toString().capitalizeFirst ?? '';
           final noTelp = item['id_user']?['no_telp']?.toString() ?? '';
           final idTransaksi = item['id_transaksi']?.toString() ?? '';
           final berat = item['berat_laundry']?.toString() ?? '';
@@ -201,7 +201,7 @@ class PengambilanLaundryController extends GetxController {
             nama: nama,
             noTelp: noTelp,
             idTransaksi: idTransaksi,
-            berat: '$berat Kg',
+            berat: '${berat}Kg',
             totalHarga: formattedTotalHarga,
             metodePembayaran: metodePembayaran,
             statusPembayaran: convertStatusPembayaran(statusPembayaran),

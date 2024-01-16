@@ -36,9 +36,13 @@ class UpdateDataPelangganController extends GetxController {
 
         if (response.status == 200 || response.status == 201 || response.status == 204) {
           Get.snackbar(
-            'Success',
-            'User data updated successfully',
+            'Berhasil', 'Data Berhasil di Perbaharui',
+            colorText: Colors.white,
+            backgroundColor: Colors.indigoAccent,
+            // backgroundColor: const Color(0xFFC9DCD1),
             snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+            // padding: const EdgeInsets.all(10) // Set the desired distance from the top
           );
 
           // Log the updated data to the console
@@ -55,6 +59,7 @@ class UpdateDataPelangganController extends GetxController {
             'Error',
             'Failed to update user data',
             snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
             colorText: Colors.white,
             backgroundColor: Colors.red,
           );

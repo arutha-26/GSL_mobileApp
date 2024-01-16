@@ -42,13 +42,13 @@ class UpdateDataHargaController extends GetxController {
         isLoading.value = false; // Reset the loading state
 
         if (response.status == 200 || response.status == 201 || response.status == 204) {
-          Get.snackbar(
-            'Berhasil',
-            'Data Berhasil di Perbaharui',
-            colorText: Colors.white,
-            backgroundColor: Colors.indigoAccent,
-            snackPosition: SnackPosition.BOTTOM,
-          );
+          // Get.snackbar(
+          //   'Berhasil',
+          //   'Data Berhasil di Perbaharui',
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.indigoAccent,
+          //   snackPosition: SnackPosition.BOTTOM,
+          // );
 
           // Log the updated data to the console
           if (kDebugMode) {
@@ -62,11 +62,20 @@ class UpdateDataHargaController extends GetxController {
           // Get.offAndToNamed(Routes.PANELTRANSAKSI);
           // Get.deleteAll();
           refresh();
+          Get.snackbar(
+            'Berhasil',
+            'Data Berhasil di Perbaharui',
+            colorText: Colors.white,
+            backgroundColor: Colors.indigoAccent,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          );
         } else {
           Get.snackbar(
             'Error',
             'Failed to update user data',
             snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
             colorText: Colors.white,
             backgroundColor: Colors.red,
           );

@@ -21,10 +21,6 @@ class AddtransaksiController extends GetxController {
     nominalBayarController.addListener(() {
       getKembalian();
     });
-    // nominalBayarController.addListener(() {
-    //   formattedNominal.value = formatNumber(nominalBayarController.text);
-    // });
-    // Anda bisa menambahkan listener lain di sini
   }
 
   void clearInputs() {
@@ -189,7 +185,7 @@ class AddtransaksiController extends GetxController {
         clearInputs();
 
         Get.defaultDialog(
-          barrierDismissible: false,
+          barrierDismissible: true,
           title: "Tambah Data Transaksi Berhasil",
           middleText: "Transaksi berhasil ditambahkan\n Faktur Berhasil Terkirim",
           actions: [
