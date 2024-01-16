@@ -176,16 +176,17 @@ class PengambilanLaundryController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'id_transaksi, id_user(id_user, nama, no_telp), berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
+              'id_transaksi,berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian, id_user(id_user, nama, no_telp)')
           .in_('status_cucian', ['diproses', 'selesai'])
           .ilike('id_user.nama, id_user.no_telp', '%$query%')
           .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         results = (response.data as List).map((item) {
-          final idUser = item['id_user']['id_user']?.toString() ?? '';
-          final nama = item['id_user']['nama']?.toString() ?? '';
-          final noTelp = item['id_user']['no_telp']?.toString() ?? '';
+          print(item);
+          final idUser = item['id_user']?['id_user']?.toString() ?? '';
+          final nama = item['id_user']?['nama']?.toString() ?? '';
+          final noTelp = item['id_user']?['no_telp']?.toString() ?? '';
           final idTransaksi = item['id_transaksi']?.toString() ?? '';
           final berat = item['berat_laundry']?.toString() ?? '';
           final totalHarga = item['total_biaya']?.toString() ?? '';
@@ -232,7 +233,7 @@ class PengambilanLaundryController extends GetxController {
         var dataTransaksi = {};
 
         if (statusCucian.value == 'diambil') {
-          dataTransaksi["nama_karyawan_keluar"] = namaKaryawanC.text;
+          dataTransaksi["id_karyawan_keluar"] = namaKaryawanC.text;
           dataTransaksi["tanggal_diambil"] = formatDate(tanggalDiambilController.text);
           dataTransaksi["metode_pembayaran"] = getSelectedPembayaran();
           dataTransaksi["status_pembayaran"] = statusPembayaran.value;

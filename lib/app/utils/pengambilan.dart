@@ -24,7 +24,7 @@ class Pengambilan {
   factory Pengambilan.fromMap(Map<String, dynamic> map) {
     return Pengambilan(
       idTransaksi: map['id_transaksi'],
-      idUser: map['id_user'],
+      idUser: map['id_user.id_user'],
       nama: map['nama'],
       noTelp: map['no_telp'],
       berat: map['berat_laundry'] as String,
