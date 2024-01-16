@@ -132,10 +132,10 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
 
   Widget _buildOutstandingDebtsCard() {
     return InkWell(
-      onTap: () {
-        // Arahkan ke halaman yang diinginkan
-        Get.offAllNamed(Routes.OWNERHOME);
-      },
+      // onTap: () {
+      //   // Arahkan ke halaman yang diinginkan
+      //   Get.offAllNamed(Routes.OWNERHOME);
+      // },
       child: Card(
         // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
         color: Colors.white,
@@ -167,10 +167,10 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
 
   Widget _buildPaidDebtsCard() {
     return InkWell(
-      onTap: () {
-        // Arahkan ke halaman yang diinginkan
-        Get.offAllNamed(Routes.OWNERHOME);
-      },
+      // onTap: () {
+      //   // Arahkan ke halaman yang diinginkan
+      //   Get.offAllNamed(Routes.OWNERHOME);
+      // },
       child: Card(
         // Menggunakan BoxDecoration dengan gradient sebagai latar belakang
         color: Colors.white,

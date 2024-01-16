@@ -52,9 +52,15 @@ flutter:
     - images/karyawan_icon.png
     - images/pelanggan_icon.png
     - images/bg_logo.png
-    - images/user_profile.png
+    - images/user-add.png
+    - images/users-alt.png
+    - images/users.png
+    - images/file-invoice-dollar.png
+    - images/money-check-edit.png
+    - images/hand-holding-usd.png
     - images/pake_h.png
     - images/karyawan_profile.png
+    - images/user_profile.png
     - images/owner_profile.png
     - images/banner_1.png
     - images/banner_4.png

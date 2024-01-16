@@ -65,133 +65,136 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 viewportFraction: 1,
               ),
             ),
-            SizedBox(
-              width: 1000, // Set the width to the screen width
-              height: 300.0, // Adjust the height based on your needs
-              child: Scrollbar(
-                thickness: 2,
-                radius: const Radius.circular(20),
-                scrollbarOrientation: ScrollbarOrientation.bottom,
-                thumbVisibility: true,
-                trackVisibility: true,
-                interactive: true,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return Row(
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFFFFFFFF),
-                                // spreadRadius: 60.0, // Color of the shadow
-                                // blurRadius: 50.0, // Spread of the shadow
-                                // offset: Offset(-8, 6), // Offset of the shadow (x, y)
-                              ),
-                            ],
-                            // Other decoration properties if needed
-                          ),
-                          width: 590,
-                          child: GridView.count(
-                            scrollDirection: Axis.horizontal,
-                            crossAxisSpacing: 20.0,
-                            mainAxisSpacing: 20.0,
-                            padding: const EdgeInsets.all(16.0),
-                            shrinkWrap: true,
-                            // physics:
-                            //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
-                            crossAxisCount: 2,
-                            children: [
-                              GlassButton(
-                                onPressed: () {
-                                  Get.deleteAll();
-                                  Get.put(AdddataController());
-                                  Get.to(() => AdddataView());
-                                },
-                                label: 'Data Pengguna',
-                                color: Colors.blue,
-                                iconPath: 'images/plus.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.deleteAll();
-                                  Get.put(AddtransaksiController());
-                                  Get.to(() => AddtransaksiView());
-                                },
-                                label: 'Data Transaksi',
-                                color: Colors.green,
-                                iconPath: 'images/plus.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.put(PaneltransaksiController());
-                                  Get.to(() => PaneltransaksiView());
-                                },
-                                label: 'Panel Transaksi',
-                                color: Colors.orange,
-                                iconPath: 'images/settings.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.deleteAll();
-                                  Get.put(PengambilanLaundryController());
-                                  Get.to(() => PengambilanLaundryView());
-                                },
-                                label: 'Update Data Laundry',
-                                color: Colors.red,
-                                iconPath: 'images/edit.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.put(DatapelangganController());
-                                  Get.to(() => DatapelangganView());
-                                },
-                                label: 'Data Pelanggan',
-                                color: Colors.purple,
-                                iconPath: 'images/document.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.put(DataKaryawanController());
-                                  Get.to(() => DataKaryawanView());
-                                },
-                                label: 'Data Karyawan',
-                                color: Colors.purple,
-                                iconPath: 'images/document.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.deleteAll();
-                                  Get.put(DataTransaksiController());
-                                  Get.to(() => DataTransaksiView());
-                                },
-                                label: 'Data Transaksi',
-                                color: Colors.teal,
-                                iconPath: 'images/document.png',
-                              ),
-                              GlassButton(
-                                onPressed: () {
-                                  Get.deleteAll();
-                                  Get.put(InvoiceTransaksiController());
-                                  Get.to(() => InvoiceTransaksiView());
-                                },
-                                label: 'Invoice Transaksi',
-                                color: Colors.teal,
-                                iconPath: 'images/document.png',
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
             const SizedBox(
-              height: 5,
+              height: 20,
+            ),
+            // SizedBox(
+            //   width: 1000, // Set the width to the screen width
+            //   height: 300.0, // Adjust the height based on your needs
+            //   child: Scrollbar(
+            //     thickness: 2,
+            //     radius: const Radius.circular(20),
+            //     scrollbarOrientation: ScrollbarOrientation.bottom,
+            //     thumbVisibility: true,
+            //     trackVisibility: true,
+            //     interactive: true,
+            //     child: ListView.builder(
+            //       scrollDirection: Axis.vertical,
+            //       itemCount: 1,
+            //       itemBuilder: (context, index) {
+            //         return Row(
+            //           children: [
+            //             Container(
+            //               decoration: const BoxDecoration(
+            //                 boxShadow: [
+            //                   BoxShadow(
+            //                     color: Color(0xFFFFFFFF),
+            //                     // spreadRadius: 60.0, // Color of the shadow
+            //                     // blurRadius: 50.0, // Spread of the shadow
+            //                     // offset: Offset(-8, 6), // Offset of the shadow (x, y)
+            //                   ),
+            //                 ],
+            //                 // Other decoration properties if needed
+            //               ),
+            //               width: 590,
+            //               child:
+            GridView.count(
+              scrollDirection: Axis.vertical,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+              padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+              shrinkWrap: true,
+              // physics:
+              //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
+              crossAxisCount: 4,
+              children: [
+                GlassButton(
+                  onPressed: () {
+                    Get.deleteAll();
+                    Get.put(AdddataController());
+                    Get.to(() => AdddataView());
+                  },
+                  label: 'Tambah\nPengguna',
+                  color: Colors.blue,
+                  iconPath: 'images/user-add.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(AddtransaksiController());
+                    Get.to(() => AddtransaksiView());
+                  },
+                  label: 'Tambah\nTransaksi',
+                  color: Colors.green,
+                  iconPath: 'images/hand-holding-usd.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(PaneltransaksiController());
+                    Get.to(() => PaneltransaksiView());
+                  },
+                  label: 'Panel\nHarga',
+                  color: Colors.orange,
+                  iconPath: 'images/money-check-edit.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.deleteAll();
+                    Get.put(PengambilanLaundryController());
+                    Get.to(() => PengambilanLaundryView());
+                  },
+                  label: 'Update\nTransaksi',
+                  color: Colors.red,
+                  iconPath: 'images/edit.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(DatapelangganController());
+                    Get.to(() => DatapelangganView());
+                  },
+                  label: 'Data\nPelanggan',
+                  color: Colors.purple,
+                  iconPath: 'images/users-alt.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.put(DataKaryawanController());
+                    Get.to(() => DataKaryawanView());
+                  },
+                  label: 'Data\nKaryawan',
+                  color: Colors.purple,
+                  iconPath: 'images/users.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.deleteAll();
+                    Get.put(DataTransaksiController());
+                    Get.to(() => DataTransaksiView());
+                  },
+                  label: 'Data\nTransaksi',
+                  color: Colors.teal,
+                  iconPath: 'images/document.png',
+                ),
+                GlassButton(
+                  onPressed: () {
+                    Get.deleteAll();
+                    Get.put(InvoiceTransaksiController());
+                    Get.to(() => InvoiceTransaksiView());
+                  },
+                  label: 'Cetak\nTransaksi',
+                  color: Colors.teal,
+                  iconPath: 'images/file-invoice-dollar.png',
+                )
+              ],
+            ),
+            //             )
+            //           ],
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            const SizedBox(
+              height: 15,
             ),
             // TERAPKAN DISINI
             QuoteCarousel(),
@@ -267,7 +270,7 @@ class GlassButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
         child: Column(
@@ -277,11 +280,19 @@ class GlassButton extends StatelessWidget {
               iconPath,
               height: 30,
             ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 12, color: Colors.black),
-              textAlign: TextAlign.center,
+            const SizedBox(height: 5),
+            FittedBox(
+              alignment: Alignment.center,
+              fit: BoxFit.none,
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),

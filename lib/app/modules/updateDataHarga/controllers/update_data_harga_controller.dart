@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../routes/app_pages.dart';
-
 class UpdateDataHargaController extends GetxController {
   RxBool isLoading = false.obs;
   RxMap<String, dynamic> updatedUserData = <String, dynamic>{}.obs;
@@ -58,7 +56,10 @@ class UpdateDataHargaController extends GetxController {
           }
 
           // Navigate back to the data pelanggan page
-          Get.offAndToNamed(Routes.PANELTRANSAKSI);
+          Get.appUpdate();
+          // Get.put(PaneltransaksiController());
+          // Get.toNamed(Routes.UPDATE_DATA_HARGA, arguments: userData);
+          // Get.offAndToNamed(Routes.PANELTRANSAKSI);
           // Get.deleteAll();
           refresh();
         } else {

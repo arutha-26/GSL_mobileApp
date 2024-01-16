@@ -47,6 +47,7 @@ class AddtransaksiController extends GetxController {
 
   @override
   void onClose() {
+    // Get.
     // Clear input fields
     clearInputs();
 

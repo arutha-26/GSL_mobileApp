@@ -45,10 +45,11 @@ class QuoteCarousel extends StatelessWidget {
         );
       }).toList(),
       options: CarouselOptions(
-        height: 200.0,
+        height: 230.0,
         enlargeCenterPage: true,
+        aspectRatio: 16 / 9,
         autoPlay: true,
-        autoPlayInterval: const Duration(seconds: 5),
+        autoPlayInterval: const Duration(seconds: 7),
         autoPlayAnimationDuration: const Duration(milliseconds: 1500),
         pauseAutoPlayOnTouch: true,
       ),

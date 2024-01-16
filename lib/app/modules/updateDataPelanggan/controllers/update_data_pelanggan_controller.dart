@@ -47,7 +47,8 @@ class UpdateDataPelangganController extends GetxController {
           }
 
           // Navigate back to the data pelanggan page
-          Get.offAndToNamed(Routes.DATAPELANGGAN);
+          Get.forceAppUpdate();
+          Get.offAndToNamed(Routes.DETAILPELANGGAN, arguments: userData);
           refresh();
         } else {
           Get.snackbar(

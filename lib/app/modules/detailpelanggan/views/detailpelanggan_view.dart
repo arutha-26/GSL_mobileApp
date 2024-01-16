@@ -76,6 +76,11 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                     label: 'Alamat Pelanggan',
                     value: user['alamat']?.toString() ?? '-',
                   ),
+                  const SizedBox(height: 5),
+                  TextRow(
+                    label: 'Status Pelanggan',
+                    value: user['is_active'] == true ? 'Aktif' : 'Tidak Aktif',
+                  ),
                   const SizedBox(height: 25),
                   ElevatedButton(
                     onPressed: () {

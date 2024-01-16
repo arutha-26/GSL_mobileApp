@@ -134,6 +134,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                         ),
                         onTap: () {
                           Get.deleteAll();
+                          Get.put(PaneltransaksiController());
                           Get.toNamed(Routes.UPDATE_DATA_HARGA, arguments: userData);
                         },
                       ),

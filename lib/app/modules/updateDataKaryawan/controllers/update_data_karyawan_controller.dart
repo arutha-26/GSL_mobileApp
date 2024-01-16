@@ -46,7 +46,8 @@ class UpdateDataKaryawanController extends GetxController {
           }
 
           // Navigate back to the data pelanggan page
-          Get.offAndToNamed(Routes.DATA_KARYAWAN);
+          Get.forceAppUpdate();
+          Get.offAndToNamed(Routes.DETAIL_KARYAWAN, arguments: userData);
           refresh();
         } else {
           Get.snackbar(
