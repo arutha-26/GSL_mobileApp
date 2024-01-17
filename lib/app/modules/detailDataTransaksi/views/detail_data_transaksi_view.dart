@@ -196,9 +196,9 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
 
   String getStatusPembayaran(String? status) {
     if (status == 'belum_dibayar') {
-      return 'Belum Dibayar';
+      return 'Belum Lunas';
     } else if (status == 'sudah_dibayar') {
-      return 'Sudah Dibayar';
+      return 'Lunas';
     }
     return status ?? '-';
   }
@@ -206,7 +206,7 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
   String formatDate(String? dateString) {
     if (dateString == null) return '-';
     final DateTime date = DateTime.parse(dateString);
-    return '${date.day}-${date.month}-${date.year}';
+    return '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
   }
 }
 

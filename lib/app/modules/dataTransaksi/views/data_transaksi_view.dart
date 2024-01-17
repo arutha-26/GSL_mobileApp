@@ -50,7 +50,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               onPressed: () => _selectDate(context),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
-                backgroundColor: const Color(0xFF22c55e),
+                backgroundColor: Colors.greenAccent,
                 minimumSize: const Size(220, 45),
               ),
               child: const Text('Pilih Tanggal Transaksi')),
@@ -205,7 +205,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                 style: ElevatedButton.styleFrom(
                   maximumSize: const Size(310, 40),
                   foregroundColor: Colors.black,
-                  backgroundColor: const Color(0xFF22c55e),
+                  backgroundColor: Colors.greenAccent,
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -233,7 +233,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(150, 40),
                         foregroundColor: Colors.black,
-                        backgroundColor: const Color(0xFF22c55e),
+                        backgroundColor: const Color(0xFFB0DCB9),
                       ),
                       child: const Text("Sebelumnya")),
                   const SizedBox(width: 10),
@@ -247,7 +247,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(150, 40),
                         foregroundColor: Colors.black,
-                        backgroundColor: const Color(0xFF22c55e),
+                        backgroundColor: const Color(0xFFB0DCB9),
                       ),
                       child: const Text("Selanjutnya")),
                   const SizedBox(width: 10),

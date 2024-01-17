@@ -260,7 +260,7 @@ class PengambilanLaundryController extends GetxController {
         String nomorPelanggan = phoneController.text;
         String pesan = '';
 
-        if (statusCucianController.value == "selesai") {
+        if (statusCucianController.value.text.toString() == "selesai") {
           await kirimPesanWhatsApp(nomorPelanggan, pesan);
         }
 

@@ -63,7 +63,7 @@ class BarChartSample3State extends State<BarChartSample3> {
             return BarTooltipItem(
               rod.toY.round().toString(),
               const TextStyle(
-                color: Colors.white, // You can customize the tooltip text color here
+                color: Colors.black87, // You can customize the tooltip text color here
                 fontWeight: FontWeight.bold,
               ),
             );

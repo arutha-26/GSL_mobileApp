@@ -78,9 +78,15 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                     height: 20,
                   ),
                   Card(
-                    elevation: 4, // Adjust the elevation as needed
-                    margin: const EdgeInsets.all(10), // Add margin as needed
-                    color: const Color(0xFFB0DCB9),
+                    // elevation: 0, // Sesuaikan elevasi sesuai kebutuhan
+                    margin: const EdgeInsets.all(10), // Tambahkan margin sesuai kebutuhan
+                    color: Colors.white, // Atur latar belakang kartu menjadi putih
+                    shape: RoundedRectangleBorder(
+                      // Menambahkan border hitam dengan ketebalan 1
+                      side: const BorderSide(color: Colors.black, width: 1),
+                      borderRadius:
+                          BorderRadius.circular(8), // Sesuaikan radius border sesuai kebutuhan
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Column(

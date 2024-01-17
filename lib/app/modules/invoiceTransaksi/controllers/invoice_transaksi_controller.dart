@@ -88,6 +88,7 @@ class InvoiceTransaksiController extends GetxController {
     String startDateText = startDateController.text;
     String endDateText = endDateController.text;
 
+    print(nameController.text);
     // Parse text into DateTime objects
     DateTime startDateFormatted = parseDate(startDateText).toLocal();
     DateTime endDateFormatted = parseDate(endDateText).toLocal();
@@ -97,10 +98,10 @@ class InvoiceTransaksiController extends GetxController {
       final transaksiResponse = await client
           .from('transaksi')
           .select(
-              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
-          .eq('id_user.nama', namaPelanggan)
-          .gte('tanggal_datang', formatDatetwo(startDateFormatted)) // Adjust as needed
-          .lte('tanggal_datang', formatDatetwo(endDateFormatted)) // Adjust as needed
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user!inner(id_user, nama, no_telp, kategori, alamat)')
+          .like('id_user.nama', '%$namaPelanggan%')
+          .gte('tanggal_datang', formatDate(startDateController.text)) // Adjust as needed
+          .lte('tanggal_datang', '${formatDate(endDateController.text)} 23:59:59')
           .execute();
 
       // Perform data fetching for user
@@ -120,10 +121,15 @@ class InvoiceTransaksiController extends GetxController {
       }
 
       if (kDebugMode) {
+        print('Parse');
         print('Start Date: $startDateFormatted');
         print('End Date: $endDateFormatted');
-        print('Start Date: $startDateController.value');
-        print('End Date: $endDateController.value');
+        print('Controller');
+        print('Start Date: $startDateController');
+        print('End Date: $endDateController');
+        print('formatdate2');
+        // print('Start Date: ${formatDate(startDateFormatted)}');
+        // print('End Date: ${formatDate(endDateFormatted)}');
         print('user data alamat nih:$alamatPelangganController');
         print('user data nama nih:$nameController');
         print('user data no_telp nih:$phoneController');

@@ -22,6 +22,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
       TextEditingController endDateController) async {
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
+      saveText: 'Filter',
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
       initialDateRange: DateTimeRange(
@@ -32,8 +33,8 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
 
     if (picked != null) {
       // Update the format to 'yyyy-MM-dd'
-      startDateController.text = DateFormat('yyyy-MM-dd').format(picked.start);
-      endDateController.text = DateFormat('yyyy-MM-dd').format(picked.end);
+      startDateController.text = DateFormat('dd-MM-yyyy').format(picked.start);
+      endDateController.text = DateFormat('dd-MM-yyyy').format(picked.end);
     }
   }
 
@@ -41,6 +42,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
   Future<DateTime?> selectSingleDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
+      confirmText: "Pilih",
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
