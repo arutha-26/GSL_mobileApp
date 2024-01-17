@@ -8,6 +8,7 @@ class Pengambilan {
   final String metodePembayaran;
   final String statusPembayaran;
   final String statusCucian;
+  final String tglDatang;
 
   Pengambilan({
     required this.idTransaksi,
@@ -19,6 +20,7 @@ class Pengambilan {
     required this.metodePembayaran,
     required this.statusPembayaran,
     required this.statusCucian,
+    required this.tglDatang,
   });
 
   factory Pengambilan.fromMap(Map<String, dynamic> map) {
@@ -32,6 +34,7 @@ class Pengambilan {
       metodePembayaran: map['metode_pembayaran'] as String,
       statusPembayaran: map['status_pembayaran'] as String,
       statusCucian: map['status_cucian'] as String,
+      tglDatang: map['tanggal_datang'] as String,
     );
   }
 }

@@ -83,36 +83,40 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                       itemBuilder: (context, index) {
                         return GridView.count(
                           scrollDirection: Axis.vertical,
-                          crossAxisSpacing: 20.0,
-                          mainAxisSpacing: 20.0,
-                          padding: const EdgeInsets.all(16.0),
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                          padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
                           shrinkWrap: true,
+                          // physics:
+                          //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
                           crossAxisCount: 3,
                           children: [
                             GlassButton(
                               onPressed: () {
+                                // Get.deleteAll();
                                 Get.put(AdddataController());
                                 Get.to(() => AdddataView());
                               },
-                              label: 'Data Pengguna',
+                              label: 'Tambah\nPengguna',
                               color: Colors.blue,
-                              iconPath: 'images/plus.png',
+                              iconPath: 'images/user-add.png',
                             ),
                             GlassButton(
                               onPressed: () {
                                 Get.put(AddtransaksiController());
                                 Get.to(() => AddtransaksiView());
                               },
-                              label: 'Data Transaksi',
+                              label: 'Tambah\nTransaksi',
                               color: Colors.green,
-                              iconPath: 'images/plus.png',
+                              iconPath: 'images/hand-holding-usd.png',
                             ),
                             GlassButton(
                               onPressed: () {
+                                Get.deleteAll();
                                 Get.put(PengambilanLaundryController());
                                 Get.to(() => PengambilanLaundryView());
                               },
-                              label: 'Update Data Laundry',
+                              label: 'Update\nTransaksi',
                               color: Colors.red,
                               iconPath: 'images/edit.png',
                             ),
@@ -121,27 +125,29 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                                 Get.put(DatapelangganController());
                                 Get.to(() => DatapelangganView());
                               },
-                              label: 'Data Pelanggan',
+                              label: 'Data\nPelanggan',
                               color: Colors.purple,
-                              iconPath: 'images/document.png',
+                              iconPath: 'images/users-alt.png',
                             ),
                             GlassButton(
                               onPressed: () {
+                                Get.deleteAll();
                                 Get.put(DataTransaksiController());
                                 Get.to(() => DataTransaksiView());
                               },
-                              label: 'Data Transaksi',
+                              label: 'Data\nTransaksi',
                               color: Colors.teal,
                               iconPath: 'images/document.png',
                             ),
                             GlassButton(
                               onPressed: () {
+                                Get.deleteAll();
                                 Get.put(InvoiceTransaksiController());
                                 Get.to(() => InvoiceTransaksiView());
                               },
-                              label: 'Invoice Transaksi',
+                              label: 'Cetak\nTransaksi',
                               color: Colors.teal,
-                              iconPath: 'images/document.png',
+                              iconPath: 'images/file-invoice-dollar.png',
                             )
                           ],
                         );

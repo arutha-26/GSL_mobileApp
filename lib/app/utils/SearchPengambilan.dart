@@ -13,6 +13,7 @@ class SearchPengambilan extends StatelessWidget {
   final TextEditingController metodePembayaranController;
   final TextEditingController statusPembayaranControlller;
   final TextEditingController statusCucianController;
+  final TextEditingController tglDatangController;
   final PengambilanLaundryController pengambilanLaundryController;
 
   SearchPengambilan({
@@ -27,6 +28,7 @@ class SearchPengambilan extends StatelessWidget {
     required this.statusPembayaranControlller,
     required this.statusCucianController,
     required this.pengambilanLaundryController,
+    required this.tglDatangController,
   }) : super(key: key);
 
   @override
@@ -49,7 +51,8 @@ class SearchPengambilan extends StatelessWidget {
           final metodePembayaran = option.metodePembayaran ?? '';
           final statusPembayaran = option.statusPembayaran ?? '';
           final statusCucian = option.statusCucian ?? '';
-          return '$idTransaksi - $idUser -  $nama - $noTelp - $berat - $totalHarga - $metodePembayaran- $statusPembayaran - $statusCucian';
+          final tglDatang = option.tglDatang ?? '';
+          return '$nama - $noTelp - $statusCucian - $tglDatang';
         } else {
           return '';
         }
@@ -64,6 +67,7 @@ class SearchPengambilan extends StatelessWidget {
         metodePembayaranController.text = selection.metodePembayaran ?? '';
         statusPembayaranControlller.text = selection.statusPembayaran ?? '';
         statusCucianController.text = selection.statusCucian ?? '';
+        tglDatangController.text = selection.tglDatang ?? '';
         Get.forceAppUpdate();
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
@@ -72,7 +76,7 @@ class SearchPengambilan extends StatelessWidget {
           focusNode: focusNode,
           onEditingComplete: onEditingComplete,
           decoration: const InputDecoration(
-            labelText: "Cari Data Transaksi",
+            labelText: "Cari Nama Pelanggan",
             border: OutlineInputBorder(),
           ),
         );

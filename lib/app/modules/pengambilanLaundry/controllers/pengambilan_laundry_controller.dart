@@ -42,11 +42,26 @@ class PengambilanLaundryController extends GetxController {
     await Future.delayed(
         const Duration(seconds: 1)); // Simulate an async operation (replace with actual logic)
 
-    if (statusCucianController.text.toString() == 'Selesai' ||
+    if (statusCucianController.text.toString() == 'Selesai' &&
         statusPembayaranController.text.toString() == 'Belum Dibayar') {
+      isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
       isDateFieldVisible.value = true;
+    } else if (statusCucianController.text.toString() == 'Diproses' &&
+        statusPembayaranController.text.toString() == 'Sudah Dibayar') {
       isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
+      debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
+      isDateFieldVisible.value = true;
+    } else if (statusCucianController.text.toString() == 'Diproses' &&
+        statusPembayaranController.text.toString() == 'Belum Dibayar') {
+      isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
+      debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
+      isDateFieldVisible.value = true;
+    } else if (statusCucianController.text.toString() == 'Selesai' &&
+        statusPembayaranController.text.toString() == 'Sudah Dibayar') {
+      isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
+      debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
+      isDateFieldVisible.value = true;
     } else {
       isDateFieldVisible.value = false;
     }
@@ -106,6 +121,7 @@ class PengambilanLaundryController extends GetxController {
   TextEditingController statusCucianController = TextEditingController();
   TextEditingController nominalBayarController = TextEditingController();
   TextEditingController kembalianController = TextEditingController();
+  TextEditingController tglDatangController = TextEditingController();
 
   SupabaseClient client = Supabase.instance.client;
 
@@ -176,7 +192,7 @@ class PengambilanLaundryController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'id_transaksi, id_user!inner(id_user, nama, no_telp), berat_laundry, total_biaya, metode_pembayaran, status_pembayaran, status_cucian')
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user!inner(id_user, nama, no_telp, kategori, alamat)')
           .in_('status_cucian', ['diproses', 'selesai'])
           .ilike('id_user.nama, id_user.no_telp', '%$query%')
           .execute();
@@ -193,21 +209,26 @@ class PengambilanLaundryController extends GetxController {
           final metodePembayaran = item['metode_pembayaran']?.toString() ?? '';
           final statusPembayaran = item['status_pembayaran']?.toString() ?? '';
           final statusCucian = item['status_cucian']?.toString() ?? '';
+          final tglDatang = item['tanggal_datang']?.toString() ?? '';
 
+          // Format tanggal
+          final formattedDate = tglDatang.isNotEmpty
+              ? DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.parse(tglDatang))
+              : '';
           // Use a dedicated function to format totalHarga
           final formattedTotalHarga = formatTotalHarga(totalHarga);
 
           return Pengambilan(
-            nama: nama,
-            noTelp: noTelp,
-            idTransaksi: idTransaksi,
-            berat: '${berat}Kg',
-            totalHarga: formattedTotalHarga,
-            metodePembayaran: metodePembayaran,
-            statusPembayaran: convertStatusPembayaran(statusPembayaran),
-            statusCucian: statusCucian.capitalizeFirst as String,
-            idUser: idUser,
-          );
+              nama: nama,
+              noTelp: noTelp,
+              idTransaksi: idTransaksi,
+              berat: '${berat}Kg',
+              totalHarga: formattedTotalHarga,
+              metodePembayaran: metodePembayaran,
+              statusPembayaran: convertStatusPembayaran(statusPembayaran),
+              statusCucian: statusCucian.capitalizeFirst as String,
+              idUser: idUser,
+              tglDatang: formattedDate);
         }).toList();
       }
     } catch (error) {
