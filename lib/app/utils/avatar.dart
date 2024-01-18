@@ -18,12 +18,14 @@ class Avatar extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: 150,
-          height: 150,
+          width: 250,
+          height: 250,
           child: imageUrl != null
-              ? Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
+              ? ClipOval(
+                  child: Image.network(
+                    imageUrl!,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : Container(
                   color: Colors.grey,
@@ -32,7 +34,7 @@ class Avatar extends StatelessWidget {
                   ),
                 ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
         ElevatedButton(
           onPressed: () async {
             final ImagePicker picker = ImagePicker();
@@ -58,7 +60,12 @@ class Avatar extends StatelessWidget {
             }).toString();
             onUpload(imageUrl);
           },
-          child: const Text('Upload'),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.indigoAccent),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            minimumSize: MaterialStateProperty.all<Size>(const Size(200, 35)),
+          ),
+          child: const Text('Ganti Foto Profile'),
         ),
       ],
     );

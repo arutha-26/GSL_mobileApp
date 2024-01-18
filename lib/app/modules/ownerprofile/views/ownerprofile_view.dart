@@ -83,7 +83,7 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                 //     backgroundImage: NetworkImage(controller.imageUrl ?? ''),
                 //   ),
                 // ),
-                AccountPage(),
+                const AccountPage(),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +153,8 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.black), // Warna teks tombol
                     ),
-                    child: Text(controller.isLoading.isFalse ? "Update Data" : "Loading..."),
+                    child:
+                        Text(controller.isLoading.isFalse ? "Update Password" : "Loading..."),
                   ),
                 ),
               ],

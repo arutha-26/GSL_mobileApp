@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/bottom_navbar_karyawan.dart';
+import '../../ownerprofile/views/ownerprofile_view.dart';
 import '../controllers/karyawanprofile_controller.dart';
 
 class KaryawanprofileView extends GetView<KaryawanprofileController> {
@@ -59,13 +60,14 @@ class KaryawanprofileView extends GetView<KaryawanprofileController> {
             return ListView(
               padding: const EdgeInsets.all(10),
               children: [
-                if (isCurrentUserPakeh())
-                  Image.asset('images/pake_h.png')
-                else
-                  Image.asset('images/karyawan_profile.png'),
-                const SizedBox(
-                  height: 20,
-                ),
+                // if (isCurrentUserPakeh())
+                //   Image.asset('images/pake_h.png')
+                // else
+                //   Image.asset('images/karyawan_profile.png'),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                const AccountPage(),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
