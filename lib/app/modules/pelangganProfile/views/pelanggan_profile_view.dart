@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
-import '../../../utils/avatar.dart';
 import '../../../utils/bottom_navbar_pelanggan.dart';
+import '../../ownerprofile/views/ownerprofile_view.dart';
 import '../controllers/pelanggan_profile_controller.dart';
 
 class PelangganProfileView extends GetView<PelangganProfileController> {
@@ -158,50 +157,5 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
         },
       ),
     );
-  }
-}
-
-class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
-
-  @override
-  State<AccountPage> createState() => _AccountPageState();
-}
-
-class _AccountPageState extends State<AccountPage> {
-  String? _imageUrl;
-
-  SupabaseClient client = Supabase.instance.client;
-
-  @override
-  void initState() {
-    super.initState();
-    _getInitialProfile();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  Future<void> _getInitialProfile() async {
-    final userId = client.auth.currentUser!.id;
-    final data = await client.from('user').select().eq('uid', userId).single();
-    setState(() {
-      _imageUrl = data['avatar_url'];
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Avatar(
-        imageUrl: _imageUrl,
-        onUpload: (imageUrl) async {
-          setState(() {
-            _imageUrl = imageUrl;
-          });
-          final userId = client.auth.currentUser!.id;
-          await client.from('user').update({'avatar_url': imageUrl}).eq('uid', userId);
-        });
   }
 }

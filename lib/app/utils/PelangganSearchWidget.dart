@@ -34,7 +34,7 @@ class PelangganSearchWidget extends StatelessWidget {
           final name = option.nama ?? '';
           final phone = option.phone ?? '';
           final kategori = option.kategori ?? '';
-          return '$id - $name - $phone - $kategori';
+          return '$name - $phone ';
         } else {
           return ''; // Return an empty string for null options
         }

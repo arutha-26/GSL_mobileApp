@@ -66,6 +66,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     height: 20,
                   ),
                   TextField(
+                    enabled: false,
                     keyboardType: TextInputType.none,
                     controller: controller.nameController,
                     decoration: const InputDecoration(
@@ -77,6 +78,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     height: 20,
                   ),
                   TextField(
+                    enabled: false,
                     keyboardType: TextInputType.none,
                     controller: controller.phoneController,
                     decoration: const InputDecoration(
@@ -88,6 +90,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     height: 20,
                   ),
                   TextField(
+                    enabled: false,
                     keyboardType: TextInputType.none,
                     controller: controller.kategoriController,
                     decoration: const InputDecoration(
@@ -137,24 +140,24 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       controller.hitungTotalHarga(); // Tambahkan ini
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: controller.tanggalDatangController,
-                    decoration: const InputDecoration(
-                      labelText: "Tanggal Datang",
-                      border: OutlineInputBorder(),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context)
-                          .requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                      selectDate(
-                          context,
-                          controller
-                              .tanggalDatangController); // Call your date picker function
-                    },
-                  ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  // TextField(
+                  //   controller: controller.tanggalDatangController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: "Tanggal Datang",
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   onTap: () {
+                  //     FocusScope.of(context)
+                  //         .requestFocus(new FocusNode()); // Prevent keyboard from appearing
+                  //     selectDate(
+                  //         context,
+                  //         controller
+                  //             .tanggalDatangController); // Call your date picker function
+                  //   },
+                  // ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: controller.tanggalSelesaiController,
@@ -189,8 +192,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     height: 20,
                   ),
                   TextField(
-                    autocorrect: false,
-                    // enabled: false,
+                    enabled: false,
                     keyboardType: TextInputType.none,
                     controller: controller.hargaTotalController,
                     textInputAction: TextInputAction.next,
@@ -230,6 +232,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    enabled: false,
                     keyboardType: TextInputType.none,
                     controller: controller.kembalianController,
                     decoration: const InputDecoration(

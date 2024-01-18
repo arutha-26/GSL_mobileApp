@@ -1,9 +1,14 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,6 +75,7 @@ class AddtransaksiController extends GetxController {
   RxString statusPembayaran = 'belum_dibayar'.obs;
   RxBool isLoading = false.obs;
   TextEditingController idKaryawanC = TextEditingController();
+  TextEditingController namaKaryawanC = TextEditingController();
   TextEditingController tanggalDatangController = TextEditingController();
   TextEditingController tanggalSelesaiController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
@@ -118,11 +124,12 @@ class AddtransaksiController extends GetxController {
   Future<void> getDataKaryawan() async {
     try {
       List<dynamic> res =
-          await client.from("user").select().match({"uid": client.auth.currentUser!.id});
+          await client.from("user").select('*').match({"uid": client.auth.currentUser!.id});
 
       if (res.isNotEmpty) {
         Map<String, dynamic> user = res.first as Map<String, dynamic>;
         idKaryawanC.text = user["id_user"].toString();
+        namaKaryawanC.text = user["nama"].toString();
       } else {
         if (kDebugMode) {
           print("Data not found for current user ID");
@@ -150,7 +157,7 @@ class AddtransaksiController extends GetxController {
       try {
         var dataTransaksi = {
           "id_karyawan_masuk": idKaryawanC.text.toString(),
-          "tanggal_datang": formatDateWithCurrentTime(tanggalDatangController.text).toString(),
+          "tanggal_datang": DateTime.now().toString(),
           "tanggal_selesai":
               formatDateWithCurrentTime(tanggalSelesaiController.text).toString(),
           "tanggal_diambil": null,
@@ -165,7 +172,7 @@ class AddtransaksiController extends GetxController {
           "kembalian": getNumericValueFromKembalian(),
           "status_pembayaran": statusPembayaran.value,
           "status_cucian": statusCucian.value,
-          "created_at": DateTime.now().toIso8601String(),
+          "created_at": DateTime.now().toString(),
           "is_hidden": false,
         };
 
@@ -176,18 +183,21 @@ class AddtransaksiController extends GetxController {
 
         await client.from("transaksi").insert(dataTransaksi).execute();
 
-        // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
-        String nomorPelanggan = phoneController.text;
-        String pesan = '';
+        await generateAndOpenInvoicePDF(dataTransaksi);
 
-        await kirimPesanWhatsApp(nomorPelanggan, pesan);
+        // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
+        // String nomorPelanggan = phoneController.text;
+        // String pesan = '';
+
+        /*FITUR KIRIM FAKTUR KE WHATSAPP*/
+        // await kirimPesanWhatsApp(nomorPelanggan, pesan);
 
         clearInputs();
 
         Get.defaultDialog(
           barrierDismissible: true,
-          title: "Tambah Data Transaksi Berhasil",
-          middleText: "Transaksi berhasil ditambahkan\n Faktur Berhasil Terkirim",
+          title: "Berhasil",
+          middleText: "Transaksi berhasil ditambahkan\n Berhasil Cetak Faktur",
           actions: [
             OutlinedButton(
               onPressed: () {
@@ -219,6 +229,192 @@ class AddtransaksiController extends GetxController {
     }
     isLoading.value = false;
     refresh();
+  }
+
+  Future<void> generateAndOpenInvoicePDF(data) async {
+    String formatCurrency(double value) {
+      final currencyFormat =
+          NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(value);
+      return currencyFormat;
+    }
+
+    String formatDate(String date) {
+      try {
+        // Assuming date is in YYYY-MM-DD format
+        DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+        return DateFormat('dd-MM-yyyy').format(parsedDate); // Convert to YYYY-MM-DD format
+      } catch (e) {
+        if (kDebugMode) {
+          print("Error parsing date: $e");
+        }
+        return "";
+      }
+    }
+
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    final pdf = pw.Document();
+
+    // Helper function to create a styled text row
+    pw.Widget styledTextRow(String label, String value) {
+      return pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: pw.CrossAxisAlignment.center,
+        children: [
+          pw.Text(
+            label,
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+          pw.SizedBox(width: 10),
+          pw.Text(value),
+        ],
+      );
+    }
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: const PdfPageFormat(8 * PdfPageFormat.cm, 20 * PdfPageFormat.cm,
+            marginAll: 0.5 * PdfPageFormat.cm),
+        build: (context) => [
+          // pw.Center(
+          //   child: pw.Text(
+          //     'Id F: ${data['id_transaksi']?.toString() ?? '-'}',
+          //     style: pw.TextStyle(
+          //       fontWeight: pw.FontWeight.bold,
+          //     ),
+          //   ),
+          // ),
+          // pw.Divider(
+          //     height: 1,
+          //     borderStyle: pw.BorderStyle.solid,
+          //     thickness: 1,
+          //     color: PdfColors.black),
+          // pw.SizedBox(height: 5),
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Text(
+                'Green Spirit Laundry',
+                style: pw.TextStyle(
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.Text(
+                  'Jl. Pura Masuka Gg. Jepun, Ungasan,\nKec. Kuta Sel., Kabupaten Badung, Bali 80361',
+                  textAlign: pw.TextAlign.center),
+              pw.Text('Telp (+6281 23850 7062)'),
+            ],
+          ),
+          pw.SizedBox(height: 5),
+          pw.Divider(
+              height: 1,
+              borderStyle: pw.BorderStyle.solid,
+              thickness: 1,
+              color: PdfColors.black),
+          pw.SizedBox(height: 5),
+          pw.Center(
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                pw.Text(
+                  'Customer Data',
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+                pw.SizedBox(height: 5),
+                pw.Text(
+                  nameController.text.toString().capitalizeFirst ?? '-',
+                  overflow: pw.TextOverflow.visible, // Truncate with ellipsis if too long
+                ),
+                pw.Text(
+                  phoneController.text.toString() ?? '-',
+                  overflow: pw.TextOverflow.visible, // Truncate with ellipsis if too long
+                ),
+              ],
+            ),
+          ),
+          pw.SizedBox(height: 5),
+          pw.Divider(
+              height: 1,
+              borderStyle: pw.BorderStyle.solid,
+              thickness: 1,
+              color: PdfColors.black),
+          pw.SizedBox(height: 5),
+          pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.SizedBox(height: 5),
+                pw.Text('Detail Transaksi',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                styledTextRow('Tanggal:', formatDate(data['tanggal_datang']) ?? '-'),
+                styledTextRow('Metode Laundry:',
+                    data['metode_laundry']?.toString().capitalizeFirst ?? '-'),
+                styledTextRow('Layanan Laundry:',
+                    data['layanan_laundry']?.toString().capitalizeFirst ?? '-'),
+                styledTextRow('Berat Laundry:', '${data['berat_laundry']}Kg' ?? '-'),
+                styledTextRow('Status Cucian:', data['status_cucian']?.toString() ?? '-'),
+                styledTextRow(
+                    'Status Pembayaran:',
+                    data['status_pembayaran']?.toString() == 'sudah_dibayar'
+                        ? 'Sudah Dibayar'
+                        : 'Belum Dibayar' ?? '-'),
+                styledTextRow('Total Biaya:',
+                    formatCurrency(double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
+                styledTextRow('Nominal Bayar:', nominalBayarController.text),
+                styledTextRow('Kembalian:',
+                    formatCurrency(double.tryParse(data['kembalian'].toString()) ?? 0.0)),
+              ]),
+          pw.SizedBox(height: 5),
+          pw.Divider(
+              height: 1,
+              borderStyle: pw.BorderStyle.solid,
+              thickness: 1,
+              color: PdfColors.black),
+          pw.SizedBox(height: 5),
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+                '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
+                'CP: Green Spirit Laundry - +62897913414121121',
+              ),
+            ],
+          ),
+          pw.SizedBox(height: 5),
+          pw.Divider(
+              height: 1,
+              borderStyle: pw.BorderStyle.solid,
+              thickness: 1,
+              color: PdfColors.black),
+          pw.SizedBox(height: 5),
+          pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.end,
+              crossAxisAlignment: pw.CrossAxisAlignment.end,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text('${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
+                    pw.Text(namaKaryawanC.text.capitalizeFirst ?? '-'),
+                    pw.SizedBox(height: 50),
+                    pw.Text('Karyawan Green Spirit Laundry'),
+                  ],
+                ),
+              ])
+        ],
+      ),
+    );
+
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/invoice.pdf');
+    await file.writeAsBytes(await pdf.save());
+
+    OpenFile.open(file.path);
   }
 
   RxString selectedMetode = "".obs;
@@ -363,23 +559,6 @@ class AddtransaksiController extends GetxController {
     } catch (e) {
       if (kDebugMode) {
         print("Error formatting date with current time: $e");
-      }
-      return "";
-    }
-  }
-
-  String formatDate(String date) {
-    try {
-      // Assuming date is in DD-MM-YYYY HH:mm:ss format
-      DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
-
-      // Convert to local time zone
-      DateTime localDate = parsedDate.toLocal();
-
-      return DateFormat('yyyy-MM-dd').format(localDate);
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error parsing date: $e");
       }
       return "";
     }
