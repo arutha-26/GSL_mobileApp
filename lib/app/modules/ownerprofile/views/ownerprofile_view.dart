@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../controllers/auth_controllers.dart';
 import '../../../routes/app_pages.dart';
+import '../../../utils/avatar.dart';
 import '../../../utils/bottom_navbar.dart';
 import '../controllers/ownerprofile_controller.dart';
 
@@ -61,13 +62,28 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
             return ListView(
               padding: const EdgeInsets.all(10),
               children: [
-                if (isCurrentUserPakeh())
-                  Image.asset('images/pake_h.png')
-                else
-                  Image.asset('images/owner_profile.png'),
-                const SizedBox(
-                  height: 10,
-                ),
+                // if (isCurrentUserPakeh())
+                //   Image.asset('images/pake_h.png')
+                // else
+                //   Image.asset('images/owner_profile.png'),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // GestureDetector(
+                //   onTap: () async {
+                //     final imagePicker = ImagePicker();
+                //     final pickedFile =
+                //         await imagePicker.pickImage(source: ImageSource.gallery);
+                //     if (pickedFile != null) {
+                //       await controller.uploadImage(pickedFile.path);
+                //     }
+                //   },
+                //   child: CircleAvatar(
+                //     radius: 60,
+                //     backgroundImage: NetworkImage(controller.imageUrl ?? ''),
+                //   ),
+                // ),
+                AccountPage(),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -164,5 +180,50 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
         },
       ),
     );
+  }
+}
+
+class AccountPage extends StatefulWidget {
+  const AccountPage({super.key});
+
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
+  String? _imageUrl;
+
+  SupabaseClient client = Supabase.instance.client;
+
+  @override
+  void initState() {
+    super.initState();
+    _getInitialProfile();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _getInitialProfile() async {
+    final userId = client.auth.currentUser!.id;
+    final data = await client.from('user').select().eq('uid', userId).single();
+    setState(() {
+      _imageUrl = data['avatar_url'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Avatar(
+        imageUrl: _imageUrl,
+        onUpload: (imageUrl) async {
+          setState(() {
+            _imageUrl = imageUrl;
+          });
+          final userId = client.auth.currentUser!.id;
+          await client.from('user').update({'avatar_url': imageUrl}).eq('uid', userId);
+        });
   }
 }

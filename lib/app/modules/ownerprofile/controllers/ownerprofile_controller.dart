@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,6 +15,40 @@ class OwnerprofileController extends GetxController {
   TextEditingController passwordC = TextEditingController();
 
   SupabaseClient client = Supabase.instance.client;
+
+  String? imageUrl;
+
+  Future<void> uploadImage(String imagePath) async {
+    try {
+      final userId = client.auth.currentUser!.id;
+      final response = await client.storage.from('profiles').upload(
+            'avatar/$userId/avatar.jpg', // Use a unique path for each user
+            File(imagePath),
+          );
+
+      if (kDebugMode) {
+        print('Upload response: $response');
+      }
+
+      if (response != null) {
+        imageUrl = response; // Assuming response is the URL
+        update(); // Update the UI to reflect the new image
+      } else {
+        Get.snackbar("Error", "Failed to upload image");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error uploading image: $e');
+      }
+      if (e is StorageException) {
+        if (kDebugMode) {
+          print(
+              'Supabase Storage Error: ${e.message}, StatusCode: ${e.statusCode}, Error: ${e.error}');
+        }
+      }
+      Get.snackbar("Error", "Failed to upload image");
+    }
+  }
 
   Future<void> logout() async {
     await client.auth.signOut();
@@ -49,8 +86,8 @@ class OwnerprofileController extends GetxController {
       }
       Get.defaultDialog(
           barrierDismissible: false,
-          title: "Update Profile success",
-          middleText: "Nama atau password akan diupdate",
+          title: "Success",
+          middleText: "Update Password Berhasil",
           actions: [
             OutlinedButton(
                 onPressed: () {
