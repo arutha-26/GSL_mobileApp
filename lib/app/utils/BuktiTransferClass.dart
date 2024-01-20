@@ -25,7 +25,7 @@ class _BuktiTransfer extends State<BuktiTransfer> {
       onUpload: (imageUrl) async {
         controller.updateSelectedImage(controller.imagePilih);
         // final tgl = DateTime.now().toString();
-        await controller.addTransaksi();
+        controller.addTransaksi();
         //
         // client
         //     .from('transaksi')

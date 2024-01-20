@@ -13,6 +13,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../../utils/pelanggan.dart';
 
 class AddtransaksiController extends GetxController {
@@ -21,8 +22,8 @@ class AddtransaksiController extends GetxController {
   void updateSelectedImage(XFile? image) {
     imagePilih = image;
     print('image data nih sebelum update: $image');
-    Get.appUpdate(); // Perbarui state tanpa memakai Get.forceAppUpdate
-    // Get.forceAppUpdate(); // Perbarui state
+    // Get.appUpdate(); // Perbarui state tanpa memakai Get.forceAppUpdate
+    Get.forceAppUpdate(); // Perbarui state
     print('image data nih setelah update: $image');
   }
 
@@ -34,12 +35,13 @@ class AddtransaksiController extends GetxController {
 
       String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
       cleanedInput = cleanedInput.replaceAll('.', '');
-
+      String? imgUrlNih;
       if (selectedImagePath != null) {
         print('image path nih: $selectedImagePath');
         final imageExtension = selectedImagePath!.split('.').last.toLowerCase();
         final imageBytes = await File(selectedImagePath!).readAsBytes();
-        final imagePath = 'buktiTransfer/bukti';
+        final tanggal = DateTime.now().toString();
+        final imagePath = '/$tanggal/bukti';
 
         await client.storage.from('bukti').uploadBinary(
               imagePath,
@@ -54,7 +56,9 @@ class AddtransaksiController extends GetxController {
         imageUrl = Uri.parse(imageUrl).replace(queryParameters: {
           't': DateTime.now().millisecondsSinceEpoch.toString()
         }).toString();
-        addTransaksi();
+
+        imgUrlNih = imageUrl;
+        // addTransaksi();
       }
 
       try {
@@ -76,7 +80,7 @@ class AddtransaksiController extends GetxController {
           "status_cucian": 'diproses',
           "created_at": DateTime.now().toString(),
           "is_hidden": false,
-          "bukti_transfer": selectedImagePath,
+          "bukti_transfer": imgUrlNih,
         };
 
         if (kDebugMode) {
@@ -97,7 +101,7 @@ class AddtransaksiController extends GetxController {
             OutlinedButton(
               onPressed: () {
                 Get.back();
-                Get.back();
+                Get.offAndToNamed(Routes.OWNERHOME);
               },
               child: const Text("OK"),
             ),
