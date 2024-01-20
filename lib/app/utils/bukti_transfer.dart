@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,7 +65,9 @@ class BuktiTrf extends StatelessWidget {
               onPressed: () {
                 if (controller.isLoading.isFalse && selectedImage != null) {
                   onUpload(selectedImage!.path);
-                  print('image path nih: $selectedImage');
+                  if (kDebugMode) {
+                    print('image path nih: $selectedImage');
+                  }
 
                   // controller.addTransaksi();
                 }

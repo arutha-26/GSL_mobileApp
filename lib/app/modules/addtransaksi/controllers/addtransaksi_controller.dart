@@ -93,20 +93,29 @@ class AddtransaksiController extends GetxController {
 
         clearInputs();
 
-        Get.defaultDialog(
-          barrierDismissible: true,
-          title: "Berhasil",
-          middleText: "Transaksi berhasil ditambahkan\n Berhasil Cetak Faktur",
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                Get.back();
-                Get.offAndToNamed(Routes.OWNERHOME);
-              },
-              child: const Text("OK"),
-            ),
-          ],
+        Get.snackbar(
+          'Berhasil',
+          "Tambah Data Berhasil",
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.greenAccent,
         );
+        Get.offAndToNamed(Routes.OWNERHOME);
+
+        // Get.defaultDialog(
+        //   barrierDismissible: true,
+        //   title: "Berhasil",
+        //   middleText: "Transaksi berhasil ditambahkan\n Berhasil Cetak Faktur",
+        //   actions: [
+        //     OutlinedButton(
+        //       onPressed: () {
+        //         Get.back();
+        //         Get.offAndToNamed(Routes.OWNERHOME);
+        //       },
+        //       child: const Text("OK"),
+        //     ),
+        //   ],
+        // );
       } catch (e) {
         isLoading.value = false;
         Get.snackbar(
