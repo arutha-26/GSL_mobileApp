@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,6 +16,116 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../utils/pelanggan.dart';
 
 class AddtransaksiController extends GetxController {
+  XFile? imagePilih;
+
+  void updateSelectedImage(XFile? image) {
+    imagePilih = image;
+    print('image data nih sebelum update: $image');
+    Get.appUpdate(); // Perbarui state tanpa memakai Get.forceAppUpdate
+    // Get.forceAppUpdate(); // Perbarui state
+    print('image data nih setelah update: $image');
+  }
+
+  String? get selectedImagePath => imagePilih?.path;
+
+  Future<void> addTransaksi() async {
+    if (selectedImagePath != null) {
+      isLoading.value = true;
+
+      String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+      cleanedInput = cleanedInput.replaceAll('.', '');
+
+      if (selectedImagePath != null) {
+        print('image path nih: $selectedImagePath');
+        final imageExtension = selectedImagePath!.split('.').last.toLowerCase();
+        final imageBytes = await File(selectedImagePath!).readAsBytes();
+        final imagePath = 'buktiTransfer/bukti';
+
+        await client.storage.from('bukti').uploadBinary(
+              imagePath,
+              imageBytes,
+              fileOptions: FileOptions(
+                upsert: true,
+                contentType: 'image/$imageExtension',
+              ),
+            );
+
+        String imageUrl = client.storage.from('bukti').getPublicUrl(imagePath);
+        imageUrl = Uri.parse(imageUrl).replace(queryParameters: {
+          't': DateTime.now().millisecondsSinceEpoch.toString()
+        }).toString();
+        addTransaksi();
+      }
+
+      try {
+        var dataTransaksi = {
+          "id_karyawan_masuk": idKaryawanC.text.toString(),
+          "tanggal_datang": DateTime.now().toString(),
+          "tanggal_selesai":
+              formatDateWithCurrentTime(tanggalSelesaiController.text).toString(),
+          "tanggal_diambil": null,
+          "berat_laundry": double.tryParse(beratLaundryController.text),
+          "total_biaya": numericTotalHarga.value.toStringAsFixed(0),
+          "id_user": idUserController.text,
+          "metode_laundry": getSelectedMetode(),
+          "layanan_laundry": getSelectedLayanan(),
+          "metode_pembayaran": getSelectedPembayaran(),
+          "nominal_bayar": cleanedInput,
+          "kembalian": getNumericValueFromKembalian(),
+          "status_pembayaran": statusPembayaran.value,
+          "status_cucian": 'diproses',
+          "created_at": DateTime.now().toString(),
+          "is_hidden": false,
+          "bukti_transfer": selectedImagePath,
+        };
+
+        if (kDebugMode) {
+          print("Data to be inserted into transaksi: $dataTransaksi");
+        }
+
+        await client.from("transaksi").insert(dataTransaksi).execute();
+
+        await generateAndOpenInvoicePDF(dataTransaksi);
+
+        clearInputs();
+
+        Get.defaultDialog(
+          barrierDismissible: true,
+          title: "Berhasil",
+          middleText: "Transaksi berhasil ditambahkan\n Berhasil Cetak Faktur",
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Get.back();
+                Get.back();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      } catch (e) {
+        isLoading.value = false;
+        Get.snackbar(
+          'ERROR',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
+      }
+    } else {
+      Get.snackbar(
+        'ERROR',
+        "Seluruh data harus terisi!",
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+    }
+    isLoading.value = false;
+    refresh();
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -22,7 +133,6 @@ class AddtransaksiController extends GetxController {
       hitungTotalHarga();
     });
     formatNominal();
-    // nominalBayarController.addListener(getKembalian);
     nominalBayarController.addListener(() {
       getKembalian();
     });
@@ -145,90 +255,6 @@ class AddtransaksiController extends GetxController {
   int getNumericValueFromKembalian() {
     String rawValue = kembalianController.text.replaceAll(RegExp(r'[^\d]'), '');
     return int.tryParse(rawValue) ?? 0;
-  }
-
-  Future<void> addTransaksi() async {
-    if (beratLaundryController.text.isNotEmpty && hargaTotalController.text.isNotEmpty) {
-      isLoading.value = true;
-
-      String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
-      cleanedInput = cleanedInput.replaceAll('.', '');
-
-      try {
-        var dataTransaksi = {
-          "id_karyawan_masuk": idKaryawanC.text.toString(),
-          "tanggal_datang": DateTime.now().toString(),
-          "tanggal_selesai":
-              formatDateWithCurrentTime(tanggalSelesaiController.text).toString(),
-          "tanggal_diambil": null,
-          "berat_laundry": double.tryParse(beratLaundryController.text),
-          "total_biaya":
-              numericTotalHarga.value.toStringAsFixed(0), // Round to 0 decimal places
-          "id_user": idUserController.text,
-          "metode_laundry": getSelectedMetode(),
-          "layanan_laundry": getSelectedLayanan(),
-          "metode_pembayaran": getSelectedPembayaran(),
-          "nominal_bayar": cleanedInput,
-          "kembalian": getNumericValueFromKembalian(),
-          "status_pembayaran": statusPembayaran.value,
-          "status_cucian": statusCucian.value,
-          "created_at": DateTime.now().toString(),
-          "is_hidden": false,
-        };
-
-        // Log the dataTransaksi to the console
-        if (kDebugMode) {
-          print("Data to be inserted into transaksi: $dataTransaksi");
-        }
-
-        await client.from("transaksi").insert(dataTransaksi).execute();
-
-        await generateAndOpenInvoicePDF(dataTransaksi);
-
-        // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
-        // String nomorPelanggan = phoneController.text;
-        // String pesan = '';
-
-        /*FITUR KIRIM FAKTUR KE WHATSAPP*/
-        // await kirimPesanWhatsApp(nomorPelanggan, pesan);
-
-        clearInputs();
-
-        Get.defaultDialog(
-          barrierDismissible: true,
-          title: "Berhasil",
-          middleText: "Transaksi berhasil ditambahkan\n Berhasil Cetak Faktur",
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                Get.back();
-                Get.back();
-              },
-              child: const Text("OK"),
-            )
-          ],
-        );
-      } catch (e) {
-        isLoading.value = false;
-        Get.snackbar(
-          'ERROR',
-          e.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-        );
-      }
-    } else {
-      Get.snackbar(
-        'ERROR',
-        "Seluruh data harus terisi!",
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-    }
-    isLoading.value = false;
-    refresh();
   }
 
   Future<void> generateAndOpenInvoicePDF(data) async {

@@ -1,8 +1,10 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../utils/BuktiTransferClass.dart';
 import '../../../utils/PelangganSearchWidget.dart';
 import '../controllers/addtransaksi_controller.dart';
 
@@ -42,19 +44,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // TextField(
-                  //   enabled: false,
-                  //   autocorrect: false,
-                  //   controller: controller.idKaryawanC,
-                  //   textInputAction: TextInputAction.next,
-                  //   decoration: const InputDecoration(
-                  //     labelText: "Id Karyawan",
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
                   PelangganSearchWidget(
                     nameController: controller.nameController,
                     phoneController: controller.phoneController,
@@ -140,24 +129,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       controller.hitungTotalHarga(); // Tambahkan ini
                     },
                   ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  // TextField(
-                  //   controller: controller.tanggalDatangController,
-                  //   decoration: const InputDecoration(
-                  //     labelText: "Tanggal Datang",
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   onTap: () {
-                  //     FocusScope.of(context)
-                  //         .requestFocus(new FocusNode()); // Prevent keyboard from appearing
-                  //     selectDate(
-                  //         context,
-                  //         controller
-                  //             .tanggalDatangController); // Call your date picker function
-                  //   },
-                  // ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: controller.tanggalSelesaiController,
@@ -201,24 +172,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  DropdownSearch<String>(
-                    popupProps: const PopupProps.menu(
-                      constraints: BoxConstraints(maxHeight: 180),
-                      // 60 are per data height
-                      showSelectedItems: true,
-                    ),
-                    items: const ["-", "Tunai", "Transfer"],
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Metode Pembayaran",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    onChanged: (String? value) {
-                      controller.setSelectedPembayaran(value);
-                    },
-                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -240,6 +193,8 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       border: OutlineInputBorder(),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  const Center(child: Text('Status Pembayaran')),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -294,9 +249,9 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                           )),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
+                  const Center(child: Text('Status Cucian')),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -376,20 +331,35 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Obx(() => ElevatedButton(
-                        onPressed: () {
-                          if (controller.isLoading.isFalse) {
-                            controller.addTransaksi();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: const Color(0xFF22c55e), // Warna teks
-                        ),
-                        child: Text(
-                          controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
-                        ),
-                      )),
+                  DropdownSearch<String>(
+                    popupProps: const PopupProps.menu(
+                      constraints: BoxConstraints(maxHeight: 180),
+                      // 60 are per data height
+                      showSelectedItems: true,
+                    ),
+                    items: const ["-", "Tunai", "Transfer"],
+                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                      dropdownSearchDecoration: InputDecoration(
+                        labelText: "Metode Pembayaran",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    onChanged: (String? value) {
+                      controller.setSelectedPembayaran(value);
+                      if (kDebugMode) {
+                        print(value);
+                      }
+                      controller.setSelectedPembayaran(value);
+                      if (Get.isBottomSheetOpen!) {
+                        Get.back();
+                      }
+                      if (value == "Transfer") {
+                        Get.bottomSheet(const BuktiTransfer());
+                      }
+                    },
+                    // Get.forceAppUpdate();
+                  ),
+                  const SizedBox(height: 20),
                 ],
               );
             }));

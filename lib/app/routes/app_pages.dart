@@ -14,8 +14,6 @@ import '../modules/datapelanggan/bindings/datapelanggan_binding.dart';
 import '../modules/datapelanggan/views/datapelanggan_view.dart';
 import '../modules/detailDataTransaksi/bindings/detail_data_transaksi_binding.dart';
 import '../modules/detailDataTransaksi/views/detail_data_transaksi_view.dart';
-import '../modules/detailHistoryPelanggan/bindings/detail_history_pelanggan_binding.dart';
-import '../modules/detailHistoryPelanggan/views/detail_history_pelanggan_view.dart';
 import '../modules/detailKaryawan/bindings/detail_karyawan_binding.dart';
 import '../modules/detailKaryawan/views/detail_karyawan_view.dart';
 import '../modules/detailpelanggan/bindings/detailpelanggan_binding.dart';
@@ -161,11 +159,6 @@ class AppPages {
       name: _Paths.PENGAMBILAN_LAUNDRY,
       page: () => PengambilanLaundryView(),
       binding: PengambilanLaundryBinding(),
-    ),
-    GetPage(
-      name: _Paths.DETAIL_HISTORY_PELANGGAN,
-      page: () => const DetailHistoryPelangganView(),
-      binding: DetailHistoryPelangganBinding(),
     ),
     GetPage(
       name: _Paths.PELANGGAN_PAID,
