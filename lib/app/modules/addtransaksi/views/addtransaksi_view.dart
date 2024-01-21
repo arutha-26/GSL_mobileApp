@@ -194,143 +194,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Center(child: Text('Status Pembayaran')),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusPembayaran('sudah_dibayar'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusPembayaran.value == 'sudah_dibayar'
-                                    ? Colors.green[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusPembayaran.value == 'sudah_dibayar'
-                                      ? Colors.green
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.payment, color: Colors.green),
-                                  Text('Sudah Dibayar'),
-                                ],
-                              ),
-                            ),
-                          )),
-
-                      // Opsi "Belum Dibayar"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusPembayaran('belum_dibayar'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusPembayaran.value == 'belum_dibayar'
-                                    ? Colors.red[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusPembayaran.value == 'belum_dibayar'
-                                      ? Colors.red
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.payment, color: Colors.red),
-                                  Text('Belum Dibayar'),
-                                ],
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Center(child: Text('Status Cucian')),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Opsi "Diproses"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusCucian('diproses'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusCucian.value == 'diproses'
-                                    ? Colors.blue[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusCucian.value == 'diproses'
-                                      ? Colors.blue
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.hourglass_empty, color: Colors.blue),
-                                  Text('Diproses'),
-                                ],
-                              ),
-                            ),
-                          )),
-
-                      // Opsi "Selesai"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusCucian('selesai'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusCucian.value == 'selesai'
-                                    ? Colors.green[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusCucian.value == 'selesai'
-                                      ? Colors.green
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.check_circle_outline, color: Colors.green),
-                                  Text('Selesai'),
-                                ],
-                              ),
-                            ),
-                          )),
-                      // Opsi "Diambil"
-                      Obx(() => GestureDetector(
-                            onTap: () => controller.setStatusCucian('diambil'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: controller.statusCucian.value == 'diambil'
-                                    ? Colors.orange[100]
-                                    : Colors.transparent,
-                                border: Border.all(
-                                  color: controller.statusCucian.value == 'diambil'
-                                      ? Colors.orange
-                                      : Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Column(
-                                children: [
-                                  Icon(Icons.done_all, color: Colors.orange),
-                                  Text('Diambil'),
-                                ],
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
                   DropdownSearch<String>(
                     popupProps: const PopupProps.menu(
                       constraints: BoxConstraints(maxHeight: 180),
@@ -357,9 +220,23 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                         Get.bottomSheet(const BuktiTransfer());
                       }
                     },
-                    // Get.forceAppUpdate();
                   ),
                   const SizedBox(height: 20),
+                  Obx(() => ElevatedButton(
+                        onPressed: () {
+                          if (controller.isLoading.isFalse) {
+                            controller.addTransaksi();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            backgroundColor: const Color(0xFF22c55e),
+                            minimumSize: const Size(300, 40)),
+                        child: Text(
+                          controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
+                        ),
+                      )),
+                  const SizedBox(height: 10),
                 ],
               );
             }));

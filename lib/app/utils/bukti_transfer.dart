@@ -25,62 +25,75 @@ class BuktiTrf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: 250,
-          height: 250,
-          child: imageUrl != null
-              ? ClipOval(
-                  child: Image.file(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+            width: 350,
+            height: 350,
+            child: imageUrl != null
+                ? Image.file(
                     File(imageUrl!), // Gunakan Image.file untuk path lokal
                     fit: BoxFit.cover,
+                  )
+                : Container(
+                    color: Colors.grey,
+                    child: const Center(
+                      child: Text('Bukti Transfer'),
+                    ),
                   ),
-                )
-              : Container(
-                  color: Colors.grey,
-                  child: const Center(
-                    child: Text('Bukti Transfer'),
-                  ),
-                ),
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () async {
-            final ImagePicker picker = ImagePicker();
-            final XFile? image = await picker.pickImage(source: ImageSource.camera);
-            if (image == null) {
-              return;
-            }
-            onImageSelected(image);
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.indigoAccent),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            minimumSize: MaterialStateProperty.all<Size>(const Size(200, 35)),
           ),
-          child: const Text('Upload Bukti Transfer'),
-        ),
-        Obx(() => ElevatedButton(
-              onPressed: () {
-                if (controller.isLoading.isFalse && selectedImage != null) {
-                  onUpload(selectedImage!.path);
-                  if (kDebugMode) {
-                    print('image path nih: $selectedImage');
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () async {
+              final ImagePicker picker = ImagePicker();
+              final XFile? image = await picker.pickImage(source: ImageSource.camera);
+              if (image == null) {
+                return;
+              }
+              onImageSelected(image);
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.indigoAccent),
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              minimumSize: MaterialStateProperty.all<Size>(const Size(300, 40)),
+            ),
+            child: const Text('Upload Bukti Transfer'),
+          ),
+          Obx(() => ElevatedButton(
+                onPressed: () {
+                  if (controller.isLoading.isFalse) {
+                    if (selectedImage != null) {
+                      onUpload(selectedImage!.path);
+                      if (kDebugMode) {
+                        print('image path nih: $selectedImage');
+                      }
+                    } else {
+                      // Tampilkan snackbar jika selectedImage null
+                      Get.snackbar(
+                        'ERROR',
+                        'Harap pilih gambar terlebih dahulu',
+                        snackPosition: SnackPosition.BOTTOM,
+                        colorText: Colors.white,
+                        backgroundColor: Colors.red,
+                      );
+                    }
                   }
-
-                  // controller.addTransaksi();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: const Color(0xFF22c55e),
-              ),
-              child: Text(
-                controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
-              ),
-            )),
-      ],
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: const Color(0xFF22c55e),
+                  minimumSize: const Size(300, 40),
+                ),
+                child: Text(
+                  controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
+                ),
+              )),
+          const SizedBox(
+            height: 30,
+          )
+        ],
+      ),
     );
   }
 }

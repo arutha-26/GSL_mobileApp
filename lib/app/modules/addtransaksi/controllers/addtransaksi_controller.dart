@@ -30,113 +30,211 @@ class AddtransaksiController extends GetxController {
   String? get selectedImagePath => imagePilih?.path;
 
   Future<void> addTransaksi() async {
-    if (selectedImagePath != null) {
-      isLoading.value = true;
-
-      String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
-      cleanedInput = cleanedInput.replaceAll('.', '');
-      String? imgUrlNih;
-      if (selectedImagePath != null) {
-        print('image path nih: $selectedImagePath');
-        final imageExtension = selectedImagePath!.split('.').last.toLowerCase();
-        final imageBytes = await File(selectedImagePath!).readAsBytes();
-        final tanggal = DateTime.now().toString();
-        final imagePath = '/$tanggal/bukti';
-
-        await client.storage.from('bukti').uploadBinary(
-              imagePath,
-              imageBytes,
-              fileOptions: FileOptions(
-                upsert: true,
-                contentType: 'image/$imageExtension',
-              ),
-            );
-
-        String imageUrl = client.storage.from('bukti').getPublicUrl(imagePath);
-        imageUrl = Uri.parse(imageUrl).replace(queryParameters: {
-          't': DateTime.now().millisecondsSinceEpoch.toString()
-        }).toString();
-
-        imgUrlNih = imageUrl;
-        // addTransaksi();
-      }
-
-      try {
-        var dataTransaksi = {
-          "id_karyawan_masuk": idKaryawanC.text.toString(),
-          "tanggal_datang": DateTime.now().toString(),
-          "tanggal_selesai":
-              formatDateWithCurrentTime(tanggalSelesaiController.text).toString(),
-          "tanggal_diambil": null,
-          "berat_laundry": double.tryParse(beratLaundryController.text),
-          "total_biaya": numericTotalHarga.value.toStringAsFixed(0),
-          "id_user": idUserController.text,
-          "metode_laundry": getSelectedMetode(),
-          "layanan_laundry": getSelectedLayanan(),
-          "metode_pembayaran": getSelectedPembayaran(),
-          "nominal_bayar": cleanedInput,
-          "kembalian": getNumericValueFromKembalian(),
-          "status_pembayaran": statusPembayaran.value,
-          "status_cucian": 'diproses',
-          "created_at": DateTime.now().toString(),
-          "is_hidden": false,
-          "bukti_transfer": imgUrlNih,
-        };
-
-        if (kDebugMode) {
-          print("Data to be inserted into transaksi: $dataTransaksi");
-        }
-
-        await client.from("transaksi").insert(dataTransaksi).execute();
-
-        await generateAndOpenInvoicePDF(dataTransaksi);
-
-        clearInputs();
-
-        Get.snackbar(
-          'Berhasil',
-          "Tambah Data Berhasil",
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          backgroundColor: Colors.greenAccent,
-        );
-        Get.offAndToNamed(Routes.OWNERHOME);
-
-        // Get.defaultDialog(
-        //   barrierDismissible: true,
-        //   title: "Berhasil",
-        //   middleText: "Transaksi berhasil ditambahkan\n Berhasil Cetak Faktur",
-        //   actions: [
-        //     OutlinedButton(
-        //       onPressed: () {
-        //         Get.back();
-        //         Get.offAndToNamed(Routes.OWNERHOME);
-        //       },
-        //       child: const Text("OK"),
-        //     ),
-        //   ],
-        // );
-      } catch (e) {
-        isLoading.value = false;
-        Get.snackbar(
-          'ERROR',
-          e.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          backgroundColor: Colors.red,
-        );
-      }
-    } else {
+    if (idKaryawanC.text.isEmpty) {
       Get.snackbar(
         'ERROR',
-        "Seluruh data harus terisi!",
+        'ID Karyawan harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (nameController.text.isEmpty) {
+      Get.snackbar(
+        'ERROR',
+        'Data Pelanggan harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (getSelectedMetode() == "") {
+      Get.snackbar(
+        'ERROR',
+        'Metode Laundry harus dipilih',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    if (getSelectedLayanan() == "") {
+      Get.snackbar(
+        'ERROR',
+        'Layanan Laundry harus dipilih',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (tanggalSelesaiController.text.isEmpty) {
+      Get.snackbar(
+        'ERROR',
+        'Tanggal selesai harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (beratLaundryController.text.isEmpty) {
+      Get.snackbar(
+        'ERROR',
+        'Berat laundry harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (getSelectedPembayaran() == "") {
+      Get.snackbar(
+        'ERROR',
+        'Metode Pembayaran harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (nominalBayarController.text.isEmpty) {
+      Get.snackbar(
+        'ERROR',
+        'Nominal Bayar harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (getSelectedPembayaran() == "") {
+      Get.snackbar(
+        'ERROR',
+        'Harap pilih Metode Pembayaran terlebih dahulu',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (getSelectedPembayaran() == "Tranfer" && selectedImagePath == null) {
+      Get.snackbar(
+        'ERROR',
+        'Harap pilih gambar terlebih dahulu',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    String? imgUrlNih;
+
+    if (double.tryParse(cleanedInput)! >= 1) {
+      statusPembayaran.value = "Lunas";
+    }
+
+    if (getSelectedPembayaran() == "-" && double.tryParse(cleanedInput)! >= 1) {
+      Get.snackbar(
+        'ERROR',
+        'Sesuaikan Metode Pembayaran!',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    isLoading.value = true;
+
+    if (selectedImagePath != null) {
+      final imageExtension = selectedImagePath!.split('.').last.toLowerCase();
+      final imageBytes = await File(selectedImagePath!).readAsBytes();
+      final tanggal = DateTime.now().toString();
+      final imagePath = '/$tanggal/bukti';
+
+      await client.storage.from('bukti').uploadBinary(
+            imagePath,
+            imageBytes,
+            fileOptions: FileOptions(
+              upsert: true,
+              contentType: 'image/$imageExtension',
+            ),
+          );
+
+      String imageUrl = client.storage.from('bukti').getPublicUrl(imagePath);
+      imageUrl = Uri.parse(imageUrl).replace(
+          queryParameters: {'t': DateTime.now().millisecondsSinceEpoch.toString()}).toString();
+
+      imgUrlNih = imageUrl;
+    }
+
+    try {
+      var dataTransaksi = {
+        "id_karyawan_masuk": idKaryawanC.text.toString(),
+        "tanggal_datang": DateTime.now().toString(),
+        "tanggal_selesai": formatDateWithCurrentTime(tanggalSelesaiController.text).toString(),
+        "tanggal_diambil": null,
+        "berat_laundry": double.tryParse(beratLaundryController.text),
+        "total_biaya": numericTotalHarga.value.toStringAsFixed(0),
+        "id_user": idUserController.text,
+        "metode_laundry": getSelectedMetode(),
+        "layanan_laundry": getSelectedLayanan(),
+        "metode_pembayaran": getSelectedPembayaran(),
+        "nominal_bayar": cleanedInput,
+        "kembalian": getNumericValueFromKembalian(),
+        "status_pembayaran": statusPembayaran.value,
+        "status_cucian": 'Dalam Proses',
+        "created_at": DateTime.now().toString(),
+        "is_hidden": false,
+        "bukti_transfer": imgUrlNih,
+      };
+
+      if (kDebugMode) {
+        print("Data to be inserted into transaksi: $dataTransaksi");
+      }
+
+      await client.from("transaksi").insert(dataTransaksi).execute();
+
+      await generateAndOpenInvoicePDF(dataTransaksi);
+
+      clearInputs();
+
+      Get.snackbar(
+        'Berhasil',
+        "Tambah Data Berhasil",
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.greenAccent,
+      );
+
+      Get.offAndToNamed(Routes.OWNERHOME);
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        'ERROR',
+        e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.red,
       );
     }
+
     isLoading.value = false;
-    refresh();
   }
 
   @override
@@ -149,6 +247,7 @@ class AddtransaksiController extends GetxController {
     nominalBayarController.addListener(() {
       getKembalian();
     });
+    Get.lazyPut(() => AddtransaksiController());
   }
 
   void clearInputs() {
@@ -398,9 +497,10 @@ class AddtransaksiController extends GetxController {
                 styledTextRow('Status Cucian:', data['status_cucian']?.toString() ?? '-'),
                 styledTextRow(
                     'Status Pembayaran:',
-                    data['status_pembayaran']?.toString() == 'sudah_dibayar'
-                        ? 'Sudah Dibayar'
-                        : 'Belum Dibayar' ?? '-'),
+                    data['status_pembayaran']?.toString() == 'Lunas'
+                        ? 'Lunas'
+                        : 'Belum Lunas' ?? '-'),
+                styledTextRow('Metode Pembayaran:', data['metode_pembayaran'].toString()),
                 styledTextRow('Total Biaya:',
                     formatCurrency(double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
                 styledTextRow('Nominal Bayar:', nominalBayarController.text),

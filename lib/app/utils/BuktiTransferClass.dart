@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,6 +24,16 @@ class _BuktiTransfer extends State<BuktiTransfer> {
       imageUrl: controller.imagePilih?.path,
       onUpload: (imageUrl) async {
         controller.updateSelectedImage(controller.imagePilih);
+        if (controller.imagePilih == null) {
+          Get.snackbar(
+            'ERROR',
+            'Harap pilih gambar terlebih dahulu',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+          );
+          return;
+        }
         controller.addTransaksi();
       },
       selectedImage: controller.imagePilih,

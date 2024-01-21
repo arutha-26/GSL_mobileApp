@@ -120,6 +120,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 ),
                 GlassButton(
                   onPressed: () {
+                    Get.deleteAll();
                     Get.put(AddtransaksiController());
                     Get.to(() => AddtransaksiView());
                   },

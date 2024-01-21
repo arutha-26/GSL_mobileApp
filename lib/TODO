@@ -1,28 +1,21 @@
 //TODO
+
+
 BANYAK BUGS/ERROR, SESUAIKAN DATABASE DAN APP KEMBALI, CEK DARI AWAL BANGET SAMPAI AKHIR PROSES, CEK REVISI DARI PAK DIAN JUGA
-
-
 
 bug invoice,
 
 cucian sudah selesai, history transaksi = dashboard, diambil saja
 
-struktur relasi salah,
-
-nominal bayar bisa menyebabkan human error
 
 TODO BELUM: MENGUBAH NAMA_KARYAWAN ... KE ID_KARYAWAN... CEK DATA DATA GET KARYAWAN LAGI YA, COBA INPUT SEMUA DATA, CEK BUG DI PELANGGAN ATAU KARYAWAN JUGA
 
-TODO BUG DI DETAIL DATA KARYAWAN, DETAIL DATA PELANGGAN, SEARCH DATA DI INVOICE, SEARCH DATA DI DATA TRANSAKSI,
+TODO BUG DETAIL DATA PELANGGAN,
 
 -perbaiki bugs/error
-
-
 
 -report/laporan all transactions (print/export)
 
 -tambahkan data
-
--dashboard pd pelanggan tidak perlu. tambahkan menu history
 
 -panjang data dalam tabel-database jgn default
