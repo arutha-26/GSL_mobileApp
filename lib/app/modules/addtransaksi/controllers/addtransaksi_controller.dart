@@ -30,6 +30,11 @@ class AddtransaksiController extends GetxController {
   String? get selectedImagePath => imagePilih?.path;
 
   Future<void> addTransaksi() async {
+    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
+    cleanedInput = cleanedInput.replaceAll('.', '');
+
+    String? imgUrlNih;
+
     if (idKaryawanC.text.isEmpty) {
       Get.snackbar(
         'ERROR',
@@ -128,6 +133,27 @@ class AddtransaksiController extends GetxController {
       return;
     }
 
+    if (double.tryParse(cleanedInput)! == 0 && getSelectedPembayaran() == "Tunai") {
+      Get.snackbar(
+        'ERROR',
+        'Harap Sesuaikan Metode dan Nominal terlebih dahulu',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    if (double.tryParse(cleanedInput)! == 0 && getSelectedPembayaran() == "Transfer") {
+      Get.snackbar(
+        'ERROR',
+        'Harap Sesuaikan Metode dan Nominal terlebih dahulu',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
     if (getSelectedPembayaran() == "Tranfer" && selectedImagePath == null) {
       Get.snackbar(
         'ERROR',
@@ -139,11 +165,6 @@ class AddtransaksiController extends GetxController {
       return;
     }
 
-    String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
-    cleanedInput = cleanedInput.replaceAll('.', '');
-
-    String? imgUrlNih;
-
     if (double.tryParse(cleanedInput)! >= 1) {
       statusPembayaran.value = "Lunas";
     }
@@ -151,7 +172,7 @@ class AddtransaksiController extends GetxController {
     if (getSelectedPembayaran() == "-" && double.tryParse(cleanedInput)! >= 1) {
       Get.snackbar(
         'ERROR',
-        'Sesuaikan Metode Pembayaran!',
+        'Harap Sesuaikan Metode Pembayaran terlebih dahulu!',
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.red,
