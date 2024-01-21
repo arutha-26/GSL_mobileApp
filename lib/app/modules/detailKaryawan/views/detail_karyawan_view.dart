@@ -58,8 +58,8 @@ class DetailKaryawanView extends GetView<DetailKaryawanController> {
                     width: 250,
                     height: 250,
                   ),
-                  const SizedBox(height: 5),
-                  TextRow(label: 'ID Pengguna', value: user['id_user']?.toString() ?? '-'),
+                  // const SizedBox(height: 5),
+                  // TextRow(label: 'ID Pengguna', value: user['id_user']?.toString() ?? '-'),
                   TextRow(label: 'Role Pengguna', value: user['role']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Nama Pengguna', value: user['nama']?.toString() ?? '-'),
@@ -67,11 +67,11 @@ class DetailKaryawanView extends GetView<DetailKaryawanController> {
                   TextRow(label: 'Email Pengguna', value: user['email']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Nomor Pengguna', value: '${user['no_telp']}' ?? '-'),
-                  const SizedBox(height: 5),
-                  TextRow(
-                    label: 'Kategori Pengguna',
-                    value: user['kategori']?.toString() ?? '-',
-                  ),
+                  // const SizedBox(height: 5),
+                  // TextRow(
+                  //   label: 'Kategori Pengguna',
+                  //   value: user['kategori']?.toString() ?? '-',
+                  // ),
                   const SizedBox(height: 5),
                   TextRow(
                     label: 'Alamat Pengguna',

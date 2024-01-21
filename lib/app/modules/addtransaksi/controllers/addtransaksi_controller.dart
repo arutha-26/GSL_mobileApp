@@ -285,8 +285,8 @@ class AddtransaksiController extends GetxController {
     selectedMetode.value = "";
     selectedLayanan.value = "";
     selectedPembayaran.value = "-";
-    statusCucian.value = 'diproses';
-    statusPembayaran.value = 'belum_dibayar';
+    statusCucian.value = 'Dalam Proses';
+    statusPembayaran.value = 'Belum Lunas';
   }
 
   @override
@@ -314,8 +314,8 @@ class AddtransaksiController extends GetxController {
 
   RxDouble numericTotalHarga = 0.0.obs; // Add this line
   RxDouble numericHargaKilo = 0.0.obs; // Add this line
-  RxString statusCucian = 'diproses'.obs;
-  RxString statusPembayaran = 'belum_dibayar'.obs;
+  RxString statusCucian = 'Dalam Proses'.obs;
+  RxString statusPembayaran = 'Belum Lunas'.obs;
   RxBool isLoading = false.obs;
   TextEditingController idKaryawanC = TextEditingController();
   TextEditingController namaKaryawanC = TextEditingController();
@@ -809,10 +809,10 @@ Layanan Laundry : ${selectedLayanan.value}
 Grand total : ${hargaTotalController.text}
 Nominal Bayar : ${nominalBayarController.text}
 Kembalian : ${kembalianController.text}
-Status Pembayaran: ${statusPembayaran.value = (statusPembayaran.value == "sudah_dibayar") ? "Sudah Dibayar" : "Belum Dibayar"}
+Status Pembayaran: ${statusPembayaran.value}
 Sisa Tagihan : ${sisaTagihan.toString()}
 
-Status Cucian: ${statusCucian.value = (statusCucian.value = (statusCucian.value == "diproses") ? "Diproses" : (statusCucian.value == "selesai") ? "Selesai" : (statusCucian.value == "diambil") ? "Diambil" : "Status Tidak Valid")}
+Status Cucian: ${statusCucian.value}
 
 Costumer Care : https://wa.me/6281933072799
 =================

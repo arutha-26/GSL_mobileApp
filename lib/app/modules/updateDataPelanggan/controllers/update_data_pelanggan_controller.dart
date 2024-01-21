@@ -26,6 +26,7 @@ class UpdateDataPelangganController extends GetxController {
           "is_active": updatedUserData['is_active'] ?? userData['is_active'],
           "edit_at": DateTime.now().toString(),
         };
+        print("Data to be updated: $updateFields");
 
         var response = await client
             .from("user")
@@ -69,6 +70,14 @@ class UpdateDataPelangganController extends GetxController {
       isLoading.value = false; // Reset the loading state in case of an error
       if (kDebugMode) {
         print('Error updating user data: $error');
+        Get.snackbar(
+          'Error',
+          '$error',
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
       }
     }
   }

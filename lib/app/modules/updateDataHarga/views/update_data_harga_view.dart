@@ -6,12 +6,12 @@ import 'package:intl/intl.dart';
 import '../controllers/update_data_harga_controller.dart';
 
 class UpdateDataHargaView extends GetView<UpdateDataHargaController> {
-  UpdateDataHargaView({Key? key}) : super(key: key);
+  UpdateDataHargaView({super.key});
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> userData = Get.arguments;
+    final Map<String, dynamic> userData = Get.arguments ?? {};
 
     return Scaffold(
       appBar: AppBar(
@@ -27,12 +27,12 @@ class UpdateDataHargaView extends GetView<UpdateDataHargaController> {
               padding: const EdgeInsets.all(5),
               children: [
                 Image.asset(
-                  'images/user_profile.png',
+                  'images/hand-holding-usd.png',
                   width: 250,
                   height: 250,
                 ),
-                const SizedBox(height: 15),
-                _buildTextField('ID Harga', 'id_harga', userData),
+                // const SizedBox(height: 15),
+                // _buildTextField('ID Harga', 'id_harga', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Kategori Pelanggan', 'kategori_pelanggan', userData),
                 const SizedBox(height: 15),

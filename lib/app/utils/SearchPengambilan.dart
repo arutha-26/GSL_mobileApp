@@ -52,7 +52,7 @@ class SearchPengambilan extends StatelessWidget {
           final statusPembayaran = option.statusPembayaran ?? '';
           final statusCucian = option.statusCucian ?? '';
           final tglDatang = option.tglDatang ?? '';
-          return '$nama - $noTelp - $statusCucian - $tglDatang';
+          return '$idTransaksi - $nama - $noTelp - $statusCucian - $tglDatang';
         } else {
           return '';
         }

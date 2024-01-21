@@ -92,6 +92,8 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
+                          _buildInfoRow("Id Transaksi", controller.idTransaksiController),
+                          const SizedBox(height: 20),
                           _buildInfoRow("Nama Pelanggan", controller.namaController),
                           const SizedBox(height: 20),
                           _buildInfoRow("Nomor Pelanggan", controller.noTelpController),
@@ -118,7 +120,18 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           if (kDebugMode) {
                             print("Button Tapped!");
                           }
-                          if (controller.isUpdateDataLoading.isFalse) {
+                          if (controller.isUpdateDataLoading.isFalse &&
+                              controller.idTransaksiController.text.toString() == '') {
+                            Get.snackbar(
+                              'ERROR',
+                              'Harap memilih data terlebih dahulu!',
+                              snackPosition: SnackPosition.BOTTOM,
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                              margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+                            );
+                            return;
+                          } else {
                             controller.updateDateFieldVisibility();
                             controller.update();
                           }
@@ -141,112 +154,9 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                         children: [
                           // const CircularProgressIndicator(),
                           const SizedBox(height: 20),
-                          // // const Text('Status Cucian:'),
-                          // if (controller.statusCucianController.text.toString() ==
-                          //     'Diproses') ...[
-                          //   Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //     children: [
-                          //       // Opsi "Diproses"
-                          //       // Obx(() => GestureDetector(
-                          //       //       onTap: () => controller.setStatusCucian('diproses'),
-                          //       //       child: Container(
-                          //       //         padding: const EdgeInsets.all(8),
-                          //       //         decoration: BoxDecoration(
-                          //       //           color: controller.statusCucian.value == 'diproses'
-                          //       //               ? Colors.blue[100]
-                          //       //               : Colors.transparent,
-                          //       //           border: Border.all(
-                          //       //             color: controller.statusCucian.value == 'diproses'
-                          //       //                 ? Colors.blue
-                          //       //                 : Colors.transparent,
-                          //       //           ),
-                          //       //           borderRadius: BorderRadius.circular(10),
-                          //       //         ),
-                          //       //         child: const Column(
-                          //       //           children: [
-                          //       //             Icon(Icons.hourglass_empty, color: Colors.blue),
-                          //       //             Text('Diproses'),
-                          //       //           ],
-                          //       //         ),
-                          //       //       ),
-                          //       //     )),
-                          //
-                          //       // Opsi "Selesai"
-                          //       const Text('Status Cucian:'),
-                          //       Obx(() => GestureDetector(
-                          //             onTap: () => controller.setStatusCucian('selesai'),
-                          //             child: Container(
-                          //               padding: const EdgeInsets.all(8),
-                          //               decoration: BoxDecoration(
-                          //                 color: controller.statusCucian.value == 'selesai'
-                          //                     ? Colors.green[100]
-                          //                     : Colors.transparent,
-                          //                 border: Border.all(
-                          //                   color: controller.statusCucian.value == 'selesai'
-                          //                       ? Colors.green
-                          //                       : Colors.transparent,
-                          //                 ),
-                          //                 borderRadius: BorderRadius.circular(10),
-                          //               ),
-                          //               child: const Column(
-                          //                 children: [
-                          //                   Icon(Icons.check_circle_outline,
-                          //                       color: Colors.green),
-                          //                   Text('Selesai'),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           )),
-                          //       // Opsi "Diambil"
-                          //       // Obx(() => GestureDetector(
-                          //       //       onTap: () => controller.setStatusCucian('diambil'),
-                          //       //       child: Container(
-                          //       //         padding: const EdgeInsets.all(8),
-                          //       //         decoration: BoxDecoration(
-                          //       //           color: controller.statusCucian.value == 'diambil'
-                          //       //               ? Colors.orange[100]
-                          //       //               : Colors.transparent,
-                          //       //           border: Border.all(
-                          //       //             color: controller.statusCucian.value == 'diambil'
-                          //       //                 ? Colors.orange
-                          //       //                 : Colors.transparent,
-                          //       //           ),
-                          //       //           borderRadius: BorderRadius.circular(10),
-                          //       //         ),
-                          //       //         child: const Column(
-                          //       //           children: [
-                          //       //             Icon(Icons.done_all, color: Colors.orange),
-                          //       //             Text('Diambil'),
-                          //       //           ],
-                          //       //         ),
-                          //       //       ),
-                          //       //     )),
-                          //     ],
-                          //   ),
-                          //   const SizedBox(height: 20),
-                          //   Obx(() => ElevatedButton(
-                          //         onPressed: () {
-                          //           if (controller.isKirimLoading.isFalse) {
-                          //             controller.updateTransaksi();
-                          //           }
-                          //         },
-                          //         style: ElevatedButton.styleFrom(
-                          //           minimumSize: const Size(400, 40),
-                          //           foregroundColor: Colors.black,
-                          //           backgroundColor: const Color(0xFF22c55e), // Warna teks
-                          //         ),
-                          //         child: Text(
-                          //           controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
-                          //           style: const TextStyle(fontSize: 16),
-                          //         ),
-                          //       )),
-                          //   //   next else if
-                          // ]
-                          // else
                           if (controller.statusCucianController.text.toString() == 'Selesai' &&
                               controller.statusPembayaranController.text.toString() ==
-                                  "Belum Dibayar") ...[
+                                  "Belum Lunas") ...[
                             TextField(
                               controller: controller.tanggalDiambilController,
                               decoration: const InputDecoration(
@@ -305,20 +215,17 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // Opsi "Sudah Dibayar"
+                                // Opsi "Lunas"
                                 Obx(() => GestureDetector(
-                                      onTap: () =>
-                                          controller.setStatusPembayaran('sudah_dibayar'),
+                                      onTap: () => controller.setStatusPembayaran('Lunas'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusPembayaran.value ==
-                                                  'sudah_dibayar'
+                                          color: controller.statusPembayaran.value == 'Lunas'
                                               ? Colors.green[100]
                                               : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusPembayaran.value ==
-                                                    'sudah_dibayar'
+                                            color: controller.statusPembayaran.value == 'Lunas'
                                                 ? Colors.green
                                                 : Colors.transparent,
                                           ),
@@ -327,26 +234,26 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                         child: const Column(
                                           children: [
                                             Icon(Icons.payment, color: Colors.green),
-                                            Text('Sudah Dibayar'),
+                                            Text('Lunas'),
                                           ],
                                         ),
                                       ),
                                     )),
 
-                                // Opsi "Belum Dibayar"
+                                // Opsi "Belum Lunas"
                                 Obx(() => GestureDetector(
                                       onTap: () =>
-                                          controller.setStatusPembayaran('belum_dibayar'),
+                                          controller.setStatusPembayaran('Belum Lunas'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           color: controller.statusPembayaran.value ==
-                                                  'belum_dibayar'
+                                                  'Belum Lunas'
                                               ? Colors.red[100]
                                               : Colors.transparent,
                                           border: Border.all(
                                             color: controller.statusPembayaran.value ==
-                                                    'belum_dibayar'
+                                                    'Belum Lunas'
                                                 ? Colors.red
                                                 : Colors.transparent,
                                           ),
@@ -355,7 +262,7 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                         child: const Column(
                                           children: [
                                             Icon(Icons.payment, color: Colors.red),
-                                            Text('Belum Dibayar'),
+                                            Text('Belum Lunas'),
                                           ],
                                         ),
                                       ),
@@ -369,26 +276,28 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // Opsi "Diproses"
+                                // Opsi "Dalam Proses"
                                 Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('diproses'),
+                                      onTap: () => controller.setStatusCucian('Dalam Proses'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'diproses'
-                                              ? Colors.blue[100]
-                                              : Colors.transparent,
+                                          color:
+                                              controller.statusCucian.value == 'Dalam Proses'
+                                                  ? Colors.blue[100]
+                                                  : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusCucian.value == 'diproses'
-                                                ? Colors.blue
-                                                : Colors.transparent,
+                                            color:
+                                                controller.statusCucian.value == 'Dalam Proses'
+                                                    ? Colors.blue
+                                                    : Colors.transparent,
                                           ),
                                           borderRadius: BorderRadius.circular(10),
                                         ),
                                         child: const Column(
                                           children: [
                                             Icon(Icons.hourglass_empty, color: Colors.blue),
-                                            Text('Diproses'),
+                                            Text('Dalam Proses'),
                                           ],
                                         ),
                                       ),
@@ -396,15 +305,15 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
 
                                 // Opsi "Selesai"
                                 Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      onTap: () => controller.setStatusCucian('Selesai'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'selesai'
+                                          color: controller.statusCucian.value == 'Selesai'
                                               ? Colors.green[100]
                                               : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusCucian.value == 'selesai'
+                                            color: controller.statusCucian.value == 'Selesai'
                                                 ? Colors.green
                                                 : Colors.transparent,
                                           ),
@@ -421,15 +330,15 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                     )),
                                 // Opsi "Diambil"
                                 Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('diambil'),
+                                      onTap: () => controller.setStatusCucian('Diambil'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'diambil'
+                                          color: controller.statusCucian.value == 'Diambil'
                                               ? Colors.orange[100]
                                               : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusCucian.value == 'diambil'
+                                            color: controller.statusCucian.value == 'Diambil'
                                                 ? Colors.orange
                                                 : Colors.transparent,
                                           ),
@@ -463,24 +372,24 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                   ),
                                 )),
                           ] else if (controller.statusCucianController.text.toString() ==
-                                  'Diproses' &&
+                                  'Dalam Proses' &&
                               controller.statusPembayaranController.text.toString() ==
-                                  "Belum Dibayar") ...[
+                                  "Belum Lunas") ...[
                             const Text('Status Cucian:'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 // Opsi "Selesai"
                                 Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      onTap: () => controller.setStatusCucian('Selesai'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'selesai'
+                                          color: controller.statusCucian.value == 'Selesai'
                                               ? Colors.green[100]
                                               : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusCucian.value == 'selesai'
+                                            color: controller.statusCucian.value == 'Selesai'
                                                 ? Colors.green
                                                 : Colors.transparent,
                                           ),
@@ -515,9 +424,9 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                   ),
                                 )),
                           ] else if (controller.statusCucianController.text.toString() ==
-                                  'Diproses' &&
+                                  'Dalam Proses' &&
                               controller.statusPembayaranController.text.toString() ==
-                                  "Sudah Dibayar") ...[
+                                  "Lunas") ...[
                             const SizedBox(
                               height: 20,
                             ),
@@ -526,15 +435,15 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                               children: [
                                 // Opsi "Selesai"
                                 Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('selesai'),
+                                      onTap: () => controller.setStatusCucian('Selesai'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'selesai'
+                                          color: controller.statusCucian.value == 'Selesai'
                                               ? Colors.green[100]
                                               : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusCucian.value == 'selesai'
+                                            color: controller.statusCucian.value == 'Selesai'
                                                 ? Colors.green
                                                 : Colors.transparent,
                                           ),
@@ -571,25 +480,22 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           ] else if (controller.statusCucianController.text.toString() ==
                                   'Selesai' &&
                               controller.statusPembayaranController.text.toString() ==
-                                  "Sudah Dibayar") ...[
-                            const SizedBox(
-                              height: 20,
-                            ),
+                                  "Lunas") ...[
                             const Text('Status Cucian:'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 // Opsi "Diambil"
                                 Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('diambil'),
+                                      onTap: () => controller.setStatusCucian('Diambil'),
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'diambil'
+                                          color: controller.statusCucian.value == 'Diambil'
                                               ? Colors.orange[100]
                                               : Colors.transparent,
                                           border: Border.all(
-                                            color: controller.statusCucian.value == 'diambil'
+                                            color: controller.statusCucian.value == 'Diambil'
                                                 ? Colors.orange
                                                 : Colors.transparent,
                                           ),

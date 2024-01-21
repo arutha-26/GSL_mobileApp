@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../controllers/update_data_karyawan_controller.dart';
@@ -30,16 +31,16 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
                   height: 250,
                 ),
                 const SizedBox(height: 15),
-                _buildTextField('ID Pengguna', 'id_user', userData),
+                // _buildTextField('ID Pengguna', 'id_user', userData),
                 _buildTextField('Role Pengguna', 'role', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Nama Pengguna', 'nama', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Email Pengguna', 'email', userData),
                 const SizedBox(height: 15),
-                _buildTextField('Kategori Pengguna', 'kategori', userData),
+                // _buildTextField('Kategori Pengguna', 'kategori', userData),
                 const SizedBox(height: 15),
-                _buildTextField('Nomor Pengguna', 'no_telp', userData),
+                _buildPhoneNumberTextField('Nomor Pengguna', 'no_telp', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Alamat Pengguna', 'alamat', userData),
                 const SizedBox(height: 25),
@@ -103,7 +104,7 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
 
   Widget _buildTextField(String label, String field, Map<String, dynamic> userData) {
     return TextFormField(
-      enabled: ['phone', 'alamat', 'is_active'].contains(field),
+      enabled: ['alamat'].contains(field),
       initialValue: userData[field]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -118,7 +119,38 @@ class UpdateDataKaryawanView extends GetView<UpdateDataKaryawanController> {
         return null;
       },
       onChanged: (value) {
-        if (['phone', 'alamat', 'is_active'].contains(field)) {
+        if (['alamat'].contains(field)) {
+          controller.updatedUserData[field] = value;
+        }
+      },
+    );
+  }
+
+  Widget _buildPhoneNumberTextField(
+      String label, String field, Map<String, dynamic> userData) {
+    return TextFormField(
+      enabled: ['no_telp'].contains(field),
+      initialValue: userData[field]?.toString() ?? '',
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(12),
+      ],
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: '08123456XXXXX',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Field cannot be empty';
+        }
+        return null;
+      },
+      onChanged: (value) {
+        if (['no_telp'].contains(field)) {
           controller.updatedUserData[field] = value;
         }
       },

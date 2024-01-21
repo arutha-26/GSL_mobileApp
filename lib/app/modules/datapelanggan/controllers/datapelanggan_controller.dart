@@ -9,11 +9,17 @@ class DatapelangganController extends GetxController {
   RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> filteredData = <Map<String, dynamic>>[].obs;
 
-  @override
-  void onInit() {
-    fetchData();
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   fetchData();
+  //   super.onInit();
+  // }
+
+  // @override
+  // void onReady() {
+  //   fetchData();
+  //   super.onReady();
+  // }
 
   Future<void> refreshData() async {
     isLoading.value = true;
@@ -24,7 +30,12 @@ class DatapelangganController extends GetxController {
   Future<void> fetchData() async {
     try {
       isLoading.value = true;
-      final response = await client.from('user').select('*').eq('role', 'Pelanggan');
+      final response = await client
+          .from('user')
+          .select('*')
+          .eq('role', 'Pelanggan')
+          .order('id_user', ascending: true);
+
       isLoading.value = false;
 
       if (response != null && response is List) {

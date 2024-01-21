@@ -43,22 +43,22 @@ class PengambilanLaundryController extends GetxController {
         const Duration(seconds: 1)); // Simulate an async operation (replace with actual logic)
 
     if (statusCucianController.text.toString() == 'Selesai' &&
-        statusPembayaranController.text.toString() == 'Belum Dibayar') {
+        statusPembayaranController.text.toString() == 'Belum Lunas') {
       isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
       isDateFieldVisible.value = true;
-    } else if (statusCucianController.text.toString() == 'Diproses' &&
-        statusPembayaranController.text.toString() == 'Sudah Dibayar') {
+    } else if (statusCucianController.text.toString() == 'Dalam Proses' &&
+        statusPembayaranController.text.toString() == 'Lunas') {
       isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
       isDateFieldVisible.value = true;
-    } else if (statusCucianController.text.toString() == 'Diproses' &&
-        statusPembayaranController.text.toString() == 'Belum Dibayar') {
+    } else if (statusCucianController.text.toString() == 'Dalam Proses' &&
+        statusPembayaranController.text.toString() == 'Belum Lunas') {
       isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
       isDateFieldVisible.value = true;
     } else if (statusCucianController.text.toString() == 'Selesai' &&
-        statusPembayaranController.text.toString() == 'Sudah Dibayar') {
+        statusPembayaranController.text.toString() == 'Lunas') {
       isUpdateDataLoading.value = false; // Set loading to true while the update is in progress
       debugPrint('Is Date Field Visible: ${isDateFieldVisible.value}');
       isDateFieldVisible.value = true;
@@ -164,9 +164,9 @@ class PengambilanLaundryController extends GetxController {
   // Fungsi untuk mengonversi nilai status_pembayaran
   String convertStatusPembayaran(String status) {
     if (status == 'belum_dibayar') {
-      return 'Belum Dibayar';
-    } else if (status == 'sudah_dibayar') {
-      return 'Sudah Dibayar';
+      return 'Belum Lunas';
+    } else if (status == 'Lunas') {
+      return 'Lunas';
     } else {
       return 'Unknown'; // Tambahkan nilai default jika diperlukan
     }
@@ -193,7 +193,7 @@ class PengambilanLaundryController extends GetxController {
           .from('transaksi')
           .select(
               'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user!inner(id_user, nama, no_telp, kategori, alamat)')
-          .in_('status_cucian', ['diproses', 'selesai'])
+          .in_('status_cucian', ['Dalam Proses', 'Selesai'])
           .ilike('id_user.nama, id_user.no_telp', '%$query%')
           .execute();
 
@@ -225,8 +225,8 @@ class PengambilanLaundryController extends GetxController {
               berat: '${berat}Kg',
               totalHarga: formattedTotalHarga,
               metodePembayaran: metodePembayaran,
-              statusPembayaran: convertStatusPembayaran(statusPembayaran),
-              statusCucian: statusCucian.capitalizeFirst as String,
+              statusPembayaran: statusPembayaran,
+              statusCucian: statusCucian,
               idUser: idUser,
               tglDatang: formattedDate);
         }).toList();
@@ -248,14 +248,15 @@ class PengambilanLaundryController extends GetxController {
   }
 
   Future<void> updateTransaksi() async {
-    if (namaKaryawanC.text.isNotEmpty) {
+    if (statusCucian.value.isNotEmpty) {
       isKirimLoading.value = true;
       try {
         var dataTransaksi = {};
 
-        if (statusCucian.value == 'diambil') {
+        if (statusCucian.value == "Diambil") {
           dataTransaksi["id_karyawan_keluar"] = namaKaryawanC.text;
-          dataTransaksi["tanggal_diambil"] = formatDate(tanggalDiambilController.text);
+          dataTransaksi["tanggal_diambil"] =
+              formatDateWithCurrentTime(tanggalDiambilController.text).toString();
           dataTransaksi["metode_pembayaran"] = getSelectedPembayaran();
           dataTransaksi["status_pembayaran"] = statusPembayaran.value;
           dataTransaksi["status_cucian"] = statusCucian.value;
@@ -278,12 +279,12 @@ class PengambilanLaundryController extends GetxController {
             .match({"id_transaksi": idTransaksiController.text}).execute();
 
         // Kirim pesan WhatsApp setelah transaksi berhasil disimpan
-        String nomorPelanggan = phoneController.text;
-        String pesan = '';
-
-        if (statusCucianController.value.text.toString() == "selesai") {
-          await kirimPesanWhatsApp(nomorPelanggan, pesan);
-        }
+        // String nomorPelanggan = phoneController.text;
+        // String pesan = '';
+        //
+        // if (statusCucian.value == "Selesai") {
+        //   await kirimPesanWhatsApp(nomorPelanggan, pesan);
+        // }
 
         clearInputs();
 
@@ -306,17 +307,22 @@ class PengambilanLaundryController extends GetxController {
         Get.snackbar("ERROR", e.toString());
       }
     } else {
-      Get.snackbar("ERROR", "Seluruh data harus terisi!");
+      Get.snackbar(
+        'ERROR',
+        'Data harus di isi!',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+      );
+      return;
     }
     isKirimLoading.value = false;
     refresh();
   }
 
   Future<void> kirimPesanWhatsApp(String nomorPelanggan, String pesan) async {
-    String whatsappNumber = '+62$nomorPelanggan';
-
-    String convertStatusPembayaranToString(String statusPembayaran) =>
-        statusPembayaran == 'belum_dibayar' ? 'Belum Dibayar' : 'Sudah Dibayar';
+    String whatsappNumber = nomorPelanggan;
 
     String message = '''
 FAKTUR ELEKTRONIK
@@ -334,7 +340,7 @@ Silakan datang untuk melakukan pengambilan DAN TUNJUKKAN NOTA TRANSAKSI SEBAGAI 
 
 Berikut detail penagihannya:
 Total Biaya: ${totalHargaController.text.toString()}
-Status: ${convertStatusPembayaranToString(statusPembayaran.value)}
+Status: ${statusPembayaran.value}
 
 JAM OPERATIONAL LAUNDRY 07.00-22.00 WITA
 
@@ -389,14 +395,18 @@ GREEN SPIRIT LAUNDRY
     selectedPembayaran.value = value ?? "";
   }
 
-  String formatDate(String date) {
+  String formatDateWithCurrentTime(String date) {
     try {
-      // Assuming date is in DD-MM-YYYY format
-      DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
-      return DateFormat('yyyy-MM-dd').format(parsedDate); // Convert to YYYY-MM-DD format
+      // Get current date and time
+      DateTime now = DateTime.now();
+
+      // Format the date with current time
+      String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+
+      return formattedDate;
     } catch (e) {
       if (kDebugMode) {
-        print("Error parsing date: $e");
+        print("Error formatting date with current time: $e");
       }
       return "";
     }

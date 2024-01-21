@@ -24,7 +24,11 @@ class DataKaryawanController extends GetxController {
   Future<void> fetchData() async {
     try {
       isLoading.value = true;
-      final response = await client.from('user').select('*').neq('role', 'Pelanggan');
+      final response = await client
+          .from('user')
+          .select('*')
+          .neq('role', 'Pelanggan')
+          .order('id_user', ascending: true);
       isLoading.value = false;
 
       if (response != null && response is List) {

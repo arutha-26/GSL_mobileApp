@@ -63,8 +63,7 @@ class DatapelangganView extends GetView<DatapelangganController> {
                     var userData = controller.filteredData[index];
 
                     if (userData == null) {
-                      // Handle null userData
-                      return const SizedBox.shrink(); // Or replace with appropriate UI
+                      return const SizedBox.shrink();
                     }
 
                     return Padding(
@@ -74,15 +73,13 @@ class DatapelangganView extends GetView<DatapelangganController> {
                             ? Colors.greenAccent
                             : Colors.red[700],
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(8.0),
+                          contentPadding: const EdgeInsets.all(8.0),
                           title: Row(
                             children: [
                               Image.asset(
-                                'images/user_profile.png', // Replace with the actual path
-                                width:
-                                    70, // Set the width of the image as per your requirement
-                                height:
-                                    70, // Set the height of the image as per your requirement
+                                'images/user_profile.png',
+                                width: 70,
+                                height: 70,
                               ),
                               const SizedBox(width: 10),
                               // Add some space between the image and text

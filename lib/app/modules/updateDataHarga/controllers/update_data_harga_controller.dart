@@ -4,6 +4,12 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UpdateDataHargaController extends GetxController {
+  // @override
+  // void onInit() {
+  //   Get.lazyPut(() => UpdateDataHargaController());
+  //   super.onInit();
+  // }
+
   RxBool isLoading = false.obs;
   RxMap<String, dynamic> updatedUserData = <String, dynamic>{}.obs;
   SupabaseClient client = Supabase.instance.client;
@@ -16,18 +22,21 @@ class UpdateDataHargaController extends GetxController {
       if (userData['id_harga'] != null) {
         isLoading.value = true;
 
-        String hargaKilo = updatedUserData['harga_kilo'].toString();
-        String cleanedInput = hargaKilo.replaceAll(RegExp(r'[^\d]'), '');
+        String cleanedInput =
+            updatedUserData['harga_kilo'].toString().replaceAll(RegExp(r'[^\d]'), '');
+
+// Cek apakah cleanedInput kosong setelah menghilangkan karakter non-digit
+        double? hargaKilo = cleanedInput.isEmpty ? null : double.parse(cleanedInput);
 
         // Prepare the update fields
         Map<String, dynamic> updateFields = {
-          "kategori_pelanggan":
-              updatedUserData['kategori_pelanggan'] ?? userData['kategori_pelanggan'],
-          "metode_laundry_id":
-              updatedUserData['metode_laundry_id'] ?? userData['metode_laundry_id'],
-          "layanan_laundry_id":
-              updatedUserData['layanan_laundry_id'] ?? userData['layanan_laundry_id'],
-          "harga_kilo": cleanedInput,
+          // "kategori_pelanggan":
+          //     updatedUserData['kategori_pelanggan'] ?? userData['kategori_pelanggan'],
+          // "metode_laundry_id":
+          //     updatedUserData['metode_laundry_id'] ?? userData['metode_laundry_id'],
+          // "layanan_laundry_id":
+          //     updatedUserData['layanan_laundry_id'] ?? userData['layanan_laundry_id'],
+          "harga_kilo": hargaKilo ?? userData['harga_kilo'],
           "edit_at": DateTime.now().toString(),
         };
         if (kDebugMode) {
@@ -42,26 +51,13 @@ class UpdateDataHargaController extends GetxController {
         isLoading.value = false; // Reset the loading state
 
         if (response.status == 200 || response.status == 201 || response.status == 204) {
-          // Get.snackbar(
-          //   'Berhasil',
-          //   'Data Berhasil di Perbaharui',
-          //   colorText: Colors.white,
-          //   backgroundColor: Colors.indigoAccent,
-          //   snackPosition: SnackPosition.BOTTOM,
-          // );
-
           // Log the updated data to the console
           if (kDebugMode) {
             print('Data Diperbaharui: $updatedUserData');
           }
 
-          // Navigate back to the data pelanggan page
-          Get.appUpdate();
-          // Get.put(PaneltransaksiController());
-          // Get.toNamed(Routes.UPDATE_DATA_HARGA, arguments: userData);
-          // Get.offAndToNamed(Routes.PANELTRANSAKSI);
-          // Get.deleteAll();
-          refresh();
+          Get.back();
+          Get.forceAppUpdate();
           Get.snackbar(
             'Berhasil',
             'Data Berhasil di Perbaharui',
@@ -73,7 +69,7 @@ class UpdateDataHargaController extends GetxController {
         } else {
           Get.snackbar(
             'Error',
-            'Failed to update user data',
+            'Gagal Memperbaharui Data Harga',
             snackPosition: SnackPosition.BOTTOM,
             margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
             colorText: Colors.white,
@@ -84,7 +80,15 @@ class UpdateDataHargaController extends GetxController {
     } catch (error) {
       isLoading.value = false; // Reset the loading state in case of an error
       if (kDebugMode) {
-        print('Error updating user data: $error');
+        print('Gagal Memperbaharui Data Harga: $error');
+        Get.snackbar(
+          'Error',
+          '$error',
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
       }
     }
   }

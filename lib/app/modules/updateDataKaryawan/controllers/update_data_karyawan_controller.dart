@@ -38,6 +38,9 @@ class UpdateDataKaryawanController extends GetxController {
             'Success',
             'User data updated successfully',
             snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+            colorText: Colors.white,
+            backgroundColor: Colors.indigoAccent,
           );
 
           // Log the updated data to the console
@@ -54,6 +57,7 @@ class UpdateDataKaryawanController extends GetxController {
             'Error',
             'Failed to update user data',
             snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
             colorText: Colors.white,
             backgroundColor: Colors.red,
           );
@@ -63,7 +67,19 @@ class UpdateDataKaryawanController extends GetxController {
       isLoading.value = false; // Reset the loading state in case of an error
       if (kDebugMode) {
         print('Error updating user data: $error');
+        Get.snackbar('ERROR', '$error',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: Colors.white,
+            backgroundColor: Colors.red,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20));
       }
+
+      // Show error snackbar
+      Get.snackbar('ERROR', 'Terjadi kesalahan saat memperbarui data pengguna',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+          margin: const EdgeInsets.fromLTRB(10, 5, 10, 20));
     }
   }
 }

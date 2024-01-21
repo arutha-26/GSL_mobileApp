@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../controllers/update_data_pelanggan_controller.dart';
@@ -36,7 +37,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
                 const SizedBox(height: 15),
                 _buildTextField('Email Pelanggan', 'email', userData),
                 const SizedBox(height: 15),
-                _buildTextField('Nomor Pelanggan', 'no_telp', userData),
+                _buildPhoneNumberTextField('Nomor Pelanggan', 'no_telp', userData),
                 const SizedBox(height: 15),
                 _buildDropdownField('Kategori Pelanggan', 'kategori', userData),
                 const SizedBox(height: 15),
@@ -123,7 +124,7 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
 
   Widget _buildTextField(String label, String field, Map<String, dynamic> userData) {
     return TextFormField(
-      enabled: ['kategori', 'alamat', 'no_telp'].contains(field),
+      enabled: ['alamat'].contains(field),
       initialValue: userData[field]?.toString() ?? '',
       decoration: InputDecoration(
         labelText: label,
@@ -138,7 +139,38 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
         return null;
       },
       onChanged: (value) {
-        if (['phone', 'kategori', 'alamat', 'is_active'].contains(field)) {
+        if (['alamat'].contains(field)) {
+          controller.updatedUserData[field] = value;
+        }
+      },
+    );
+  }
+
+  Widget _buildPhoneNumberTextField(
+      String label, String field, Map<String, dynamic> userData) {
+    return TextFormField(
+      enabled: ['no_telp'].contains(field),
+      initialValue: userData[field]?.toString() ?? '',
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(12),
+      ],
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: '08123456XXXXX',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Field cannot be empty';
+        }
+        return null;
+      },
+      onChanged: (value) {
+        if (['no_telp'].contains(field)) {
           controller.updatedUserData[field] = value;
         }
       },
