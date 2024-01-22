@@ -69,8 +69,8 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                   firstDate: DateTime(2023),
                   lastDate: DateTime(2030),
                   initialDateRange: DateTimeRange(
-                    start: DateTime.now(),
-                    end: DateTime.now(),
+                    start: controller.selectedStartDate.value ?? DateTime.now(),
+                    end: controller.selectedEndDate.value ?? DateTime.now(),
                   ),
                 );
                 if (picked != null) {
@@ -80,7 +80,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.greenAccent,
                 foregroundColor: Colors.black87,
-                padding: const EdgeInsets.symmetric(horizontal: 55), // Sesuaikan lebar tombol
+                padding: const EdgeInsets.symmetric(horizontal: 20),
               ),
               child: const Text('Pilih Tanggal Transaksi'),
             ),
@@ -105,10 +105,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                     final isHidden = transaction['is_hidden'];
 
                     // Mengubah nilai status_pembayaran
-                    final statusPembayaran =
-                        transaction['status_pembayaran'] == 'sudah_dibayar'
-                            ? 'Lunas'
-                            : 'Belum Lunas';
+                    final statusPembayaran = transaction['status_pembayaran'];
                     // Determine card color based on IS_HIDDEN
                     final cardColor = isHidden ? Colors.green[600] : Colors.red[400];
 
@@ -158,7 +155,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      'ID Transaksi: ${transaction['id_transaksi']}',
+                                      'Tanggal Datang: ${transaction['tanggal_datang'] != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(transaction['tanggal_datang'])) : '-'}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: cardColor == Colors.green

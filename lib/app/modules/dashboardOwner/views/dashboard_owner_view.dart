@@ -45,7 +45,8 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
                     'Grafik Transaksi Bulanan',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  _buildMonthlyTransactionsGraph(),
+                  BarWidget(controller: controller)
+
                   // _buildMonthlyIncomeGraph(),
                 ],
               ),
@@ -237,28 +238,46 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
       ),
     );
   }
+}
+
+class BarWidget extends StatefulWidget {
+  final DashboardOwnerController controller;
+
+  BarWidget({required this.controller});
+
+  @override
+  _BarWidgetState createState() => _BarWidgetState();
+}
+
+class _BarWidgetState extends State<BarWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildMonthlyTransactionsGraph(),
+      ],
+    );
+  }
 
   Widget _buildMonthlyTransactionsGraph() {
     return Column(
       children: [
         monthSelectionDropdown(),
         Obx(() {
-          if (controller.isLoading.value) {
-            // Tampilkan indikator loading saat data sedang dimuat
+          if (widget.controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final transactionsData = controller.monthlyTransactionData.value;
+          final transactionsData = widget.controller.monthlyTransactionData.value;
 
           if (transactionsData.isNotEmpty) {
-            // Use the selected month and year
-            DateTime selectedMonth = controller.selectedMonth.value ?? DateTime.now();
+            DateTime selectedMonth = widget.controller.selectedMonth.value;
             DateTime firstDayOfSelectedMonth =
                 DateTime(selectedMonth.year, selectedMonth.month, 1);
 
             List<String> dates = List.generate(transactionsData.length, (index) {
               DateTime date = firstDayOfSelectedMonth.add(Duration(days: index));
-              return DateFormat('dd').format(date); // Format as 'Day-Month'
+              return DateFormat('dd').format(date);
             });
 
             return SizedBox(
@@ -277,18 +296,21 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
   }
 
   Widget monthSelectionDropdown() {
-    DateTime initialMonth = controller.selectedMonth.value;
+    DateTime initialMonth = widget.controller.selectedMonth.value;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DropdownButton<int>(
-          value: initialMonth.month,
+          value: widget.controller.selectedMonth.value.month,
           onChanged: (int? newValue) {
             if (newValue != null) {
-              controller.selectedMonth.value = DateTime(initialMonth.year, newValue);
-              controller.fetchMonthlyTransactionData(
-                  controller.selectedMonth.value.year, controller.selectedMonth.value.month);
+              widget.controller.selectedMonth.value = DateTime(initialMonth.year, newValue);
+              widget.controller.fetchMonthlyTransactionData(
+                widget.controller.selectedMonth.value.year,
+                widget.controller.selectedMonth.value.month,
+              );
+              setState(() {});
             }
           },
           items: List.generate(12, (index) {
@@ -298,14 +320,17 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
             );
           }),
         ),
-        const SizedBox(width: 16), // Menambahk
+        const SizedBox(width: 16),
         DropdownButton<int>(
-          value: initialMonth.year,
+          value: widget.controller.selectedMonth.value.year,
           onChanged: (int? newValue) {
             if (newValue != null) {
-              controller.selectedMonth.value = DateTime(newValue, initialMonth.month);
-              controller.fetchMonthlyTransactionData(
-                  controller.selectedMonth.value.year, controller.selectedMonth.value.month);
+              widget.controller.selectedMonth.value = DateTime(newValue, initialMonth.month);
+              widget.controller.fetchMonthlyTransactionData(
+                widget.controller.selectedMonth.value.year,
+                widget.controller.selectedMonth.value.month,
+              );
+              setState(() {});
             }
           },
           items: List.generate(5, (index) {

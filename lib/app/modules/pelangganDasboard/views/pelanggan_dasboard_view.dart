@@ -77,10 +77,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                       final isHidden = transaction['is_hidden'];
 
                       // Mengubah nilai status_pembayaran
-                      final statusPembayaran =
-                          transaction['status_pembayaran'] == 'sudah_dibayar'
-                              ? 'Lunas'
-                              : 'Belum Lunas';
+                      final statusPembayaran = transaction['status_pembayaran'];
                       // Determine card color based on IS_HIDDEN
                       final cardColor = isHidden ? Colors.greenAccent : Colors.redAccent;
 
@@ -131,9 +128,8 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        'ID Transaksi: ${transaction['id_transaksi']}',
+                                        'Tanggal Datang: ${transaction['tanggal_datang'] != null ? DateFormat('dd-MM-yyyy').format(DateTime.parse(transaction['tanggal_datang'])) : '-'}',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
                                           color: cardColor == Colors.greenAccent
                                               ? Colors.black
                                               : Colors.white,

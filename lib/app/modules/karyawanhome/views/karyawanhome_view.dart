@@ -43,128 +43,129 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
         if (controller.isLoading.isTrue) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return Scrollbar(
-            thumbVisibility: true,
-            trackVisibility: true,
-            interactive: true,
-            scrollbarOrientation: ScrollbarOrientation.right,
-            thickness: 10,
-            radius: const Radius.circular(20),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CarouselSlider(
-                    items: [
-                      Image.asset('images/banner_1.png'),
-                      Image.asset('images/banner_4.png'),
-                      Image.asset('images/banner_7.png'),
-                      Image.asset('images/banner_5.png'),
-                    ],
-                    options: CarouselOptions(
-                      autoPlay: true,
-                      aspectRatio: 16 / 9,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: true,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      autoPlayAnimationDuration: const Duration(milliseconds: 2500),
-                      viewportFraction: 1,
-                    ),
+          // return Scrollbar(
+          //   thumbVisibility: true,
+          //   trackVisibility: true,
+          //   interactive: true,
+          //   scrollbarOrientation: ScrollbarOrientation.right,
+          //   thickness: 10,
+          //   radius: const Radius.circular(20),
+          //   child:
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                CarouselSlider(
+                  items: [
+                    Image.asset('images/banner_1.png'),
+                    Image.asset('images/banner_4.png'),
+                    Image.asset('images/banner_7.png'),
+                    Image.asset('images/banner_5.png'),
+                  ],
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: true,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayAnimationDuration: const Duration(milliseconds: 2500),
+                    viewportFraction: 1,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(9.0),
-                    child: _buildProfitAndTransactionCountCard(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(9.0),
+                  child: _buildProfitAndTransactionCountCard(),
+                ),
+                SizedBox(
+                  width: 400, // Set the width to the screen width
+                  height: 300.0, // Adjust the height based on your needs
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return GridView.count(
+                        scrollDirection: Axis.vertical,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0,
+                        padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+                        shrinkWrap: true,
+                        // physics:
+                        //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
+                        crossAxisCount: 3,
+                        children: [
+                          GlassButton(
+                            onPressed: () {
+                              // Get.deleteAll();
+                              Get.put(AdddataController());
+                              Get.to(() => AdddataView());
+                            },
+                            label: 'Tambah\nPengguna',
+                            color: Colors.blue,
+                            iconPath: 'images/user-add.png',
+                          ),
+                          GlassButton(
+                            onPressed: () {
+                              Get.put(AddtransaksiController());
+                              Get.to(() => AddtransaksiView());
+                            },
+                            label: 'Tambah\nTransaksi',
+                            color: Colors.green,
+                            iconPath: 'images/hand-holding-usd.png',
+                          ),
+                          GlassButton(
+                            onPressed: () {
+                              Get.deleteAll();
+                              Get.put(PengambilanLaundryController());
+                              Get.to(() => PengambilanLaundryView());
+                            },
+                            label: 'Update\nTransaksi',
+                            color: Colors.red,
+                            iconPath: 'images/edit.png',
+                          ),
+                          GlassButton(
+                            onPressed: () {
+                              Get.put(DatapelangganController());
+                              Get.to(() => DatapelangganView());
+                            },
+                            label: 'Data\nPelanggan',
+                            color: Colors.purple,
+                            iconPath: 'images/users-alt.png',
+                          ),
+                          GlassButton(
+                            onPressed: () {
+                              Get.deleteAll();
+                              Get.put(DataTransaksiController());
+                              Get.to(() => DataTransaksiView());
+                            },
+                            label: 'Data\nTransaksi',
+                            color: Colors.teal,
+                            iconPath: 'images/document.png',
+                          ),
+                          GlassButton(
+                            onPressed: () {
+                              Get.deleteAll();
+                              Get.put(InvoiceTransaksiController());
+                              Get.to(() => InvoiceTransaksiView());
+                            },
+                            label: 'Cetak\nTransaksi',
+                            color: Colors.teal,
+                            iconPath: 'images/file-invoice-dollar.png',
+                          )
+                        ],
+                      );
+                    },
                   ),
-                  SizedBox(
-                    width: 450, // Set the width to the screen width
-                    height: 300.0, // Adjust the height based on your needs
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        return GridView.count(
-                          scrollDirection: Axis.vertical,
-                          crossAxisSpacing: 8.0,
-                          mainAxisSpacing: 8.0,
-                          padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
-                          shrinkWrap: true,
-                          // physics:
-                          //     NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
-                          crossAxisCount: 3,
-                          children: [
-                            GlassButton(
-                              onPressed: () {
-                                // Get.deleteAll();
-                                Get.put(AdddataController());
-                                Get.to(() => AdddataView());
-                              },
-                              label: 'Tambah\nPengguna',
-                              color: Colors.blue,
-                              iconPath: 'images/user-add.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(AddtransaksiController());
-                                Get.to(() => AddtransaksiView());
-                              },
-                              label: 'Tambah\nTransaksi',
-                              color: Colors.green,
-                              iconPath: 'images/hand-holding-usd.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.deleteAll();
-                                Get.put(PengambilanLaundryController());
-                                Get.to(() => PengambilanLaundryView());
-                              },
-                              label: 'Update\nTransaksi',
-                              color: Colors.red,
-                              iconPath: 'images/edit.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.put(DatapelangganController());
-                                Get.to(() => DatapelangganView());
-                              },
-                              label: 'Data\nPelanggan',
-                              color: Colors.purple,
-                              iconPath: 'images/users-alt.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.deleteAll();
-                                Get.put(DataTransaksiController());
-                                Get.to(() => DataTransaksiView());
-                              },
-                              label: 'Data\nTransaksi',
-                              color: Colors.teal,
-                              iconPath: 'images/document.png',
-                            ),
-                            GlassButton(
-                              onPressed: () {
-                                Get.deleteAll();
-                                Get.put(InvoiceTransaksiController());
-                                Get.to(() => InvoiceTransaksiView());
-                              },
-                              label: 'Cetak\nTransaksi',
-                              color: Colors.teal,
-                              iconPath: 'images/file-invoice-dollar.png',
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  // TERAPKAN DISINI
-                  QuoteCarousel(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                // TERAPKAN DISINI
+                QuoteCarousel(),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
+            // ),
           );
         }
       }),

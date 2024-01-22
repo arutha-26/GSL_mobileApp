@@ -90,8 +90,8 @@ class PelangganPaidController extends GetxController {
           .from('transaksi')
           .select('*')
           .eq('nama_pelanggan', namaPelanggan)
-          .eq('status_pembayaran', 'sudah_dibayar')
-          .order('transaksi_id',
+          .eq('status_pembayaran', 'Lunas')
+          .order('id_transaksi',
               ascending: false) // Urutkan berdasarkan tanggal_diambil secara menurun
           .execute();
 

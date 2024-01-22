@@ -38,8 +38,11 @@ class DashboardOwnerController extends GetxController {
 
   Future<void> fetchDataCucian() async {
     try {
-      final response =
-          await client.from('transaksi').select('*').eq('status_cucian', 'diproses').execute();
+      final response = await client
+          .from('transaksi')
+          .select('*')
+          .eq('status_cucian', 'Dalam Proses')
+          .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         count.value = response.data.length;
@@ -64,7 +67,7 @@ class DashboardOwnerController extends GetxController {
       final response = await client
           .from('transaksi')
           .select('*')
-          .eq('status_pembayaran', 'belum_dibayar')
+          .eq('status_pembayaran', 'Belum Lunas')
           .gte('tanggal_datang', firstDayOfMonth)
           .lte('tanggal_datang', lastDayOfMonth)
           .execute();
@@ -107,7 +110,7 @@ class DashboardOwnerController extends GetxController {
       final response = await client
           .from('transaksi')
           .select('*')
-          .eq('status_pembayaran', 'sudah_dibayar')
+          .eq('status_pembayaran', 'Lunas')
           .gte('tanggal_datang', firstDayOfMonth)
           .lte('tanggal_datang', lastDayOfMonth)
           .execute();
@@ -172,9 +175,8 @@ class DashboardOwnerController extends GetxController {
     }
   }
 
-  var selectedMonth = DateTime.now().obs; // Menambahkan variable untuk bulan terpilih
+  var selectedMonth = DateTime.now().obs;
 
-  // Modifikasi fungsi fetchMonthlyTransactionData untuk menerima parameter DateTime
   Future<void> fetchMonthlyTransactionData(int year, int month) async {
     try {
       // Define the first and last day of the selected month

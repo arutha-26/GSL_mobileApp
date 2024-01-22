@@ -100,6 +100,7 @@ class PelangganTransaksiController extends GetxController {
           .select(
               'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .eq('id_user.nama', namaPelanggan)
+          .neq('status_cucian', 'Diambil')
           .order('id_transaksi', ascending: false)
           .execute();
 
@@ -123,19 +124,23 @@ class PelangganTransaksiController extends GetxController {
     }
   }
 
-  final List<String> statusOptions = ['Diproses', 'Selesai'];
+  Rx<DateTime?> selectedStartDate = Rx<DateTime?>(null);
+  Rx<DateTime?> selectedEndDate = Rx<DateTime?>(null);
 
-  RxString selectedStatus = 'Diproses'.obs;
+  final List<String> statusOptions = ['Dalam Proses', 'Selesai'];
+
+  RxString selectedStatus = 'Dalam Proses'.obs;
 
   Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
 
   void filterByStatus(String? status) {
-    selectedStatus.value = status ?? 'Diproses'; // Set a default value if status is null
+    selectedStatus.value = status ?? 'Dalam Proses'; // Set a default value if status is null
     updateTransactionList();
   }
 
   void filterByDate(DateTimeRange dateRange) {
-    selectedDate.value = dateRange.start;
+    selectedStartDate.value = dateRange.start;
+    selectedEndDate.value = dateRange.end;
     updateTransactionList();
   }
 
@@ -144,8 +149,7 @@ class PelangganTransaksiController extends GetxController {
 
     if (selectedStatus.isNotEmpty) {
       filteredList = filteredList.where((transaksi) {
-        bool condition =
-            transaksi['status_cucian']?.toLowerCase() == selectedStatus.value.toLowerCase();
+        bool condition = transaksi['status_cucian'] == selectedStatus.value;
         if (kDebugMode) {
           print(
               'Status condition: $condition (status_cucian: ${transaksi['status_cucian']}, selectedStatus: ${selectedStatus.value})');
@@ -154,15 +158,20 @@ class PelangganTransaksiController extends GetxController {
       }).toList();
     }
 
-    if (selectedDate.value != null) {
+    if (selectedStartDate.value != null && selectedEndDate.value != null) {
       filteredList = filteredList.where((transaksi) {
-        bool condition = transaksi['tanggal_datang'] != null &&
-            DateTime.parse(transaksi['tanggal_datang']).isAfter(selectedDate.value!);
-        if (kDebugMode) {
-          print(
-              'Date condition: $condition (tanggal_datang: ${transaksi['tanggal_datang']}, selectedDate: ${selectedDate.value})');
-        }
-        return condition;
+        DateTime transactionDate = DateTime.parse(transaksi['tanggal_datang']);
+        DateTime start = selectedStartDate.value!;
+        DateTime end = selectedEndDate.value!.add(const Duration(days: 1));
+
+        print('Transaction Date: $transactionDate');
+        print('Selected Start Date: $start');
+        print('Selected End Date: $end');
+
+        bool dateCondition = transactionDate.isAfter(start) && transactionDate.isBefore(end);
+        print('Date condition: $dateCondition');
+
+        return dateCondition;
       }).toList();
     }
 

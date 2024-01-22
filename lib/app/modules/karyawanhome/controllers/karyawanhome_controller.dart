@@ -38,8 +38,11 @@ class KaryawanhomeController extends GetxController {
 
   Future<void> fetchDataCucian() async {
     try {
-      final response =
-          await client.from('transaksi').select('*').eq('status_cucian', 'diproses').execute();
+      final response = await client
+          .from('transaksi')
+          .select('*')
+          .eq('status_cucian', 'Dalam Proses')
+          .execute();
 
       if (response.status == 200 && response.data != null && response.data is List) {
         count.value = response.data.length;
@@ -64,7 +67,7 @@ class KaryawanhomeController extends GetxController {
       final response = await client
           .from('transaksi')
           .select('*')
-          .eq('status_pembayaran', 'belum_dibayar')
+          .eq('status_pembayaran', 'Belum Lunas')
           .gte('tanggal_datang', firstDayOfMonth)
           .lte('tanggal_datang', lastDayOfMonth)
           .execute();
@@ -107,7 +110,7 @@ class KaryawanhomeController extends GetxController {
       final response = await client
           .from('transaksi')
           .select('*')
-          .eq('status_pembayaran', 'sudah_dibayar')
+          .eq('status_pembayaran', 'Lunas')
           .gte('tanggal_datang', firstDayOfMonth)
           .lte('tanggal_datang', lastDayOfMonth)
           .execute();
