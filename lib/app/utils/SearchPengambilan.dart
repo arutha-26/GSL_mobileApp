@@ -33,54 +33,65 @@ class SearchPengambilan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Autocomplete<Pengambilan>(
-      optionsBuilder: (TextEditingValue textEditingValue) async {
-        if (textEditingValue.text == '') {
-          return const Iterable<Pengambilan>.empty();
-        }
-        return await pengambilanLaundryController.fetchDataTransaksi(textEditingValue.text);
-      },
-      displayStringForOption: (Pengambilan option) {
-        if (option != null) {
-          final idTransaksi = option.idTransaksi ?? '';
-          final idUser = option.idUser ?? '';
-          final nama = option.nama ?? '';
-          final noTelp = option.noTelp ?? '';
-          final berat = option.berat ?? '';
-          final totalHarga = option.totalHarga ?? '';
-          final metodePembayaran = option.metodePembayaran ?? '';
-          final statusPembayaran = option.statusPembayaran ?? '';
-          final statusCucian = option.statusCucian ?? '';
-          final tglDatang = option.tglDatang ?? '';
-          return '$idTransaksi - $nama - $noTelp - $statusCucian - $tglDatang';
-        } else {
-          return '';
-        }
-      },
-      onSelected: (Pengambilan selection) {
-        idTransaksiController.text = selection.idTransaksi ?? '';
-        idUserController.text = selection.idUser ?? '';
-        namaController.text = selection.nama ?? '';
-        noTelpController.text = selection.noTelp ?? '';
-        beratController.text = selection.berat ?? '';
-        totalHargaController.text = selection.totalHarga ?? '';
-        metodePembayaranController.text = selection.metodePembayaran ?? '';
-        statusPembayaranControlller.text = selection.statusPembayaran ?? '';
-        statusCucianController.text = selection.statusCucian ?? '';
-        tglDatangController.text = selection.tglDatang ?? '';
-        Get.forceAppUpdate();
-      },
-      fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-        return TextField(
-          controller: controller,
-          focusNode: focusNode,
-          onEditingComplete: onEditingComplete,
-          decoration: const InputDecoration(
-            labelText: "Cari Nama Pelanggan",
-            border: OutlineInputBorder(),
+    return Obx(() {
+      return Stack(
+        children: [
+          Autocomplete<Pengambilan>(
+            optionsBuilder: (TextEditingValue textEditingValue) async {
+              if (textEditingValue.text == '') {
+                return const Iterable<Pengambilan>.empty();
+              }
+              return await pengambilanLaundryController
+                  .fetchDataTransaksi(textEditingValue.text);
+            },
+            displayStringForOption: (Pengambilan option) {
+              if (option != null) {
+                final idTransaksi = option.idTransaksi ?? '';
+                final idUser = option.idUser ?? '';
+                final nama = option.nama ?? '';
+                final noTelp = option.noTelp ?? '';
+                final berat = option.berat ?? '';
+                final totalHarga = option.totalHarga ?? '';
+                final metodePembayaran = option.metodePembayaran ?? '';
+                final statusPembayaran = option.statusPembayaran ?? '';
+                final statusCucian = option.statusCucian ?? '';
+                final tglDatang = option.tglDatang ?? '';
+                return '$idTransaksi - $nama - $noTelp - $statusCucian - $tglDatang';
+              } else {
+                return '';
+              }
+            },
+            onSelected: (Pengambilan selection) {
+              idTransaksiController.text = selection.idTransaksi ?? '';
+              idUserController.text = selection.idUser ?? '';
+              namaController.text = selection.nama ?? '';
+              noTelpController.text = selection.noTelp ?? '';
+              beratController.text = selection.berat ?? '';
+              totalHargaController.text = selection.totalHarga ?? '';
+              metodePembayaranController.text = selection.metodePembayaran ?? '';
+              statusPembayaranControlller.text = selection.statusPembayaran ?? '';
+              statusCucianController.text = selection.statusCucian ?? '';
+              tglDatangController.text = selection.tglDatang ?? '';
+              Get.forceAppUpdate();
+            },
+            fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
+              return TextField(
+                controller: controller,
+                focusNode: focusNode,
+                onEditingComplete: onEditingComplete,
+                decoration: const InputDecoration(
+                  labelText: "Cari Nama Pelanggan",
+                  border: OutlineInputBorder(),
+                ),
+              );
+            },
           ),
-        );
-      },
-    );
+          if (pengambilanLaundryController.isLoading.value)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      );
+    });
   }
 }

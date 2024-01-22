@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -247,23 +250,70 @@ class PengambilanLaundryController extends GetxController {
     namaKaryawanC.text = user["id_user"].toString();
   }
 
+  XFile? imagePilih;
+
+  void updateSelectedImage(XFile? image) {
+    imagePilih = image;
+    print('image data nih sebelum update: $image');
+    // Get.appUpdate(); // Perbarui state tanpa memakai Get.forceAppUpdate
+    Get.forceAppUpdate(); // Perbarui state
+    print('image data nih setelah update: $image');
+  }
+
+  String? get selectedImagePath => imagePilih?.path;
+
   Future<void> updateTransaksi() async {
+    String? imgUrlNih;
+
     if (statusCucian.value.isNotEmpty) {
       isKirimLoading.value = true;
+
+      if (selectedImagePath != null) {
+        final imageExtension = selectedImagePath!.split('.').last.toLowerCase();
+        final imageBytes = await File(selectedImagePath!).readAsBytes();
+        final tanggal = DateTime.now().toString();
+        final imagePath = '/$tanggal/bukti';
+
+        await client.storage.from('bukti').uploadBinary(
+              imagePath,
+              imageBytes,
+              fileOptions: FileOptions(
+                upsert: true,
+                contentType: 'image/$imageExtension',
+              ),
+            );
+
+        String imageUrl = client.storage.from('bukti').getPublicUrl(imagePath);
+        imageUrl = Uri.parse(imageUrl).replace(queryParameters: {
+          't': DateTime.now().millisecondsSinceEpoch.toString()
+        }).toString();
+
+        imgUrlNih = imageUrl;
+      }
+
       try {
         var dataTransaksi = {};
 
-        if (statusCucian.value == "Diambil") {
+        if (statusCucian.value == "Diambil" && statusPembayaran.value == "Lunas") {
           dataTransaksi["id_karyawan_keluar"] = namaKaryawanC.text;
           dataTransaksi["tanggal_diambil"] =
-              formatDateWithCurrentTime(tanggalDiambilController.text).toString();
+              formatDateWithCurrentTime(DateTime.now().toString()).toString();
           dataTransaksi["metode_pembayaran"] = getSelectedPembayaran();
           dataTransaksi["status_pembayaran"] = statusPembayaran.value;
           dataTransaksi["status_cucian"] = statusCucian.value;
           dataTransaksi["is_hidden"] = true;
-          dataTransaksi["edit_at"] = DateTime.now().toString();
+          dataTransaksi["edit_at"] =
+              formatDateWithCurrentTime(DateTime.now().toString()).toString();
+          dataTransaksi["bukti_transfer"] = imgUrlNih;
+        } else if (statusCucian.value == "Diambil") {
+          dataTransaksi["id_karyawan_keluar"] = namaKaryawanC.text;
+          dataTransaksi["tanggal_diambil"] =
+              formatDateWithCurrentTime(DateTime.now().toString()).toString();
+          dataTransaksi["status_cucian"] = statusCucian.value;
+          dataTransaksi["is_hidden"] = true;
+          dataTransaksi["edit_at"] =
+              formatDateWithCurrentTime(DateTime.now().toString()).toString();
         } else {
-          // Jika status_cucian != diambil, hanya update status_cucian
           dataTransaksi["status_cucian"] = statusCucian.value;
           dataTransaksi["edit_at"] = DateTime.now().toString();
         }
@@ -287,7 +337,6 @@ class PengambilanLaundryController extends GetxController {
         // }
 
         clearInputs();
-
         Get.defaultDialog(
           barrierDismissible: false,
           title: "Pembaharuan Data Transaksi Berhasil",
@@ -295,6 +344,7 @@ class PengambilanLaundryController extends GetxController {
           actions: [
             OutlinedButton(
               onPressed: () {
+                Get.back();
                 Get.back();
                 Get.back();
               },

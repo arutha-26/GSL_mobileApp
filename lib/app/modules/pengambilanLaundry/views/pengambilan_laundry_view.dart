@@ -2,8 +2,10 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gsl/app/utils/BuktiTransferClassPengambilan.dart';
 import 'package:gsl/app/utils/SearchPengambilan.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../controllers/pengambilan_laundry_controller.dart';
 
@@ -157,60 +159,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                           if (controller.statusCucianController.text.toString() == 'Selesai' &&
                               controller.statusPembayaranController.text.toString() ==
                                   "Belum Lunas") ...[
-                            TextField(
-                              controller: controller.tanggalDiambilController,
-                              decoration: const InputDecoration(
-                                labelText: "Tanggal Diambil",
-                                border: OutlineInputBorder(),
-                              ),
-                              onTap: () {
-                                FocusScope.of(context).requestFocus(
-                                    new FocusNode()); // Prevent keyboard from appearing
-                                selectDate(
-                                    context,
-                                    controller
-                                        .tanggalDiambilController); // Call your date picker function
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            DropdownSearch<String>(
-                              popupProps: const PopupProps.menu(
-                                constraints: BoxConstraints(maxHeight: 180),
-                                // 60 are per data height
-                                showSelectedItems: true,
-                              ),
-                              items: const ["-", "Tunai", "Transfer"],
-                              dropdownDecoratorProps: const DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: "Metode Pembayaran",
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                              onChanged: (String? value) {
-                                controller.setSelectedPembayaran(value);
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            TextField(
-                              keyboardType: TextInputType.number,
-                              controller: controller.nominalBayarController,
-                              decoration: const InputDecoration(
-                                labelText: "Nominal Bayar",
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            TextField(
-                              keyboardType: TextInputType.none,
-                              controller: controller.kembalianController,
-                              decoration: const InputDecoration(
-                                labelText: "Kembalian",
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
                             const Text('Status Pembayaran:'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -239,34 +187,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                         ),
                                       ),
                                     )),
-
-                                // Opsi "Belum Lunas"
-                                Obx(() => GestureDetector(
-                                      onTap: () =>
-                                          controller.setStatusPembayaran('Belum Lunas'),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: controller.statusPembayaran.value ==
-                                                  'Belum Lunas'
-                                              ? Colors.red[100]
-                                              : Colors.transparent,
-                                          border: Border.all(
-                                            color: controller.statusPembayaran.value ==
-                                                    'Belum Lunas'
-                                                ? Colors.red
-                                                : Colors.transparent,
-                                          ),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: const Column(
-                                          children: [
-                                            Icon(Icons.payment, color: Colors.red),
-                                            Text('Belum Lunas'),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
                               ],
                             ),
                             const SizedBox(
@@ -276,58 +196,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // Opsi "Dalam Proses"
-                                Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('Dalam Proses'),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              controller.statusCucian.value == 'Dalam Proses'
-                                                  ? Colors.blue[100]
-                                                  : Colors.transparent,
-                                          border: Border.all(
-                                            color:
-                                                controller.statusCucian.value == 'Dalam Proses'
-                                                    ? Colors.blue
-                                                    : Colors.transparent,
-                                          ),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: const Column(
-                                          children: [
-                                            Icon(Icons.hourglass_empty, color: Colors.blue),
-                                            Text('Dalam Proses'),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-
-                                // Opsi "Selesai"
-                                Obx(() => GestureDetector(
-                                      onTap: () => controller.setStatusCucian('Selesai'),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: controller.statusCucian.value == 'Selesai'
-                                              ? Colors.green[100]
-                                              : Colors.transparent,
-                                          border: Border.all(
-                                            color: controller.statusCucian.value == 'Selesai'
-                                                ? Colors.green
-                                                : Colors.transparent,
-                                          ),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: const Column(
-                                          children: [
-                                            Icon(Icons.check_circle_outline,
-                                                color: Colors.green),
-                                            Text('Selesai'),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
                                 // Opsi "Diambil"
                                 Obx(() => GestureDetector(
                                       onTap: () => controller.setStatusCucian('Diambil'),
@@ -355,23 +223,40 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                               ],
                             ),
                             const SizedBox(height: 20),
-                            Obx(() => ElevatedButton(
-                                  onPressed: () {
-                                    if (controller.isKirimLoading.isFalse) {
-                                      controller.updateTransaksi();
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(400, 40),
-                                    foregroundColor: Colors.black,
-                                    backgroundColor: const Color(0xFF22c55e), // Warna teks
-                                  ),
-                                  child: Text(
-                                    controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                )),
-                          ] else if (controller.statusCucianController.text.toString() ==
+                            DropdownSearch<String>(
+                              popupProps: const PopupProps.menu(
+                                constraints: BoxConstraints(maxHeight: 120),
+                                // 60 are per data height
+                                showSelectedItems: true,
+                              ),
+                              items: const ["Tunai", "Transfer"],
+                              dropdownDecoratorProps: const DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "Metode Pembayaran",
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              onChanged: (String? value) {
+                                controller.setSelectedPembayaran(value);
+                                if (kDebugMode) {
+                                  print(value);
+                                }
+                                controller.setSelectedPembayaran(value);
+                                if (Get.isBottomSheetOpen!) {
+                                  Get.back();
+                                }
+                                if (value == "Transfer") {
+                                  Get.bottomSheet(const BuktiTransfer());
+                                } else {
+                                  Get.bottomSheet(const Tunai());
+                                }
+                              },
+                            ),
+                          ]
+
+                          //   DIVIDER
+
+                          else if (controller.statusCucianController.text.toString() ==
                                   'Dalam Proses' &&
                               controller.statusPembayaranController.text.toString() ==
                                   "Belum Lunas") ...[
@@ -423,7 +308,11 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                 )),
-                          ] else if (controller.statusCucianController.text.toString() ==
+                          ]
+
+                          //   DIVIDER
+
+                          else if (controller.statusCucianController.text.toString() ==
                                   'Dalam Proses' &&
                               controller.statusPembayaranController.text.toString() ==
                                   "Lunas") ...[
@@ -477,7 +366,10 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                 )),
-                          ] else if (controller.statusCucianController.text.toString() ==
+                          ]
+                          //   DIVIDER
+
+                          else if (controller.statusCucianController.text.toString() ==
                                   'Selesai' &&
                               controller.statusPembayaranController.text.toString() ==
                                   "Lunas") ...[
@@ -511,24 +403,6 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                     )),
                               ],
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextField(
-                              controller: controller.tanggalDiambilController,
-                              decoration: const InputDecoration(
-                                labelText: "Tanggal Diambil",
-                                border: OutlineInputBorder(),
-                              ),
-                              onTap: () {
-                                FocusScope.of(context).requestFocus(
-                                    new FocusNode()); // Prevent keyboard from appearing
-                                selectDate(
-                                    context,
-                                    controller
-                                        .tanggalDiambilController); // Call your date picker function
-                              },
-                            ),
                             const SizedBox(height: 20),
                             Obx(() => ElevatedButton(
                                   onPressed: () {
@@ -554,5 +428,69 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                 ],
               );
             }));
+  }
+}
+
+class Tunai extends StatefulWidget {
+  const Tunai({Key? key}) : super(key: key);
+
+  @override
+  State<Tunai> createState() => _Tunai();
+}
+
+class _Tunai extends State<Tunai> {
+  PengambilanLaundryController controller = Get.find<PengambilanLaundryController>();
+
+  SupabaseClient client = Supabase.instance.client;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: controller.nominalBayarController,
+              decoration: const InputDecoration(
+                labelText: "Nominal Bayar",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              enabled: false,
+              keyboardType: TextInputType.none,
+              controller: controller.kembalianController,
+              decoration: const InputDecoration(
+                labelText: "Kembalian",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Obx(() => ElevatedButton(
+                  onPressed: () {
+                    if (controller.isKirimLoading.isFalse) {
+                      controller.updateTransaksi();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(400, 40),
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                  ),
+                  child: Text(
+                    controller.isKirimLoading.isFalse ? "Kirim" : "Loading...",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
   }
 }
