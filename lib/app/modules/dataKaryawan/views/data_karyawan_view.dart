@@ -68,18 +68,11 @@ class DataKaryawanView extends GetView<DataKaryawanController> {
                                 ? Colors.greenAccent
                                 : Colors.red[700],
                             child: ListTile(
-                              contentPadding: EdgeInsets.all(8.0),
+                              contentPadding: const EdgeInsets.all(8.0),
                               title: Row(
                                 children: [
-                                  Image.asset(
-                                    (userData['name'] == 'pakeh')
-                                        ? 'images/pake_h.png'
-                                        : (userData['role'] == 'Owner')
-                                            ? 'images/owner_profile.png'
-                                            : (userData['role'] == 'Karyawan')
-                                                ? 'images/karyawan_profile.png'
-                                                : 'images/user_profile.png',
-                                    // Provide a default photo path if none of the conditions match
+                                  CustomImageWidget(
+                                    imageUrl: userData['avatar_url'],
                                     width: 70,
                                     height: 70,
                                   ),
@@ -130,6 +123,37 @@ class DataKaryawanView extends GetView<DataKaryawanController> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomImageWidget extends StatelessWidget {
+  final String? imageUrl; // URL gambar dari jaringan atau path lokal
+  final double width;
+  final double height;
+
+  CustomImageWidget({
+    required this.imageUrl,
+    required this.width,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: imageUrl != null
+          ? Image.network(
+              imageUrl!,
+              width: width,
+              height: height,
+              fit: BoxFit.cover, // Sesuaikan dengan kebutuhan Anda
+            )
+          : Image.asset(
+              'images/karyawan_profile.png', // Foto default jika URL null
+              width: width,
+              height: height,
+              fit: BoxFit.cover, // Sesuaikan dengan kebutuhan Anda
+            ),
     );
   }
 }

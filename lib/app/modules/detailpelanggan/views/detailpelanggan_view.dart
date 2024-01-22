@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../datapelanggan/views/datapelanggan_view.dart';
 import '../controllers/detailpelanggan_controller.dart';
 
 class DetailpelangganView extends GetView<DetailpelangganController> {
@@ -53,12 +54,12 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(5),
                 children: [
-                  Image.asset(
-                    'images/user_profile.png',
-                    width: 250,
-                    height: 250,
+                  CustomImageWidget(
+                    imageUrl: userData['avatar_url'],
+                    width: 300,
+                    height: 350,
                   ),
-                  // const SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   // TextRow(label: 'ID User', value: user['id_user']?.toString() ?? '-'),
                   const SizedBox(height: 5),
                   TextRow(label: 'Nama Pelanggan', value: user['nama']?.toString() ?? '-'),

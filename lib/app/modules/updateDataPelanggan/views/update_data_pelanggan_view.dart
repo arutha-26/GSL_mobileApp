@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../datapelanggan/views/datapelanggan_view.dart';
 import '../controllers/update_data_pelanggan_controller.dart';
 
 class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
@@ -25,10 +26,10 @@ class UpdateDataPelangganView extends GetView<UpdateDataPelangganController> {
             child: ListView(
               padding: const EdgeInsets.all(5),
               children: [
-                Image.asset(
-                  'images/user_profile.png',
-                  width: 250,
-                  height: 250,
+                CustomImageWidget(
+                  imageUrl: userData['avatar_url'],
+                  width: 300,
+                  height: 350,
                 ),
                 // const SizedBox(height: 15),
                 // _buildTextField('ID Pelanggan', 'id_user', userData),

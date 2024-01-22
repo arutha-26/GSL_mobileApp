@@ -31,6 +31,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
       controller.currentPage.value = 1;
 
       await controller.fetchDataWithDateRange();
+      print('Data setelah pemanggilan fetchDataWithDateRange: ${controller.data}');
     }
   }
 

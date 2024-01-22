@@ -76,8 +76,8 @@ class DatapelangganView extends GetView<DatapelangganController> {
                           contentPadding: const EdgeInsets.all(8.0),
                           title: Row(
                             children: [
-                              Image.asset(
-                                'images/user_profile.png',
+                              CustomImageWidget(
+                                imageUrl: userData['avatar_url'],
                                 width: 70,
                                 height: 70,
                               ),
@@ -127,6 +127,37 @@ class DatapelangganView extends GetView<DatapelangganController> {
           );
         },
       ),
+    );
+  }
+}
+
+class CustomImageWidget extends StatelessWidget {
+  final String? imageUrl; // URL gambar dari jaringan atau path lokal
+  final double width;
+  final double height;
+
+  CustomImageWidget({
+    required this.imageUrl,
+    required this.width,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: imageUrl != null
+          ? Image.network(
+              imageUrl!,
+              width: width,
+              height: height,
+              fit: BoxFit.cover, // Sesuaikan dengan kebutuhan Anda
+            )
+          : Image.asset(
+              'images/user_profile.png', // Foto default jika URL null
+              width: width,
+              height: height,
+              fit: BoxFit.cover, // Sesuaikan dengan kebutuhan Anda
+            ),
     );
   }
 }

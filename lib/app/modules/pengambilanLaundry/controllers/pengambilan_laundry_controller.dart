@@ -254,10 +254,14 @@ class PengambilanLaundryController extends GetxController {
 
   void updateSelectedImage(XFile? image) {
     imagePilih = image;
-    print('image data nih sebelum update: $image');
+    if (kDebugMode) {
+      print('image data nih sebelum update: $image');
+    }
     // Get.appUpdate(); // Perbarui state tanpa memakai Get.forceAppUpdate
     Get.forceAppUpdate(); // Perbarui state
-    print('image data nih setelah update: $image');
+    if (kDebugMode) {
+      print('image data nih setelah update: $image');
+    }
   }
 
   String? get selectedImagePath => imagePilih?.path;
