@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../utils/BuktiTransferClass.dart';
 import '../../../utils/PelangganSearchWidget.dart';
@@ -172,27 +173,6 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    controller: controller.nominalBayarController,
-                    decoration: const InputDecoration(
-                      labelText: "Nominal Bayar",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    enabled: false,
-                    keyboardType: TextInputType.none,
-                    controller: controller.kembalianController,
-                    decoration: const InputDecoration(
-                      labelText: "Kembalian",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
                   const SizedBox(height: 20),
                   DropdownSearch<String>(
                     popupProps: const PopupProps.menu(
@@ -213,32 +193,135 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                         print(value);
                       }
                       controller.setSelectedPembayaran(value);
-                      if (Get.isBottomSheetOpen!) {
-                        Get.back();
-                      }
                       if (value == "Transfer") {
                         Get.bottomSheet(const BuktiTransfer());
+                      } else if (value == "Tunai") {
+                        Get.bottomSheet(const Tunai());
+                      } else {
+                        Get.bottomSheet(const Nope());
                       }
                     },
                   ),
                   const SizedBox(height: 20),
-                  Obx(() => ElevatedButton(
-                        onPressed: () {
-                          if (controller.isLoading.isFalse) {
-                            controller.addTransaksi();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            backgroundColor: const Color(0xFF22c55e),
-                            minimumSize: const Size(300, 40)),
-                        child: Text(
-                          controller.isLoading.isFalse ? "Tambah Transaksi" : "Loading...",
-                        ),
-                      )),
-                  const SizedBox(height: 10),
                 ],
               );
             }));
+  }
+}
+
+class Nope extends StatefulWidget {
+  const Nope({Key? key}) : super(key: key);
+
+  @override
+  State<Nope> createState() => _Nope();
+}
+
+class _Nope extends State<Nope> {
+  AddtransaksiController controller = Get.find<AddtransaksiController>();
+
+  SupabaseClient client = Supabase.instance.client;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            Obx(() => ElevatedButton(
+                  onPressed: () {
+                    if (controller.isLoading.isFalse) {
+                      controller.addTransaksi();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(400, 40),
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                  ),
+                  child: Text(
+                    controller.isLoading.isFalse ? "Kirim" : "Loading...",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Tunai extends StatefulWidget {
+  const Tunai({Key? key}) : super(key: key);
+
+  @override
+  State<Tunai> createState() => _Tunai();
+}
+
+class _Tunai extends State<Tunai> {
+  AddtransaksiController controller = Get.find<AddtransaksiController>();
+
+  SupabaseClient client = Supabase.instance.client;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            TextField(
+              enabled: false,
+              keyboardType: TextInputType.none,
+              controller: controller.hargaTotalController,
+              decoration: const InputDecoration(
+                labelText: "Total Harga",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: controller.nominalBayarController,
+              decoration: const InputDecoration(
+                labelText: "Nominal Bayar",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              enabled: false,
+              keyboardType: TextInputType.none,
+              controller: controller.kembalianController,
+              decoration: const InputDecoration(
+                labelText: "Kembalian",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Obx(() => ElevatedButton(
+                  onPressed: () {
+                    if (controller.isLoading.isFalse) {
+                      controller.addTransaksi();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(400, 40),
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e), // Warna teks
+                  ),
+                  child: Text(
+                    controller.isLoading.isFalse ? "Kirim" : "Loading...",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
   }
 }

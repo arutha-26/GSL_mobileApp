@@ -33,6 +33,9 @@ class AddtransaksiController extends GetxController {
     String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
     cleanedInput = cleanedInput.replaceAll('.', '');
 
+    // Tambahkan kondisi untuk memastikan bahwa jika cleanedInput null, maka berikan nilai default 0
+    double nominalBayar = cleanedInput.isNotEmpty ? double.tryParse(cleanedInput) ?? 0 : 0;
+
     String? imgUrlNih;
 
     if (idKaryawanC.text.isEmpty) {
@@ -100,18 +103,7 @@ class AddtransaksiController extends GetxController {
       return;
     }
 
-    if (getSelectedPembayaran() == "") {
-      Get.snackbar(
-        'ERROR',
-        'Metode Pembayaran harus diisi',
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-
-    if (nominalBayarController.text.isEmpty) {
+    if (nominalBayarController.text.isEmpty && getSelectedPembayaran() == "Tunai") {
       Get.snackbar(
         'ERROR',
         'Nominal Bayar harus diisi',
@@ -122,28 +114,7 @@ class AddtransaksiController extends GetxController {
       return;
     }
 
-    if (getSelectedPembayaran() == "") {
-      Get.snackbar(
-        'ERROR',
-        'Harap pilih Metode Pembayaran terlebih dahulu',
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-
-    if (double.tryParse(cleanedInput)! == 0 && getSelectedPembayaran() == "Tunai") {
-      Get.snackbar(
-        'ERROR',
-        'Harap Sesuaikan Metode dan Nominal terlebih dahulu',
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-    if (double.tryParse(cleanedInput)! == 0 && getSelectedPembayaran() == "Transfer") {
+    if (double.tryParse(cleanedInput) == 0 && getSelectedPembayaran() == "Tunai") {
       Get.snackbar(
         'ERROR',
         'Harap Sesuaikan Metode dan Nominal terlebih dahulu',
@@ -154,25 +125,10 @@ class AddtransaksiController extends GetxController {
       return;
     }
 
-    if (getSelectedPembayaran() == "Tranfer" && selectedImagePath == null) {
+    if (getSelectedPembayaran() == "Transfer" && selectedImagePath == null) {
       Get.snackbar(
         'ERROR',
         'Harap pilih gambar terlebih dahulu',
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-
-    if (double.tryParse(cleanedInput)! >= 1) {
-      statusPembayaran.value = "Lunas";
-    }
-
-    if (getSelectedPembayaran() == "-" && double.tryParse(cleanedInput)! >= 1) {
-      Get.snackbar(
-        'ERROR',
-        'Harap Sesuaikan Metode Pembayaran terlebih dahulu!',
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.red,
@@ -216,9 +172,9 @@ class AddtransaksiController extends GetxController {
         "metode_laundry": getSelectedMetode(),
         "layanan_laundry": getSelectedLayanan(),
         "metode_pembayaran": getSelectedPembayaran(),
-        "nominal_bayar": cleanedInput,
+        "nominal_bayar": nominalBayar,
         "kembalian": getNumericValueFromKembalian(),
-        "status_pembayaran": statusPembayaran.value,
+        "status_pembayaran": stausPembayaran(),
         "status_cucian": 'Dalam Proses',
         "created_at": DateTime.now().toString(),
         "is_hidden": false,
@@ -524,7 +480,8 @@ class AddtransaksiController extends GetxController {
                 styledTextRow('Metode Pembayaran:', data['metode_pembayaran'].toString()),
                 styledTextRow('Total Biaya:',
                     formatCurrency(double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
-                styledTextRow('Nominal Bayar:', nominalBayarController.text),
+                styledTextRow('Nominal Bayar:',
+                    formatCurrency(double.tryParse(data['nominal_bayar'].toString()) ?? 0.0)),
                 styledTextRow('Kembalian:',
                     formatCurrency(double.tryParse(data['kembalian'].toString()) ?? 0.0)),
               ]),
@@ -601,6 +558,25 @@ class AddtransaksiController extends GetxController {
 
   String getSelectedPembayaran() {
     return selectedPembayaran.value;
+  }
+
+  String stausPembayaran() {
+    // Dapatkan nilai metodePembayaran
+    String metode = selectedPembayaran.value;
+
+    // Set nilai statusPembayaran berdasarkan kondisi
+    if (metode == '-') {
+      statusPembayaran.value = 'Belum Lunas';
+    } else if (metode == 'Tunai') {
+      statusPembayaran.value = 'Lunas';
+    } else if (metode == 'Transfer') {
+      statusPembayaran.value = 'Lunas';
+    }
+
+    // Tambahkan kondisi lain sesuai kebutuhan Anda
+
+    // Kembalikan nilai statusPembayaran
+    return statusPembayaran.value;
   }
 
   void setSelectedPembayaran(String? value) {
