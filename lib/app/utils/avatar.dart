@@ -27,11 +27,9 @@ class Avatar extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 )
-              : Container(
-                  color: Colors.grey,
-                  child: const Center(
-                    child: Text('No Image'),
-                  ),
+              : Image.asset(
+                  'images/user_profile.png', // Replace with your default image asset path
+                  fit: BoxFit.cover,
                 ),
         ),
         const SizedBox(height: 10),

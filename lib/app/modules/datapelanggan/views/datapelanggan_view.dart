@@ -31,7 +31,7 @@ class DatapelangganView extends GetView<DatapelangganController> {
             );
           }
 
-          if (controller == null || controller.filteredData == null) {
+          if (controller.isClosed || controller.filteredData.isEmpty) {
             // Handle null controller or filteredData
             return const Center(
               child: Text('Data not available'),
@@ -57,71 +57,79 @@ class DatapelangganView extends GetView<DatapelangganController> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: controller.filteredData.length,
-                  itemBuilder: (context, index) {
-                    var userData = controller.filteredData[index];
-
-                    if (userData == null) {
-                      return const SizedBox.shrink();
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: Card(
-                        color: userData['is_active'] == true
-                            ? Colors.greenAccent
-                            : Colors.red[700],
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(8.0),
-                          title: Row(
-                            children: [
-                              CustomImageWidget(
-                                imageUrl: userData['avatar_url'],
-                                width: 70,
-                                height: 70,
-                              ),
-                              const SizedBox(width: 10),
-                              // Add some space between the image and text
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Nama: ${userData['nama']}',
-                                      style: TextStyle(
-                                        color: userData['is_active'] == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        fontWeight: userData['is_active'] == true
-                                            ? FontWeight.normal
-                                            : FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Kategori: ${userData['kategori']}',
-                                      style: TextStyle(
-                                        color: userData['is_active'] == true
-                                            ? Colors.black
-                                            : Colors.white,
-                                        fontWeight: userData['is_active'] == true
-                                            ? FontWeight.normal
-                                            : FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          onTap: () {
-                            Get.toNamed(Routes.DETAILPELANGGAN, arguments: userData);
-                          },
-                        ),
-                      ),
+                child: Obx(() {
+                  if (controller.isLoading.value) {
+                    // Display a loading indicator while loading data
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
-                  },
-                ),
+                  }
+
+                  return ListView.builder(
+                      itemCount: controller.filteredData.length,
+                      itemBuilder: (context, index) {
+                        var userData = controller.filteredData[index];
+
+                        if (userData == null) {
+                          return const SizedBox.shrink();
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                          child: Card(
+                            color: userData['is_active'] == true
+                                ? Colors.greenAccent
+                                : Colors.red[700],
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(8.0),
+                              title: Row(
+                                children: [
+                                  CustomImageWidget(
+                                    imageUrl: userData['avatar_url'],
+                                    width: 70,
+                                    height: 70,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  // Add some space between the image and text
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Nama: ${userData['nama']}',
+                                          style: TextStyle(
+                                            color: userData['is_active'] == true
+                                                ? Colors.black
+                                                : Colors.white,
+                                            fontWeight: userData['is_active'] == true
+                                                ? FontWeight.normal
+                                                : FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Kategori: ${userData['kategori']}',
+                                          style: TextStyle(
+                                            color: userData['is_active'] == true
+                                                ? Colors.black
+                                                : Colors.white,
+                                            fontWeight: userData['is_active'] == true
+                                                ? FontWeight.normal
+                                                : FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                Get.toNamed(Routes.DETAILPELANGGAN, arguments: userData);
+                              },
+                            ),
+                          ),
+                        );
+                      });
+                }),
               ),
             ],
           );

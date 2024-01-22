@@ -13,6 +13,7 @@ class OwnerprofileController extends GetxController {
   TextEditingController nameC2 = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
+  RxBool isHidden = true.obs;
 
   SupabaseClient client = Supabase.instance.client;
 

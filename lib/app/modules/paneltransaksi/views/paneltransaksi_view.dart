@@ -70,7 +70,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                     controller.searchByName(value);
                   },
                   decoration: InputDecoration(
-                    labelText: 'Cari Data Berdasarkan Metode',
+                    labelText: 'Cari Data Berdasarkan Kategori',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),

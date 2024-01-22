@@ -115,15 +115,21 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  autocorrect: false,
-                  controller: controller.passwordC,
-                  textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                    labelText: "Password Baru",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                Obx(() => TextFormField(
+                      controller: controller.passwordC,
+                      textInputAction: TextInputAction.done,
+                      obscureText: controller.isHidden.value,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () => controller.isHidden.toggle(),
+                            icon: controller.isHidden.isTrue
+                                ? const Icon(Icons.remove_red_eye)
+                                : const Icon(Icons.remove_red_eye_outlined)),
+                        labelText: 'Password Baru',
+                        labelStyle: const TextStyle(color: Colors.black87),
+                        border: const OutlineInputBorder(),
+                      ),
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
@@ -131,19 +137,35 @@ class OwnerprofileView extends GetView<OwnerprofileController> {
                   () => ElevatedButton(
                     onPressed: () async {
                       if (controller.isLoading.isFalse) {
-                        if (controller.nameC.text == controller.nameC2.text &&
-                            controller.passwordC.text.isEmpty) {
-                          // Check if user has the same name and does not want to change the password but clicks the button
-                          Get.snackbar("Info", "There is no data to update",
-                              borderWidth: 1, borderColor: Colors.white, barBlur: 100);
+                        if (controller.passwordC.text.isEmpty) {
+                          Get.snackbar(
+                            'ERROR',
+                            'Password Harus di isi!',
+                            snackPosition: SnackPosition.BOTTOM,
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+                          );
+                          // // Check if user has the same name and does not want to change the password but clicks the button
+                          // Get.snackbar("Info", "There is no data to update",
+                          //     borderWidth: 1, borderColor: Colors.white, barBlur: 100);
                           return;
                         }
-                        await controller.updateProfile();
                         if (controller.passwordC.text.isNotEmpty &&
                             controller.passwordC.text.length >= 6) {
+                          await controller.updateProfile();
                           await controller.logout();
                           await authC.resetTimer();
                           Get.offAllNamed(Routes.HOME);
+                        } else {
+                          Get.snackbar(
+                            'ERROR',
+                            'Password harus lebih dari 6 karakter!',
+                            snackPosition: SnackPosition.BOTTOM,
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red,
+                            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+                          );
                         }
                       }
                     },

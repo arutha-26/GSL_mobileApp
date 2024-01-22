@@ -56,7 +56,7 @@ class PaneltransaksiController extends GetxController {
 
     filteredData.assignAll(
       data.where((user) =>
-          user['metode_laundry_id'].toString().toLowerCase().contains(query.toLowerCase())),
+          user['kategori_pelanggan'].toString().toLowerCase().contains(query.toLowerCase())),
     );
   }
 }
