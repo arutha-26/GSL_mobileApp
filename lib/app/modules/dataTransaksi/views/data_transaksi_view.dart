@@ -94,7 +94,9 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               ...controller.data[0].keys
                   .where((key) =>
                       !hiddenColumns.contains(key) &&
-                      key != 'id_transaksi') // Exclude 'id' from being displayed
+                      key != 'id_transaksi' &&
+                      key !=
+                          'nomor_urut') // Exclude 'id' and 'nomor_urut' from being displayed
                   .map((key) => DataColumn(
                         label: Text(controller.columnNames[key] ?? key.capitalizeFirst!),
                       )),
@@ -108,7 +110,7 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                     ..removeWhere((key, value) => hiddenColumns.contains(key));
 
                   // Ensure the number of cells matches the number of columns
-                  assert(filteredRow.length + 1 == columns.length,
+                  assert(filteredRow.length == columns.length - 1,
                       'Mismatch in the number of cells and columns');
 
                   return MapEntry(
@@ -116,7 +118,25 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                     DataRow(
                       cells: [
                         DataCell(
-                            Center(child: Text('${controller.data[idx]['nomor_urut']}.'))),
+                          Center(child: Text('${row['nomor_urut'] ?? ''}')),
+                          onTap: () {
+                            if (row != null) {
+                              if (kDebugMode) {
+                                print(
+                                  'Navigating to: ${Routes.DETAIL_DATA_TRANSAKSI}, with data: $row',
+                                );
+                              }
+                              Get.toNamed(
+                                Routes.DETAIL_DATA_TRANSAKSI,
+                                arguments: row,
+                              );
+                            } else {
+                              if (kDebugMode) {
+                                print('Error: Data for row is null');
+                              }
+                            }
+                          },
+                        ),
                         ...filteredRow.keys.map((key) {
                           return DataCell(
                             Center(child: Text('${filteredRow[key]}')),

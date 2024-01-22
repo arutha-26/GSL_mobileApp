@@ -76,9 +76,9 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
                     ),
                     const SizedBox(height: 5),
 
-                    TextRow(
-                        label: 'Transaksi ID', value: data['id_transaksi']?.toString() ?? '-'),
-                    const SizedBox(height: 5),
+                    // TextRow(
+                    //     label: 'Transaksi ID', value: data['id_transaksi']?.toString() ?? '-'),
+                    // const SizedBox(height: 5),
 
                     TextRow(
                         label: 'Nama Karyawan Penerima',

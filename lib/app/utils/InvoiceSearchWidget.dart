@@ -38,7 +38,7 @@ class InvoiceSearchWidget extends StatelessWidget {
       },
       onSelected: (Pelanggan selection) {
         nameController.text = selection.nama ?? '';
-        phoneController.text = '${selection.phone}' ?? '';
+        phoneController.text = selection.phone ?? '';
         kategoriController.text = selection.kategori ?? '';
       },
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {

@@ -88,11 +88,6 @@ class InvoiceTransaksiController extends GetxController {
     String startDateText = startDateController.text;
     String endDateText = endDateController.text;
 
-    print(nameController.text);
-    // Parse text into DateTime objects
-    DateTime startDateFormatted = parseDate(startDateText).toLocal();
-    DateTime endDateFormatted = parseDate(endDateText).toLocal();
-
     try {
       // Perform data fetching for transaksi
       final transaksiResponse = await client
@@ -102,6 +97,8 @@ class InvoiceTransaksiController extends GetxController {
           .like('id_user.nama', '%$namaPelanggan%')
           .gte('tanggal_datang', formatDate(startDateController.text)) // Adjust as needed
           .lte('tanggal_datang', '${formatDate(endDateController.text)} 23:59:59')
+          .eq('status_pembayaran', 'Belum Lunas')
+          .order('id_transaksi')
           .execute();
 
       // Perform data fetching for user
@@ -117,19 +114,14 @@ class InvoiceTransaksiController extends GetxController {
         phoneController.text = (userResponse.data?.first['no_telp'] as String?) ?? '';
       } else {
         // Handle the case where user data is not available
-        alamatPelangganController.text = '';
+        alamatPelangganController.text = 'Error';
       }
 
       if (kDebugMode) {
-        print('Parse');
-        print('Start Date: $startDateFormatted');
-        print('End Date: $endDateFormatted');
         print('Controller');
         print('Start Date: $startDateController');
         print('End Date: $endDateController');
         print('formatdate2');
-        // print('Start Date: ${formatDate(startDateFormatted)}');
-        // print('End Date: ${formatDate(endDateFormatted)}');
         print('user data alamat nih:$alamatPelangganController');
         print('user data nama nih:$nameController');
         print('user data no_telp nih:$phoneController');
@@ -138,13 +130,11 @@ class InvoiceTransaksiController extends GetxController {
       if (transaksiResponse.status == 200 &&
           transaksiResponse.data != null &&
           transaksiResponse.data is List) {
-        // Handle the fetched transaksi data
         invoiceData.assignAll((transaksiResponse.data as List).map((transaksiItem) {
-          // Process transaksi data as needed
-          // Combine transaksi data with user data
-          final userData = userResponse.data?.first ?? {};
           return InvoiceData.fromMap(transaksiItem);
         }).toList());
+
+        print('DATANYA NIH :$invoiceData');
 
         if (invoiceData.isNotEmpty) {
           if (kDebugMode) {
@@ -165,6 +155,8 @@ class InvoiceTransaksiController extends GetxController {
           print('Error fetching transaksi data. Response status: ${transaksiResponse.status}');
         }
       }
+
+      print('Response status: ${transaksiResponse.status}');
     } catch (error) {
       if (kDebugMode) {
         print('Exception during fetching transaction data: $error');
