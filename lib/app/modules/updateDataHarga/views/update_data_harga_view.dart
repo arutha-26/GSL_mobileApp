@@ -28,10 +28,10 @@ class UpdateDataHargaView extends GetView<UpdateDataHargaController> {
               children: [
                 Image.asset(
                   'images/hand-holding-usd.png',
-                  width: 250,
-                  height: 250,
+                  width: 200,
+                  height: 200,
                 ),
-                // const SizedBox(height: 15),
+                const SizedBox(height: 15),
                 // _buildTextField('ID Harga', 'id_harga', userData),
                 const SizedBox(height: 15),
                 _buildTextField('Kategori Pelanggan', 'kategori_pelanggan', userData),

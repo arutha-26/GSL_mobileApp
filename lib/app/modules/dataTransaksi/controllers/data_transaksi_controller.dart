@@ -454,7 +454,7 @@ class DataTransaksiController extends GetxController {
                     centeredText('${data['berat_laundry']}'),
                     centeredText(data['status_cucian'] ?? "Error Data"),
                     centeredText(data['status_pembayaran']),
-                    centeredText(formatCurrency(
+                    rightText(formatCurrency(
                         double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
                   ],
                 ),
@@ -477,7 +477,7 @@ class DataTransaksiController extends GetxController {
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     width: 50, // Merge cells for the total label
                   ),
-                  pw.Text(textAlign: pw.TextAlign.center, formatCurrency(total)),
+                  pw.Text(textAlign: pw.TextAlign.right, formatCurrency(total)),
                 ],
               ),
             ],
@@ -636,7 +636,7 @@ class DataTransaksiController extends GetxController {
                         centeredText('${data['berat_laundry']}'),
                         centeredText(data['status_cucian'] ?? "Error Data"),
                         centeredText(data['status_pembayaran']),
-                        centeredText(formatCurrency(
+                        rightText(formatCurrency(
                             double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
                       ],
                     ),
@@ -659,7 +659,7 @@ class DataTransaksiController extends GetxController {
                             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                         width: 50, // Merge cells for the total label
                       ),
-                      pw.Text(textAlign: pw.TextAlign.center, formatCurrency(totalpaid)),
+                      pw.Text(textAlign: pw.TextAlign.right, formatCurrency(totalpaid)),
                     ],
                   ),
                 ],
@@ -818,7 +818,7 @@ class DataTransaksiController extends GetxController {
                         centeredText('${data['berat_laundry']}'),
                         centeredText(data['status_cucian'] ?? "Error Data"),
                         centeredText(data['status_pembayaran']),
-                        centeredText(formatCurrency(
+                        rightText(formatCurrency(
                             double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
                       ],
                     ),
@@ -841,7 +841,7 @@ class DataTransaksiController extends GetxController {
                             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                         width: 50, // Merge cells for the total label
                       ),
-                      pw.Text(textAlign: pw.TextAlign.center, formatCurrency(totalUnpaid)),
+                      pw.Text(textAlign: pw.TextAlign.right, formatCurrency(totalUnpaid)),
                     ],
                   ),
                 ],
@@ -884,7 +884,7 @@ class DataTransaksiController extends GetxController {
     // Save PDF to a temporary file
     final output = await getTemporaryDirectory();
     final file = File(
-        '${output.path}/Laporan_Keuangan_Periode${formatDate(startDate.toString())}-${formatDate(endDate.toString())}.pdf');
+        '${output.path}/Laporan_Transaksi_Periode${formatDate(startDate.toString())}-${formatDate(endDate.toString())}.pdf');
     await file.writeAsBytes(await pdf.save());
 
     // Open the generated PDF file
@@ -894,6 +894,13 @@ class DataTransaksiController extends GetxController {
   pw.Widget centeredText(String text, {pw.FontWeight? fontWeight}) {
     return pw.Container(
       alignment: pw.Alignment.center,
+      child: pw.Text(text, style: pw.TextStyle(fontWeight: fontWeight)),
+    );
+  }
+
+  pw.Widget rightText(String text, {pw.FontWeight? fontWeight}) {
+    return pw.Container(
+      alignment: pw.Alignment.centerRight,
       child: pw.Text(text, style: pw.TextStyle(fontWeight: fontWeight)),
     );
   }

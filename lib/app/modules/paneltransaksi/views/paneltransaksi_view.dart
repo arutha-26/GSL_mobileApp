@@ -101,7 +101,7 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                             title: Row(
                               children: [
                                 Image.asset(
-                                  'images/settings.png',
+                                  'images/hand-holding-usd.png',
                                   width: 70,
                                   height: 70,
                                 ),
