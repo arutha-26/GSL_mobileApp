@@ -917,7 +917,7 @@ class DataTransaksiController extends GetxController {
     'total_biaya': 'Total Biaya\n(Rp)',
     'metode_pembayaran': 'Metode Pembayaran',
     'status_pembayaran': 'Status Pembayaran',
-    'tanggal_datang': 'Tanggal Datang',
+    'tanggal_datang': 'Tanggal\nDatang',
     'tanggal_selesai': 'Tanggal Selesai',
     'status_cucian': 'Status Cucian',
     'is_hidden': 'Is Hidden',

@@ -496,10 +496,11 @@ class AddtransaksiController extends GetxController {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
-                'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                'CP: Green Spirit Laundry - +62897913414121121',
-              ),
+                  'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+                  '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.',
+                  textAlign: pw.TextAlign.justify),
+              pw.Text('CP:\nGreen Spirit Laundry : +62897913414121121',
+                  textAlign: pw.TextAlign.start)
             ],
           ),
           pw.SizedBox(height: 5),

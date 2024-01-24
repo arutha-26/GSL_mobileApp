@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,6 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DetailDataTransaksiController extends GetxController {
@@ -111,7 +109,7 @@ class DetailDataTransaksiController extends GetxController {
         build: (context) => [
           pw.Center(
             child: pw.Text(
-              'Id Invoice: ${data['id_transaksi']?.toString() ?? '-'}',
+              'Id Transaksi: ${data['id_transaksi']?.toString() ?? '-'}',
               style: pw.TextStyle(
                 fontWeight: pw.FontWeight.bold,
               ),
@@ -145,32 +143,34 @@ class DetailDataTransaksiController extends GetxController {
               thickness: 1,
               color: PdfColors.black),
           pw.SizedBox(height: 5),
-          pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.center,
-            children: [
-              pw.Text(
-                'Customer Data',
-                style: pw.TextStyle(
-                  fontWeight: pw.FontWeight.bold,
+          pw.Center(
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Text(
+                  'Customer Data',
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
-              ),
-              pw.SizedBox(height: 5),
-              pw.Text(
-                data['id_user']['nama']?.toString().capitalizeFirst ?? '-',
-                overflow: pw.TextOverflow.visible, // Truncate with ellipsis if too long
-              ),
-              pw.Text(
-                (data['id_user']['alamat']?.toString() ?? '-'),
-                maxLines: null, // Limit to 3 lines
-                overflow: pw.TextOverflow.visible, // Clip overflowed text
-                softWrap: true,
-                textAlign: pw.TextAlign.center,
-              ),
-              pw.Text(
-                data['id_user']['no_telp']?.toString() ?? '-',
-                overflow: pw.TextOverflow.visible, // Truncate with ellipsis if too long
-              ),
-            ],
+                pw.SizedBox(height: 5),
+                pw.Text(
+                  data['id_user']['nama']?.toString().capitalizeFirst ?? '-',
+                  overflow: pw.TextOverflow.visible, // Truncate with ellipsis if too long
+                ),
+                pw.Text(
+                  (data['id_user']['alamat']?.toString() ?? '-'),
+                  maxLines: null, // Limit to 3 lines
+                  overflow: pw.TextOverflow.visible, // Clip overflowed text
+                  softWrap: true,
+                  textAlign: pw.TextAlign.center,
+                ),
+                pw.Text(
+                  data['id_user']['no_telp']?.toString() ?? '-',
+                  overflow: pw.TextOverflow.visible, // Truncate with ellipsis if too long
+                ),
+              ],
+            ),
           ),
           pw.SizedBox(height: 5),
           pw.Divider(
@@ -193,11 +193,8 @@ class DetailDataTransaksiController extends GetxController {
                     data['layanan_laundry']?.toString().capitalizeFirst ?? '-'),
                 styledTextRow('Berat Laundry:', '${data['berat_laundry']}Kg' ?? '-'),
                 styledTextRow('Status Cucian:', data['status_cucian']?.toString() ?? '-'),
-                styledTextRow(
-                    'Status Pembayaran:',
-                    data['status_pembayaran']?.toString().capitalize == 'sudah_dibayar'
-                        ? 'Sudah Dibayar'
-                        : 'Belum Dibayar' ?? '-'),
+                styledTextRow('Status Pembayaran:',
+                    data['status_pembayaran']?.toString().capitalize ?? '-'),
                 styledTextRow('Total Biaya:',
                     formatCurrency(double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
               ]),
@@ -209,13 +206,13 @@ class DetailDataTransaksiController extends GetxController {
               color: PdfColors.black),
           pw.SizedBox(height: 5),
           pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
-                'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                'CP: Green Spirit Laundry - +62897913414121121',
-              ),
+                  'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+                  '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.',
+                  textAlign: pw.TextAlign.justify),
+              pw.Text('CP:\nGreen Spirit Laundry : +62897913414121121',
+                  textAlign: pw.TextAlign.start)
             ],
           ),
           pw.SizedBox(height: 5),
@@ -232,7 +229,7 @@ class DetailDataTransaksiController extends GetxController {
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.end,
                   children: [
-                    pw.Text('${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
+                    pw.Text(DateFormat('dd-MM-yyyy').format(DateTime.now())),
                     pw.Text(data['id_karyawan_masuk']?.toString().capitalizeFirst ?? '-'),
                     pw.SizedBox(height: 50),
                     pw.Text('Karyawan Green Spirit Laundry'),
@@ -244,36 +241,9 @@ class DetailDataTransaksiController extends GetxController {
     );
 
     final output = await getTemporaryDirectory();
-    final file = File('${output.path}/invoice.pdf');
+    final file = File('${output.path}/Faktur_Cucian_Pelanggan_${data['id_user']['nama']}.pdf');
     await file.writeAsBytes(await pdf.save());
 
     OpenFile.open(file.path);
-  }
-
-// MUNGKIN DIGUNAKAN, FUNC INI BLM SEPENUHNYA SELESAI!
-  Future<void> generateAndPrintInvoicePDF(data) async {
-    final randomInvoiceNumber = Random().nextInt(99999) + 10000;
-
-    Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async {
-        return await Printing.convertHtml(
-          format: format,
-          html: '''
-          <html>
-            <head>
-              <style>
-                /* Add your custom styles here */
-              </style>
-            </head>
-            <body>
-              <!-- Your HTML content here -->
-              <h1>Green Spirit Laundry</h1>
-              <!-- ... your existing content ... -->
-            </body>
-          </html>
-        ''',
-        );
-      },
-    );
   }
 }
