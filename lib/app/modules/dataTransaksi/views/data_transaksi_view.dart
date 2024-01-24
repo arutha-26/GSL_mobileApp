@@ -55,6 +55,9 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                 minimumSize: const Size(220, 45),
               ),
               child: const Text('Pilih Tanggal Transaksi')),
+          const SizedBox(
+            height: 10,
+          ),
           Obx(() {
             if (controller.isLoading.isTrue) {
               return const Center(
@@ -139,7 +142,14 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                         ),
                         ...filteredRow.keys.map((key) {
                           return DataCell(
-                            Center(child: Text('${filteredRow[key]}')),
+                            Center(
+                              child: key == 'total_biaya'
+                                  ? Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text('${filteredRow[key]}'),
+                                    )
+                                  : Text('${filteredRow[key]}', textAlign: TextAlign.center),
+                            ),
                             onTap: () {
                               if (row != null) {
                                 if (kDebugMode) {
@@ -181,9 +191,13 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
                   controller: _scrollController,
                   // Pass the same ScrollController to your scrollable widget
                   scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: columns,
-                    rows: rows,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: DataTable(
+                      border: TableBorder.all(),
+                      columns: columns,
+                      rows: rows,
+                    ),
                   ),
                 ),
               ),

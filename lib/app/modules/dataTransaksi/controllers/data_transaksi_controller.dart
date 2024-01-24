@@ -78,7 +78,7 @@ class DataTransaksiController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
           .lte('tanggal_datang', '${endDate.value.toLocal().add(const Duration(days: 1))}')
           .order('tanggal_datang', ascending: true)
@@ -165,7 +165,7 @@ class DataTransaksiController extends GetxController {
       final response = await client
           .from('transaksi')
           .select(
-              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, status_cucian, status_pembayaran, layanan_laundry, metode_laundry, metode_pembayaran, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .gte('tanggal_datang', '${startDate.value.toLocal()}')
           .lte('tanggal_datang', '${endDate.value.toLocal().add(const Duration(days: 1))}')
           .order('tanggal_datang', ascending: true)
@@ -190,7 +190,7 @@ class DataTransaksiController extends GetxController {
                 final formattedBerat = '$berat Kg';
                 final harga = (item['total_biaya'] as num?) ?? 0;
                 NumberFormat currencyFormatter =
-                    NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0);
+                    NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0);
                 final formatHarga = currencyFormatter.format(harga);
                 final cucian = (item['status_cucian'] as String?) ?? 'N/A';
                 final formattedCucian = cucian.capitalizeFirst;
@@ -914,7 +914,7 @@ class DataTransaksiController extends GetxController {
     'metode_laundry': 'Metode Laundry',
     'layanan_laundry': 'Layanan Laundry',
     'berat_laundry': 'Berat Laundry',
-    'total_biaya': 'Total Biaya',
+    'total_biaya': 'Total Biaya\n(Rp)',
     'metode_pembayaran': 'Metode Pembayaran',
     'status_pembayaran': 'Status Pembayaran',
     'tanggal_datang': 'Tanggal Datang',

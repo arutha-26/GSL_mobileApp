@@ -50,12 +50,41 @@ class BuktiTrf extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
-                final ImagePicker picker = ImagePicker();
-                final XFile? image = await picker.pickImage(source: ImageSource.camera);
-                if (image == null) {
-                  return;
-                }
-                onImageSelected(image);
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Wrap(
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.photo_library),
+                          title: Text('Pilih dari Galeri'),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            final ImagePicker picker = ImagePicker();
+                            final XFile? image =
+                                await picker.pickImage(source: ImageSource.gallery);
+                            if (image != null) {
+                              onImageSelected(image);
+                            }
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.camera_alt),
+                          title: Text('Ambil dari Kamera'),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            final ImagePicker picker = ImagePicker();
+                            final XFile? image =
+                                await picker.pickImage(source: ImageSource.camera);
+                            if (image != null) {
+                              onImageSelected(image);
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.indigoAccent),

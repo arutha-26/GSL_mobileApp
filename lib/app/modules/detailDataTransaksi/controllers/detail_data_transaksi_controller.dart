@@ -34,7 +34,7 @@ class DetailDataTransaksiController extends GetxController {
       var response = await client
           .from("transaksi")
           .select(
-              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, layanan_laundry, metode_laundry, status_cucian, status_pembayaran, metode_pembayaran, kembalian, nominal_bayar, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
+              'id_transaksi, tanggal_datang, total_biaya, berat_laundry, layanan_laundry, metode_laundry, status_cucian, status_pembayaran, metode_pembayaran, tanggal_selesai, tanggal_diambil, id_karyawan_masuk, id_karyawan_keluar, is_hidden, edit_at, id_user(id_user, nama, no_telp, kategori, alamat)')
           .match({"id_transaksi": dataPanel['id_transaksi']}).execute();
 
       if (response.status == 200 && response.data != null && response.data.isNotEmpty) {
