@@ -38,10 +38,9 @@ class PelangganPaidView extends GetView<PelangganPaidController> {
                       final isHidden = transaction['is_hidden'];
 
                       // Mengubah nilai status_pembayaran
-                      final statusPembayaran =
-                          transaction['status_pembayaran'] == 'sudah_dibayar'
-                              ? 'Lunas'
-                              : 'Belum Lunas';
+                      final statusPembayaran = transaction['status_pembayaran'] == 'Lunas'
+                          ? 'Lunas'
+                          : 'Belum Lunas';
                       // Determine card color based on IS_HIDDEN
                       final cardColor = isHidden ? Colors.green[600] : Colors.red[400];
 
@@ -67,8 +66,7 @@ class PelangganPaidView extends GetView<PelangganPaidController> {
                                   width: 70,
                                   height: 150,
                                 ),
-                                const SizedBox(
-                                    width: 15), // Add spacing between image and text
+                                const SizedBox(width: 15),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +95,7 @@ class PelangganPaidView extends GetView<PelangganPaidController> {
                                         ),
                                       ),
                                       Text(
-                                        'Total Berat Laundry: ${transaction['berat_laundry']} kg',
+                                        'Total Berat Laundry: ${transaction['berat_laundry']}Kg',
                                         style: TextStyle(
                                           color: cardColor == Colors.green[600]
                                               ? Colors.black

@@ -164,12 +164,20 @@ class PelangganTransaksiController extends GetxController {
         DateTime start = selectedStartDate.value!;
         DateTime end = selectedEndDate.value!.add(const Duration(days: 1));
 
-        print('Transaction Date: $transactionDate');
-        print('Selected Start Date: $start');
-        print('Selected End Date: $end');
+        if (kDebugMode) {
+          print('Transaction Date: $transactionDate');
+        }
+        if (kDebugMode) {
+          print('Selected Start Date: $start');
+        }
+        if (kDebugMode) {
+          print('Selected End Date: $end');
+        }
 
         bool dateCondition = transactionDate.isAfter(start) && transactionDate.isBefore(end);
-        print('Date condition: $dateCondition');
+        if (kDebugMode) {
+          print('Date condition: $dateCondition');
+        }
 
         return dateCondition;
       }).toList();

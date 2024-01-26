@@ -26,6 +26,8 @@ import '../modules/karyawanhome/bindings/karyawanhome_binding.dart';
 import '../modules/karyawanhome/views/karyawanhome_view.dart';
 import '../modules/karyawanprofile/bindings/karyawanprofile_binding.dart';
 import '../modules/karyawanprofile/views/karyawanprofile_view.dart';
+import '../modules/log_harga/bindings/log_harga_binding.dart';
+import '../modules/log_harga/views/log_harga_view.dart';
 import '../modules/loginpage/bindings/loginpage_binding.dart';
 import '../modules/loginpage/views/loginpage_view.dart';
 import '../modules/ownerhome/bindings/ownerhome_binding.dart';
@@ -211,6 +213,11 @@ class AppPages {
       name: _Paths.TRANSAKSI_HARI_INI,
       page: () => const TransaksiHariIniView(),
       binding: TransaksiHariIniBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOG_HARGA,
+      page: () => const LogHargaView(),
+      binding: LogHargaBinding(),
     ),
   ];
 }

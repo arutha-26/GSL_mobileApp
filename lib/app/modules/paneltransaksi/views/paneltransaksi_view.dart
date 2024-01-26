@@ -23,7 +23,8 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
   String formatDate(String? dateString) {
     if (dateString != null) {
       final date = DateTime.parse(dateString);
-      final formattedDate = '${date.day}-${date.month}-${date.year}';
+      final formattedDate =
+          '${date.day}-${date.month.toString().padLeft(2, '0')}-${date.year}';
       return formattedDate;
     }
     return '';
@@ -76,6 +77,20 @@ class PaneltransaksiView extends GetView<PaneltransaksiController> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed(Routes.LOG_HARGA);
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(400, 40),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.indigoAccent, // Warna teks
+                ),
+                child: const Text(
+                  "Log Harga",
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
               Expanded(

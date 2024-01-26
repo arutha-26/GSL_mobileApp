@@ -70,7 +70,7 @@ class StatusCucianTransaksiView extends GetView<StatusCucianTransaksiController>
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: Card(
-                        color: userData['status_cucian'] == 'diproses'
+                        color: userData['status_cucian'] == 'Dalam Proses'
                             ? Colors.teal
                             : Colors.greenAccent,
                         child: ListTile(
