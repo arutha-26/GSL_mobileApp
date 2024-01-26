@@ -218,24 +218,72 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
             verticalDirection: VerticalDirection.down,
             children: [
               ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await controller.fetchAllDataForPDF2();
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                            leading: Icon(Icons.print),
+                            title: const Text('Print Data Lengkap'),
+                            onTap: () async {
+                              try {
+                                await controller.fetchAllDataForPDF2();
 
-                    if (controller.data.isNotEmpty) {
-                      controller.generateAndOpenInvoicePDF(controller.printDataInvoice);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('No data available to generate an invoice.'),
-                        ),
+                                if (controller.data.isNotEmpty) {
+                                  controller
+                                      .generateAndOpenInvoicePDF(controller.printDataInvoice);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('No data available to generate an invoice.'),
+                                    ),
+                                  );
+                                }
+                              } catch (error) {
+                                if (kDebugMode) {
+                                  print('Error generating PDF: $error');
+                                }
+                              }
+                              Navigator.pop(
+                                  context); // Close the bottom sheet after executing the function
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.print), // Replace with the appropriate icon
+                            title: const Text('Print Data Simple'),
+                            onTap: () async {
+                              try {
+                                await controller.fetchAllDataForPDF2();
+
+                                if (controller.data.isNotEmpty) {
+                                  controller.generateAndOpenInvoicePDFSimple(
+                                      controller.printDataInvoice);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('No data available to generate an invoice.'),
+                                    ),
+                                  );
+                                }
+                              } catch (error) {
+                                if (kDebugMode) {
+                                  print('Error generating PDF: $error');
+                                }
+                              }
+
+                              Navigator.pop(
+                                  context); // Close the bottom sheet after executing the function
+                            },
+                          ),
+                        ],
                       );
-                    }
-                  } catch (error) {
-                    if (kDebugMode) {
-                      print('Error generating PDF: $error');
-                    }
-                  }
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   maximumSize: const Size(310, 40),
