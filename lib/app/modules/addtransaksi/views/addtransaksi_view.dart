@@ -176,11 +176,11 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                   const SizedBox(height: 20),
                   DropdownSearch<String>(
                     popupProps: const PopupProps.menu(
-                      constraints: BoxConstraints(maxHeight: 180),
+                      constraints: BoxConstraints(maxHeight: 120),
                       // 60 are per data height
                       showSelectedItems: true,
                     ),
-                    items: const ["-", "Tunai", "Transfer"],
+                    items: const ["Tunai", "Transfer"],
                     dropdownDecoratorProps: const DropDownDecoratorProps(
                       dropdownSearchDecoration: InputDecoration(
                         labelText: "Metode Pembayaran",
@@ -202,7 +202,7 @@ class AddtransaksiView extends GetView<AddtransaksiController> {
                       }
                     },
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                 ],
               );
             }));

@@ -94,7 +94,6 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                         children: [
                           GlassButton(
                             onPressed: () {
-                              // Get.deleteAll();
                               Get.put(AdddataController());
                               Get.to(() => AdddataView());
                             },
@@ -113,7 +112,7 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                           ),
                           GlassButton(
                             onPressed: () {
-                              Get.deleteAll();
+                              // Get.deleteAll();
                               Get.put(PengambilanLaundryController());
                               Get.to(() => PengambilanLaundryView());
                             },
@@ -132,7 +131,7 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                           ),
                           GlassButton(
                             onPressed: () {
-                              Get.deleteAll();
+                              // Get.deleteAll();
                               Get.put(DataTransaksiController());
                               Get.to(() => DataTransaksiView());
                             },
@@ -142,7 +141,7 @@ class KaryawanhomeView extends GetView<KaryawanhomeController> {
                           ),
                           GlassButton(
                             onPressed: () {
-                              Get.deleteAll();
+                              // Get.deleteAll();
                               Get.put(InvoiceTransaksiController());
                               Get.to(() => InvoiceTransaksiView());
                             },

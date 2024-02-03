@@ -341,182 +341,182 @@ class DataTransaksiController extends GetxController {
         data.where((element) => element['status_pembayaran'] == 'Belum Lunas').toList();
 
     /*HALAMAN SELURUH DATA, BAIK LUNAS ATAU TIDAK*/
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a3.landscape,
-        build: (context) => [
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Text('Green Spirit Laundry'),
-                  pw.Text(
-                    'Jl. Pura Masuka Gg. Jepun, Ungasan,\nKec. Kuta Sel., Kabupaten Badung, Bali 80361',
-                  ),
-                  pw.Text('Telp (+6281 23850 7062)'),
-                ],
-              ),
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Text('Data Transaksi'),
-                ],
-              ),
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.end,
-                children: [
-                  pw.Text('Transaksi Periode',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text(
-                      '${formatDate(startDate.toString())} - ${formatDate(endDate.toString())}'),
-                ],
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 20),
-          /*TABLE SELURUH DATA*/
-          pw.Table(
-            defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
-            // defaultColumnWidth: const pw.IntrinsicColumnWidth(),
-            columnWidths: {
-              0: const pw.FlexColumnWidth(1),
-              1: const pw.FlexColumnWidth(2),
-              2: const pw.FlexColumnWidth(2),
-              3: const pw.FlexColumnWidth(2),
-              4: const pw.FlexColumnWidth(2),
-              5: const pw.FlexColumnWidth(2),
-              6: const pw.FlexColumnWidth(2),
-              7: const pw.FlexColumnWidth(2),
-              8: const pw.FlexColumnWidth(2),
-              9: const pw.FlexColumnWidth(2),
-            },
-            border: pw.TableBorder.all(), // Add borders to the table
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Text('No.',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  // pw.Text('Id\nTransaksi',
-                  //     textAlign: pw.TextAlign.center,
-                  //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Nama\nPelanggan',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  // pw.Text('Alamat Pelanggan',
-                  //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('No\nTelp',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Tanggal\nDatang',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Metode\nLaundry',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Layanan\nLaundry',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Berat\nLaundry',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Status\nCucian',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Status\nPembayaran',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Total\nBiaya (Rp)',
-                      textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                ],
-              ),
-              for (var data in data)
-
-                // for (int index = 0; index < data.length; index++)
-                pw.TableRow(
-                  // Apply red color for unpaid rows
-                  // decoration: (data['status_pembayaran'] == 'Belum Lunas')
-                  //     ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
-                  //     : null,
-                  children: [
-                    centeredText('${rowIndex++}'),
-                    // centeredText('${data['id_transaksi']}'),
-                    centeredText('${data['nama']}'),
-                    // pw.Text('${data['alamat']}'),
-                    centeredText('${data['no_telp']}'),
-                    centeredText(data['tanggal_datang']),
-                    centeredText(data['metode_laundry']),
-                    centeredText(data['layanan_laundry']),
-                    centeredText('${data['berat_laundry']}'),
-                    centeredText(data['status_cucian'] ?? "Error Data"),
-                    centeredText(data['status_pembayaran']),
-                    rightText(formatCurrency(
-                        double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
-                  ],
-                ),
-              // Footer row for total amount of unpaid transactions
-              pw.TableRow(
-                // decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC)),
-                children: [
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(),
-                  pw.Container(
-                    alignment: pw.Alignment.center,
-                    child: pw.Text('Total Biaya (Rp)',
-                        textAlign: pw.TextAlign.center,
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    width: 50, // Merge cells for the total label
-                  ),
-                  pw.Text(textAlign: pw.TextAlign.right, formatCurrency(total)),
-                ],
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 20),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: pw.CrossAxisAlignment.center,
-            children: [
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  // pw.Text(
-                  //   'Jatuh Tempo: ${controller.jatuhTempoController.text}',
-                  //   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                  // ),
-                  pw.Text(
-                    'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                    '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                    'CP: Green Spirit Laundry - +62897913414121121',
-                  ),
-                ],
-              ),
-              pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.end,
-                children: [
-                  pw.Text(
-                    '${DateFormat('dd-MM-yyyy').format(DateTime.now())}',
-                  ),
-                  pw.Text(namaKaryawanC.text.capitalizeFirst.toString()),
-                  pw.SizedBox(height: 50),
-                  pw.Text('Karyawan Green Spirit Laundry'),
-                ],
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+    // pdf.addPage(
+    //   pw.MultiPage(
+    //     pageFormat: PdfPageFormat.a3.landscape,
+    //     build: (context) => [
+    //       pw.Row(
+    //         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+    //         crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //         children: [
+    //           pw.Column(
+    //             crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //             children: [
+    //               pw.Text('Green Spirit Laundry'),
+    //               pw.Text(
+    //                 'Jl. Pura Masuka Gg. Jepun, Ungasan,\nKec. Kuta Sel., Kabupaten Badung, Bali 80361',
+    //               ),
+    //               pw.Text('Telp (+6281 23850 7062)'),
+    //             ],
+    //           ),
+    //           pw.Column(
+    //             crossAxisAlignment: pw.CrossAxisAlignment.center,
+    //             children: [
+    //               pw.Text('Data Transaksi'),
+    //             ],
+    //           ),
+    //           pw.Column(
+    //             crossAxisAlignment: pw.CrossAxisAlignment.end,
+    //             children: [
+    //               pw.Text('Transaksi Periode',
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text(
+    //                   '${formatDate(startDate.toString())} - ${formatDate(endDate.toString())}'),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //       pw.SizedBox(height: 20),
+    //       /*TABLE SELURUH DATA*/
+    //       pw.Table(
+    //         defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
+    //         // defaultColumnWidth: const pw.IntrinsicColumnWidth(),
+    //         columnWidths: {
+    //           0: const pw.FlexColumnWidth(1),
+    //           1: const pw.FlexColumnWidth(2),
+    //           2: const pw.FlexColumnWidth(2),
+    //           3: const pw.FlexColumnWidth(2),
+    //           4: const pw.FlexColumnWidth(2),
+    //           5: const pw.FlexColumnWidth(2),
+    //           6: const pw.FlexColumnWidth(2),
+    //           7: const pw.FlexColumnWidth(2),
+    //           8: const pw.FlexColumnWidth(2),
+    //           9: const pw.FlexColumnWidth(2),
+    //         },
+    //         border: pw.TableBorder.all(), // Add borders to the table
+    //         children: [
+    //           pw.TableRow(
+    //             children: [
+    //               pw.Text('No.',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               // pw.Text('Id\nTransaksi',
+    //               //     textAlign: pw.TextAlign.center,
+    //               //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Nama\nPelanggan',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               // pw.Text('Alamat Pelanggan',
+    //               //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('No\nTelp',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Tanggal\nDatang',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Metode\nLaundry',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Layanan\nLaundry',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Berat\nLaundry',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Status\nCucian',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Status\nPembayaran',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //               pw.Text('Total\nBiaya (Rp)',
+    //                   textAlign: pw.TextAlign.center,
+    //                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //             ],
+    //           ),
+    //           for (var data in data)
+    //
+    //             // for (int index = 0; index < data.length; index++)
+    //             pw.TableRow(
+    //               // Apply red color for unpaid rows
+    //               // decoration: (data['status_pembayaran'] == 'Belum Lunas')
+    //               //     ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
+    //               //     : null,
+    //               children: [
+    //                 centeredText('${rowIndex++}'),
+    //                 // centeredText('${data['id_transaksi']}'),
+    //                 centeredText('${data['nama']}'),
+    //                 // pw.Text('${data['alamat']}'),
+    //                 centeredText('${data['no_telp']}'),
+    //                 centeredText(data['tanggal_datang']),
+    //                 centeredText(data['metode_laundry']),
+    //                 centeredText(data['layanan_laundry']),
+    //                 centeredText('${data['berat_laundry']}'),
+    //                 centeredText(data['status_cucian'] ?? "Error Data"),
+    //                 centeredText(data['status_pembayaran']),
+    //                 rightText(formatCurrency(
+    //                     double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
+    //               ],
+    //             ),
+    //           // Footer row for total amount of unpaid transactions
+    //           pw.TableRow(
+    //             // decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC)),
+    //             children: [
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(),
+    //               pw.Container(
+    //                 alignment: pw.Alignment.center,
+    //                 child: pw.Text('Total Biaya (Rp)',
+    //                     textAlign: pw.TextAlign.center,
+    //                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                 width: 50, // Merge cells for the total label
+    //               ),
+    //               pw.Text(textAlign: pw.TextAlign.right, formatCurrency(total)),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //       pw.SizedBox(height: 20),
+    //       pw.Row(
+    //         mainAxisAlignment: pw.MainAxisAlignment.end,
+    //         crossAxisAlignment: pw.CrossAxisAlignment.end,
+    //         children: [
+    //           // pw.Column(
+    //           //   crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //           //   children: [
+    //           //     // pw.Text(
+    //           //     //   'Jatuh Tempo: ${controller.jatuhTempoController.text}',
+    //           //     //   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+    //           //     // ),
+    //           //     pw.Text(
+    //           //       'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+    //           //       '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
+    //           //       'CP: Green Spirit Laundry - +62897913414121121',
+    //           //     ),
+    //           //   ],
+    //           // ),
+    //           pw.Column(
+    //             crossAxisAlignment: pw.CrossAxisAlignment.end,
+    //             children: [
+    //               pw.Text(
+    //                 '${DateFormat('dd-MM-yyyy').format(DateTime.now())}',
+    //               ),
+    //               pw.Text(namaKaryawanC.text.capitalizeFirst.toString()),
+    //               pw.SizedBox(height: 50),
+    //               pw.Text('Karyawan Green Spirit Laundry'),
+    //             ],
+    //           )
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
 
     /*HALAMAN SELURUH DATA LUNAS */
     pdf.addPage(
@@ -666,23 +666,23 @@ class DataTransaksiController extends GetxController {
               ),
               pw.SizedBox(height: 20),
               pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      // pw.Text(
-                      //   'Jatuh Tempo: ${controller.jatuhTempoController.text}',
-                      //   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      // ),
-                      pw.Text(
-                        'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                        '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                        'CP: Green Spirit Laundry - +62897913414121121',
-                      ),
-                    ],
-                  ),
+                  // pw.Column(
+                  //   crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  //   children: [
+                  //     // pw.Text(
+                  //     //   'Jatuh Tempo: ${controller.jatuhTempoController.text}',
+                  //     //   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                  //     // ),
+                  //     pw.Text(
+                  //       'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+                  //       '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
+                  //       'CP: Green Spirit Laundry - +62897913414121121',
+                  //     ),
+                  //   ],
+                  // ),
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
@@ -701,186 +701,186 @@ class DataTransaksiController extends GetxController {
     );
 
     /*HALAMAN SELURUH DATA BELUM LUNAS */
-    pdf.addPage(
-      pw.MultiPage(
-          pageFormat: PdfPageFormat.a3.landscape,
-          build: (context) {
-            // Reset rowIndex
-            rowIndex = 1;
-            return [
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Text('Green Spirit Laundry'),
-                      pw.Text(
-                        'Jl. Pura Masuka Gg. Jepun, Ungasan,\nKec. Kuta Sel., Kabupaten Badung, Bali 80361',
-                      ),
-                      pw.Text('Telp (+6281 23850 7062)'),
-                    ],
-                  ),
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Text('Data Transaksi Belum Lunas'),
-                    ],
-                  ),
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.end,
-                    children: [
-                      pw.Text('Transaksi Periode',
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text(
-                          '${formatDate(startDate.toString())} - ${formatDate(endDate.toString())}'),
-                    ],
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 20),
-              /*TABLE DATA BELUM LUNAS*/
-              pw.Table(
-                defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
-                // defaultColumnWidth: const pw.IntrinsicColumnWidth(),
-                columnWidths: {
-                  0: const pw.FlexColumnWidth(1),
-                  1: const pw.FlexColumnWidth(2),
-                  2: const pw.FlexColumnWidth(2),
-                  3: const pw.FlexColumnWidth(2),
-                  4: const pw.FlexColumnWidth(2),
-                  5: const pw.FlexColumnWidth(2),
-                  6: const pw.FlexColumnWidth(2),
-                  7: const pw.FlexColumnWidth(2),
-                  8: const pw.FlexColumnWidth(2),
-                  9: const pw.FlexColumnWidth(2),
-                  // 10: const pw.FlexColumnWidth(2),
-                },
-                border: pw.TableBorder.all(), // Add borders to the table
-                children: [
-                  pw.TableRow(
-                    children: [
-                      pw.Text('No.',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      // pw.Text('Id\nTransaksi',
-                      //     textAlign: pw.TextAlign.center,
-                      //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Nama\nPelanggan',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      // pw.Text('Alamat Pelanggan',
-                      //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('No\nTelp',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Tanggal\nDatang',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Metode\nLaundry',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Layanan\nLaundry',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Berat\nLaundry',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Status\nCucian',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Status\nPembayaran',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.Text('Total\nBiaya (Rp)',
-                          textAlign: pw.TextAlign.center,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
-                  for (var data in belumLunasData)
-
-                    // for (int index = 0; index < data.length; index++)
-                    pw.TableRow(
-                      // Apply red color for unpaid rows
-                      // decoration: (data['status_pembayaran'] == 'Belum Lunas')
-                      //     ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
-                      //     : null,
-                      children: [
-                        centeredText('${rowIndex++}'),
-                        // centeredText('${data['id_transaksi']}'),
-                        centeredText('${data['nama']}'),
-                        // pw.Text('${data['alamat']}'),
-                        centeredText('${data['no_telp']}'),
-                        centeredText(formatDate(data['tanggal_datang'])),
-                        centeredText(data['metode_laundry']),
-                        centeredText(data['layanan_laundry']),
-                        centeredText('${data['berat_laundry']}'),
-                        centeredText(data['status_cucian'] ?? "Error Data"),
-                        centeredText(data['status_pembayaran']),
-                        rightText(formatCurrency(
-                            double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
-                      ],
-                    ),
-                  // Footer row for total amount of unpaid transactions
-                  pw.TableRow(
-                    // decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC)),
-                    children: [
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(),
-                      pw.Container(
-                        alignment: pw.Alignment.center,
-                        child: pw.Text('Total Biaya (Rp)',
-                            textAlign: pw.TextAlign.center,
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                        width: 50, // Merge cells for the total label
-                      ),
-                      pw.Text(textAlign: pw.TextAlign.right, formatCurrency(totalUnpaid)),
-                    ],
-                  ),
-                ],
-              ),
-              pw.SizedBox(height: 20),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      // pw.Text(
-                      //   'Jatuh Tempo: ${controller.jatuhTempoController.text}',
-                      //   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      // ),
-                      pw.Text(
-                        'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                        '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                        'CP: Green Spirit Laundry - +62897913414121121',
-                      ),
-                    ],
-                  ),
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.end,
-                    children: [
-                      pw.Text(
-                        '${DateFormat('dd-MM-yyyy').format(DateTime.now())}',
-                      ),
-                      pw.Text(namaKaryawanC.text.capitalizeFirst.toString()),
-                      pw.SizedBox(height: 50),
-                      pw.Text('Karyawan Green Spirit Laundry'),
-                    ],
-                  )
-                ],
-              ),
-            ];
-          }),
-    );
+    // pdf.addPage(
+    //   pw.MultiPage(
+    //       pageFormat: PdfPageFormat.a3.landscape,
+    //       build: (context) {
+    //         // Reset rowIndex
+    //         rowIndex = 1;
+    //         return [
+    //           pw.Row(
+    //             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+    //             crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //             children: [
+    //               pw.Column(
+    //                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //                 children: [
+    //                   pw.Text('Green Spirit Laundry'),
+    //                   pw.Text(
+    //                     'Jl. Pura Masuka Gg. Jepun, Ungasan,\nKec. Kuta Sel., Kabupaten Badung, Bali 80361',
+    //                   ),
+    //                   pw.Text('Telp (+6281 23850 7062)'),
+    //                 ],
+    //               ),
+    //               pw.Column(
+    //                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //                 children: [
+    //                   pw.Text('Data Transaksi Belum Lunas'),
+    //                 ],
+    //               ),
+    //               pw.Column(
+    //                 crossAxisAlignment: pw.CrossAxisAlignment.end,
+    //                 children: [
+    //                   pw.Text('Transaksi Periode',
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text(
+    //                       '${formatDate(startDate.toString())} - ${formatDate(endDate.toString())}'),
+    //                 ],
+    //               ),
+    //             ],
+    //           ),
+    //           pw.SizedBox(height: 20),
+    //           /*TABLE DATA BELUM LUNAS*/
+    //           pw.Table(
+    //             defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
+    //             // defaultColumnWidth: const pw.IntrinsicColumnWidth(),
+    //             columnWidths: {
+    //               0: const pw.FlexColumnWidth(1),
+    //               1: const pw.FlexColumnWidth(2),
+    //               2: const pw.FlexColumnWidth(2),
+    //               3: const pw.FlexColumnWidth(2),
+    //               4: const pw.FlexColumnWidth(2),
+    //               5: const pw.FlexColumnWidth(2),
+    //               6: const pw.FlexColumnWidth(2),
+    //               7: const pw.FlexColumnWidth(2),
+    //               8: const pw.FlexColumnWidth(2),
+    //               9: const pw.FlexColumnWidth(2),
+    //               // 10: const pw.FlexColumnWidth(2),
+    //             },
+    //             border: pw.TableBorder.all(), // Add borders to the table
+    //             children: [
+    //               pw.TableRow(
+    //                 children: [
+    //                   pw.Text('No.',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   // pw.Text('Id\nTransaksi',
+    //                   //     textAlign: pw.TextAlign.center,
+    //                   //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Nama\nPelanggan',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   // pw.Text('Alamat Pelanggan',
+    //                   //     style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('No\nTelp',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Tanggal\nDatang',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Metode\nLaundry',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Layanan\nLaundry',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Berat\nLaundry',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Status\nCucian',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Status\nPembayaran',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                   pw.Text('Total\nBiaya (Rp)',
+    //                       textAlign: pw.TextAlign.center,
+    //                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                 ],
+    //               ),
+    //               for (var data in belumLunasData)
+    //
+    //                 // for (int index = 0; index < data.length; index++)
+    //                 pw.TableRow(
+    //                   // Apply red color for unpaid rows
+    //                   // decoration: (data['status_pembayaran'] == 'Belum Lunas')
+    //                   //     ? const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC))
+    //                   //     : null,
+    //                   children: [
+    //                     centeredText('${rowIndex++}'),
+    //                     // centeredText('${data['id_transaksi']}'),
+    //                     centeredText('${data['nama']}'),
+    //                     // pw.Text('${data['alamat']}'),
+    //                     centeredText('${data['no_telp']}'),
+    //                     centeredText(formatDate(data['tanggal_datang'])),
+    //                     centeredText(data['metode_laundry']),
+    //                     centeredText(data['layanan_laundry']),
+    //                     centeredText('${data['berat_laundry']}'),
+    //                     centeredText(data['status_cucian'] ?? "Error Data"),
+    //                     centeredText(data['status_pembayaran']),
+    //                     rightText(formatCurrency(
+    //                         double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
+    //                   ],
+    //                 ),
+    //               // Footer row for total amount of unpaid transactions
+    //               pw.TableRow(
+    //                 // decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFFFCCCC)),
+    //                 children: [
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(),
+    //                   pw.Container(
+    //                     alignment: pw.Alignment.center,
+    //                     child: pw.Text('Total Biaya (Rp)',
+    //                         textAlign: pw.TextAlign.center,
+    //                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+    //                     width: 50, // Merge cells for the total label
+    //                   ),
+    //                   pw.Text(textAlign: pw.TextAlign.right, formatCurrency(totalUnpaid)),
+    //                 ],
+    //               ),
+    //             ],
+    //           ),
+    //           pw.SizedBox(height: 20),
+    //           pw.Row(
+    //             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+    //             crossAxisAlignment: pw.CrossAxisAlignment.center,
+    //             children: [
+    //               pw.Column(
+    //                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+    //                 children: [
+    //                   // pw.Text(
+    //                   //   'Jatuh Tempo: ${controller.jatuhTempoController.text}',
+    //                   //   style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+    //                   // ),
+    //                   pw.Text(
+    //                     'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+    //                     '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
+    //                     'CP: Green Spirit Laundry - +62897913414121121',
+    //                   ),
+    //                 ],
+    //               ),
+    //               pw.Column(
+    //                 crossAxisAlignment: pw.CrossAxisAlignment.end,
+    //                 children: [
+    //                   pw.Text(
+    //                     '${DateFormat('dd-MM-yyyy').format(DateTime.now())}',
+    //                   ),
+    //                   pw.Text(namaKaryawanC.text.capitalizeFirst.toString()),
+    //                   pw.SizedBox(height: 50),
+    //                   pw.Text('Karyawan Green Spirit Laundry'),
+    //                 ],
+    //               )
+    //             ],
+    //           ),
+    //         ];
+    //       }),
+    // );
     // Save PDF to a temporary file
     final output = await getTemporaryDirectory();
     final file = File(

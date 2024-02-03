@@ -86,8 +86,8 @@ class DatapelangganView extends GetView<DatapelangganController> {
                                 children: [
                                   CustomImageWidget(
                                     imageUrl: userData['avatar_url'],
-                                    width: 70,
-                                    height: 70,
+                                    width: 50,
+                                    height: 50,
                                   ),
                                   const SizedBox(width: 10),
                                   // Add some space between the image and text

@@ -50,6 +50,14 @@ class UpdateDataKaryawanController extends GetxController {
 
           // Navigate back to the data pelanggan page
           Get.forceAppUpdate();
+          Get.snackbar(
+            'Berhasil',
+            'Data Berhasil di Perbaharui',
+            colorText: Colors.white,
+            backgroundColor: Colors.indigoAccent,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          );
           Get.offAndToNamed(Routes.DETAIL_KARYAWAN, arguments: userData);
           refresh();
         } else {

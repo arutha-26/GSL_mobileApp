@@ -21,10 +21,14 @@ class AddtransaksiController extends GetxController {
 
   void updateSelectedImage(XFile? image) {
     imagePilih = image;
-    print('image data nih sebelum update: $image');
+    if (kDebugMode) {
+      print('image data nih sebelum update: $image');
+    }
     // Get.appUpdate(); // Perbarui state tanpa memakai Get.forceAppUpdate
     Get.forceAppUpdate(); // Perbarui state
-    print('image data nih setelah update: $image');
+    if (kDebugMode) {
+      print('image data nih setelah update: $image');
+    }
   }
 
   String? get selectedImagePath => imagePilih?.path;
@@ -107,6 +111,17 @@ class AddtransaksiController extends GetxController {
       Get.snackbar(
         'ERROR',
         'Nominal Bayar harus diisi',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+
+    if (nominalBayar < numericTotalHarga.value && getSelectedPembayaran() == "Tunai") {
+      Get.snackbar(
+        'ERROR',
+        'Nominal Bayar belum mencukupi!',
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.red,
@@ -199,7 +214,11 @@ class AddtransaksiController extends GetxController {
         backgroundColor: Colors.greenAccent,
       );
 
-      Get.offAndToNamed(Routes.OWNERHOME);
+      if (roleC.text == 'Karyawan') {
+        Get.offAndToNamed(Routes.KARYAWANHOME);
+      } else {
+        Get.offAndToNamed(Routes.OWNERHOME);
+      }
     } catch (e) {
       isLoading.value = false;
       Get.snackbar(
@@ -275,6 +294,7 @@ class AddtransaksiController extends GetxController {
   RxBool isLoading = false.obs;
   TextEditingController idKaryawanC = TextEditingController();
   TextEditingController namaKaryawanC = TextEditingController();
+  TextEditingController roleC = TextEditingController();
   TextEditingController tanggalDatangController = TextEditingController();
   TextEditingController tanggalSelesaiController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
@@ -329,6 +349,7 @@ class AddtransaksiController extends GetxController {
         Map<String, dynamic> user = res.first as Map<String, dynamic>;
         idKaryawanC.text = user["id_user"].toString();
         namaKaryawanC.text = user["nama"].toString();
+        roleC.text = user["role"].toString();
       } else {
         if (kDebugMode) {
           print("Data not found for current user ID");
@@ -368,6 +389,9 @@ class AddtransaksiController extends GetxController {
 
     String cleanedInput = nominalBayarController.text.replaceAll(RegExp(r'[^\d.]'), '');
     cleanedInput = cleanedInput.replaceAll('.', '');
+
+    // Tambahkan kondisi untuk memastikan bahwa jika cleanedInput null, maka berikan nilai default 0
+    double nominalBayar = cleanedInput.isNotEmpty ? double.tryParse(cleanedInput) ?? 0 : 0;
 
     final pdf = pw.Document();
 
@@ -480,10 +504,12 @@ class AddtransaksiController extends GetxController {
                 styledTextRow('Metode Pembayaran:', data['metode_pembayaran'].toString()),
                 styledTextRow('Total Biaya:',
                     formatCurrency(double.tryParse(data['total_biaya'].toString()) ?? 0.0)),
-                styledTextRow('Nominal Bayar:',
-                    formatCurrency(double.tryParse(data['nominal_bayar'].toString()) ?? 0.0)),
-                styledTextRow('Kembalian:',
-                    formatCurrency(double.tryParse(data['kembalian'].toString()) ?? 0.0)),
+                // styledTextRow('Nominal Bayar:',
+                //     formatCurrency(double.tryParse(nominalBayar.toString()) ?? 0.0)),
+                // styledTextRow(
+                //     'Kembalian:',
+                //     formatCurrency(
+                //         double.tryParse(getNumericValueFromKembalian().toString()) ?? 0.0)),
               ]),
           pw.SizedBox(height: 5),
           pw.Divider(
@@ -495,41 +521,53 @@ class AddtransaksiController extends GetxController {
           pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
+              pw.Text('Customer Care:\nWhatsApp: +6281234567891',
+                  textAlign: pw.TextAlign.start),
+              pw.Divider(),
+              pw.Text('Syarat & Ketentuan:'),
+              pw.Text('PERHATIAN :'),
+              pw.Text('1. Pengambilan barang harap disertai Nota.'),
               pw.Text(
-                  'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                  '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.',
-                  textAlign: pw.TextAlign.justify),
-              pw.Text('CP:\nGreen Spirit Laundry : +62897913414121121',
-                  textAlign: pw.TextAlign.start)
+                  '2. Barang yang tidak diambil selama 1 Minggu, hilang/rusak bukan tanggung jawab laundry.'),
+              pw.Text(
+                  '3. Barang hilang/rusak karena proses pengerjaan diganti rugi maksimal 5x dari biaya jasa cuci barang yang rusak/hilang.'),
+              pw.Text('4. Pakaian luntur bukan menjadi tanggung jawab kami.'),
+              pw.Text(
+                  '5. Cek kelengkapan Laundry-an anda terlebih dahulu sebelum meninggalkan outlet, karena setelah meninggalkan outlet kami tidak menerima komplain.'),
+              pw.Text(
+                  '6. Setiap konsumen dianggap setuju dengan isi syarat & peraturan laundry kami.'),
+              pw.Divider(),
+              pw.Text('Terima kasih', textAlign: pw.TextAlign.center),
             ],
           ),
-          pw.SizedBox(height: 5),
-          pw.Divider(
-              height: 1,
-              borderStyle: pw.BorderStyle.solid,
-              thickness: 1,
-              color: PdfColors.black),
-          pw.SizedBox(height: 5),
-          pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.end,
-              crossAxisAlignment: pw.CrossAxisAlignment.end,
-              children: [
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.end,
-                  children: [
-                    pw.Text('${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
-                    pw.Text(namaKaryawanC.text.capitalizeFirst ?? '-'),
-                    pw.SizedBox(height: 50),
-                    pw.Text('Karyawan Green Spirit Laundry'),
-                  ],
-                ),
-              ])
+          // pw.SizedBox(height: 5),
+          // pw.Divider(
+          //     height: 1,
+          //     borderStyle: pw.BorderStyle.solid,
+          //     thickness: 1,
+          //     color: PdfColors.black),
+          // pw.SizedBox(height: 5),
+          // pw.Row(
+          //     mainAxisAlignment: pw.MainAxisAlignment.end,
+          //     crossAxisAlignment: pw.CrossAxisAlignment.end,
+          //     children: [
+          //       pw.Column(
+          //         crossAxisAlignment: pw.CrossAxisAlignment.end,
+          //         children: [
+          //           pw.Text('${DateFormat('dd-MM-yyyy').format(DateTime.now())}'),
+          //           pw.Text(namaKaryawanC.text.capitalizeFirst ?? '-'),
+          //           pw.SizedBox(height: 50),
+          //           pw.Text('Karyawan Green Spirit Laundry'),
+          //         ],
+          //       ),
+          //     ])
         ],
       ),
     );
 
     final output = await getTemporaryDirectory();
-    final file = File('${output.path}/invoice.pdf');
+    final file = File(
+        '${output.path}/faktur_${nameController.text.toString().capitalizeFirst ?? '-'},.pdf');
     await file.writeAsBytes(await pdf.save());
 
     OpenFile.open(file.path);

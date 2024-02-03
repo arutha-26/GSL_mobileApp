@@ -11,6 +11,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
   PelangganDasboardView({super.key});
 
   final authC = Get.find<AuthController>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +59,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
           const SizedBox(height: 10),
           Expanded(
             child: Scrollbar(
+              controller: _scrollController,
               thickness: 7,
               scrollbarOrientation: ScrollbarOrientation.right,
               radius: const Radius.circular(12),
@@ -71,6 +73,7 @@ class PelangganDasboardView extends GetView<PelangganDasboardController> {
                   return const Center(child: Text('Data Transaksi Tidak Ditemukan'));
                 } else {
                   return ListView.builder(
+                    controller: _scrollController,
                     itemCount: controller.transactionHistory.length,
                     itemBuilder: (context, index) {
                       final transaction = controller.transactionHistory[index];

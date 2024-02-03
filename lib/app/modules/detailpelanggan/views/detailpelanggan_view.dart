@@ -9,6 +9,8 @@ import '../controllers/detailpelanggan_controller.dart';
 class DetailpelangganView extends GetView<DetailpelangganController> {
   DetailpelangganView({Key? key}) : super(key: key);
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     // Dapatkan data dari halaman sebelumnya
@@ -49,59 +51,69 @@ class DetailpelangganView extends GetView<DetailpelangganController> {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: ListView(
-                shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(5),
-                children: [
-                  CustomImageWidget(
-                    imageUrl: userData['avatar_url'],
-                    width: 300,
-                    height: 350,
-                  ),
-                  const SizedBox(height: 5),
-                  // TextRow(label: 'ID User', value: user['id_user']?.toString() ?? '-'),
-                  const SizedBox(height: 5),
-                  TextRow(label: 'Nama Pelanggan', value: user['nama']?.toString() ?? '-'),
-                  const SizedBox(height: 5),
-                  TextRow(label: 'Email Pelanggan', value: user['email']?.toString() ?? '-'),
-                  const SizedBox(height: 5),
-                  TextRow(label: 'Nomor Pelanggan', value: '${user['no_telp']}' ?? '-'),
-                  const SizedBox(height: 5),
-                  TextRow(
-                    label: 'Kategori Pelanggan',
-                    value: user['kategori']?.toString() ?? '-',
-                  ),
-                  const SizedBox(height: 5),
-                  TextRow(
-                    label: 'Alamat Pelanggan',
-                    value: user['alamat']?.toString() ?? '-',
-                  ),
-                  const SizedBox(height: 5),
-                  TextRow(
-                    label: 'Status Pelanggan',
-                    value: user['is_active'] == true ? 'Aktif' : 'Tidak Aktif',
-                  ),
-                  const SizedBox(height: 25),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (user != null) {
-                        Get.offAndToNamed(Routes.UPDATE_DATA_PELANGGAN, arguments: user);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
-                      minimumSize: const Size(150, 48),
+              child: Scrollbar(
+                controller: _scrollController,
+                thickness: 5,
+                scrollbarOrientation: ScrollbarOrientation.right,
+                radius: const Radius.circular(12),
+                trackVisibility: true,
+                thumbVisibility: true,
+                interactive: true,
+                child: ListView(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  // physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(5),
+                  children: [
+                    CustomImageWidget(
+                      imageUrl: userData['avatar_url'],
+                      width: 300,
+                      height: 350,
                     ),
-                    child: const Text(
-                      'Update Data',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(height: 5),
+                    // TextRow(label: 'ID User', value: user['id_user']?.toString() ?? '-'),
+                    const SizedBox(height: 5),
+                    TextRow(label: 'Nama Pelanggan', value: user['nama']?.toString() ?? '-'),
+                    const SizedBox(height: 5),
+                    TextRow(label: 'Email Pelanggan', value: user['email']?.toString() ?? '-'),
+                    const SizedBox(height: 5),
+                    TextRow(label: 'Nomor Pelanggan', value: '${user['no_telp']}' ?? '-'),
+                    const SizedBox(height: 5),
+                    TextRow(
+                      label: 'Kategori Pelanggan',
+                      value: user['kategori']?.toString() ?? '-',
+                    ),
+                    const SizedBox(height: 5),
+                    TextRow(
+                      label: 'Alamat Pelanggan',
+                      value: user['alamat']?.toString() ?? '-',
+                    ),
+                    const SizedBox(height: 5),
+                    TextRow(
+                      label: 'Status Pelanggan',
+                      value: user['is_active'] == true ? 'Aktif' : 'Tidak Aktif',
+                    ),
+                    const SizedBox(height: 25),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (user != null) {
+                          Get.offAndToNamed(Routes.UPDATE_DATA_PELANGGAN, arguments: user);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.greenAccent,
+                        minimumSize: const Size(150, 48),
+                      ),
+                      child: const Text(
+                        'Update Data',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else {

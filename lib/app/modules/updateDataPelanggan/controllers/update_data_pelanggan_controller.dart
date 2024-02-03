@@ -52,6 +52,14 @@ class UpdateDataPelangganController extends GetxController {
           }
 
           // Navigate back to the data pelanggan page
+          Get.snackbar(
+            'Berhasil',
+            'Data Berhasil di Perbaharui',
+            colorText: Colors.white,
+            backgroundColor: Colors.indigoAccent,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          );
           Get.forceAppUpdate();
           Get.offAndToNamed(Routes.DETAILPELANGGAN, arguments: userData);
           refresh();

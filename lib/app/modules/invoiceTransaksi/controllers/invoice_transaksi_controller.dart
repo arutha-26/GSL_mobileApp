@@ -85,8 +85,37 @@ class InvoiceTransaksiController extends GetxController {
   Future<void> fetchDataTransaksi() async {
     // Get values from controllers
     String namaPelanggan = nameController.text;
-    String startDateText = startDateController.text;
-    String endDateText = endDateController.text;
+
+    if (nameController.text.isEmpty) {
+      Get.snackbar(
+        'ERROR',
+        'Data Pelanggan harus diisi',
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    if (tanggalDatangController.text.isEmpty) {
+      Get.snackbar(
+        'ERROR',
+        'Harap Pilih Tanggal Transaksi!',
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    // if (jatuhTempoController.text.isEmpty) {
+    //   Get.snackbar(
+    //     'ERROR',
+    //     'Harap Pilih Tanggal Jatuh Tempo!',
+    //     snackPosition: SnackPosition.TOP,
+    //     colorText: Colors.white,
+    //     backgroundColor: Colors.red,
+    //   );
+    //   return;
+    // }
 
     try {
       // Perform data fetching for transaksi
@@ -114,7 +143,14 @@ class InvoiceTransaksiController extends GetxController {
         phoneController.text = (userResponse.data?.first['no_telp'] as String?) ?? '';
       } else {
         // Handle the case where user data is not available
-        alamatPelangganController.text = 'Error';
+        Get.snackbar(
+          'ERROR',
+          'Error fetching user data. Response status: ${userResponse.status}',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
+        return;
       }
 
       if (kDebugMode) {
@@ -134,7 +170,9 @@ class InvoiceTransaksiController extends GetxController {
           return InvoiceData.fromMap(transaksiItem);
         }).toList());
 
-        print('DATANYA NIH :$invoiceData');
+        if (kDebugMode) {
+          print('DATANYA NIH :$invoiceData');
+        }
 
         if (invoiceData.isNotEmpty) {
           if (kDebugMode) {
@@ -151,16 +189,32 @@ class InvoiceTransaksiController extends GetxController {
           }
         }
       } else {
-        if (kDebugMode) {
-          print('Error fetching transaksi data. Response status: ${transaksiResponse.status}');
-        }
+        // Handle the case where transaction data is not available
+        Get.snackbar(
+          'ERROR',
+          'Error fetching transaction data. Response status: ${transaksiResponse.status}',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+          backgroundColor: Colors.red,
+        );
+        return;
       }
 
-      print('Response status: ${transaksiResponse.status}');
+      if (kDebugMode) {
+        print('Response status: ${transaksiResponse.status}');
+      }
     } catch (error) {
       if (kDebugMode) {
-        print('Exception during fetching transaction data: $error');
+        print('Exception during fetching data: $error');
       }
+      Get.snackbar(
+        'ERROR',
+        'Exception during fetching data: $error',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return;
     }
   }
 

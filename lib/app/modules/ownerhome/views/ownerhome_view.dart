@@ -120,7 +120,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 ),
                 GlassButton(
                   onPressed: () {
-                    Get.deleteAll();
+                    // Get.deleteAll();
                     Get.put(AddtransaksiController());
                     Get.to(() => AddtransaksiView());
                   },
@@ -139,7 +139,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 ),
                 GlassButton(
                   onPressed: () {
-                    Get.deleteAll();
+                    // Get.deleteAll();
                     Get.put(PengambilanLaundryController());
                     Get.to(() => PengambilanLaundryView());
                   },
@@ -167,7 +167,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 ),
                 GlassButton(
                   onPressed: () {
-                    Get.deleteAll();
+                    // Get.deleteAll();
                     Get.put(DataTransaksiController());
                     Get.to(() => DataTransaksiView());
                   },
@@ -177,7 +177,7 @@ class OwnerhomeView extends GetView<OwnerhomeController> {
                 ),
                 GlassButton(
                   onPressed: () {
-                    Get.deleteAll();
+                    // Get.deleteAll();
                     Get.put(InvoiceTransaksiController());
                     Get.to(() => InvoiceTransaksiView());
                   },

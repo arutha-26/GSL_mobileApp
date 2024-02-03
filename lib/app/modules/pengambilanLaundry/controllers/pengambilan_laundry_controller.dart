@@ -8,9 +8,33 @@ import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../../utils/pengambilan.dart';
 
 class PengambilanLaundryController extends GetxController {
+  TextEditingController roleC = TextEditingController();
+
+  Future<void> getDataKaryawan() async {
+    try {
+      List<dynamic> res =
+          await client.from("user").select('*').match({"uid": client.auth.currentUser!.id});
+
+      if (res.isNotEmpty) {
+        Map<String, dynamic> user = res.first as Map<String, dynamic>;
+        namaKaryawanC.text = user["nama"].toString();
+        roleC.text = user["role"].toString();
+      } else {
+        if (kDebugMode) {
+          print("Data not found for current user ID");
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error fetching data: $e");
+      }
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -243,13 +267,6 @@ class PengambilanLaundryController extends GetxController {
     return results;
   }
 
-  Future<void> getDataKaryawan() async {
-    List<dynamic> res =
-        await client.from("user").select().match({"uid": client.auth.currentUser!.id});
-    Map<String, dynamic> user = (res).first as Map<String, dynamic>;
-    namaKaryawanC.text = user["id_user"].toString();
-  }
-
   XFile? imagePilih;
 
   void updateSelectedImage(XFile? image) {
@@ -341,21 +358,20 @@ class PengambilanLaundryController extends GetxController {
         // }
 
         clearInputs();
-        Get.defaultDialog(
-          barrierDismissible: false,
-          title: "Pembaharuan Data Transaksi Berhasil",
-          middleText: "Data berhasil diperbaharui.",
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                Get.back();
-                Get.back();
-                Get.back();
-              },
-              child: const Text("OK"),
-            ),
-          ],
+        Get.snackbar(
+          'Succes',
+          'Update Data Berhasil!',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.black87,
+          backgroundColor: Colors.greenAccent,
+          margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
         );
+
+        if (roleC.text == 'Karyawan') {
+          Get.offAndToNamed(Routes.KARYAWANHOME);
+        } else {
+          Get.offAndToNamed(Routes.OWNERHOME);
+        }
       } catch (e) {
         isKirimLoading.value = false;
         Get.snackbar("ERROR", e.toString());

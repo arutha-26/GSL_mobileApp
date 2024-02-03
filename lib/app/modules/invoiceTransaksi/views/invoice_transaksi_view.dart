@@ -221,21 +221,21 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
           ),
           pw.SizedBox(height: 20),
           pw.Row(
-              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              mainAxisAlignment: pw.MainAxisAlignment.end,
+              crossAxisAlignment: pw.CrossAxisAlignment.end,
               children: [
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Jatuh Tempo: ${controller.jatuhTempoController.text}',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    pw.Text(
-                      'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
-                      '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
-                      'CP: Green Spirit Laundry - +62897913414121121',
-                    ),
-                  ],
-                ),
+                // pw.Column(
+                //   crossAxisAlignment: pw.CrossAxisAlignment.start,
+                //   children: [
+                //     pw.Text('Jatuh Tempo: ${controller.jatuhTempoController.text}',
+                //         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                //     pw.Text(
+                //       'Catatan:\n 1. Pembayaran dapat dilakukan melalui transfer ke rekening\n A/N Green Spirit Laundry di BCA dengan nomor xxx.xxx.xxxx.\n '
+                //       '2. Keterlambatan pembayaran akan dikenakan bunga.\n 3. Hubungi kami jika ada kendala atau pertanyaan.\n'
+                //       'CP: Green Spirit Laundry - +62897913414121121',
+                //     ),
+                //   ],
+                // ),
                 pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.end,
                   children: [
@@ -299,6 +299,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                 height: 20,
               ),
               TextField(
+                enabled: false,
                 keyboardType: TextInputType.none,
                 controller: controller.nameController,
                 decoration: const InputDecoration(
@@ -337,35 +338,46 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                 },
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: controller.jatuhTempoController,
-                decoration: const InputDecoration(
-                  labelText: "Tanggal Jatuh Tempo",
-                  border: OutlineInputBorder(),
-                ),
-                onTap: () async {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  final selectedDate = await selectSingleDate(context);
-                  if (selectedDate != null) {
-                    controller.jatuhTempoController.text = formatDatetwo(selectedDate);
-                  }
-                },
-              ),
-              const SizedBox(height: 20),
+              // TextField(
+              //   controller: controller.jatuhTempoController,
+              //   decoration: const InputDecoration(
+              //     labelText: "Tanggal Jatuh Tempo",
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   onTap: () async {
+              //     FocusScope.of(context).requestFocus(FocusNode());
+              //     final selectedDate = await selectSingleDate(context);
+              //     if (selectedDate != null) {
+              //       controller.jatuhTempoController.text = formatDatetwo(selectedDate);
+              //     }
+              //   },
+              // ),
+              // const SizedBox(height: 20),
               Obx(
                 () => ElevatedButton(
-                    onPressed: () async {
-                      if (controller.isLoading.isFalse) {
-                        await controller.fetchDataTransaksi();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: const Color(0xFF22c55e),
-                    ),
-                    child: Text(
-                      controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
-                    )),
+                  onPressed: () {
+                    if (controller.nameController.text.isNotEmpty &&
+                        controller.tanggalDatangController.text.isNotEmpty) {
+                      controller.fetchDataTransaksi();
+                    } else {
+                      Get.snackbar(
+                        'ERROR',
+                        'Data harus di isi!',
+                        snackPosition: SnackPosition.BOTTOM,
+                        colorText: Colors.white,
+                        backgroundColor: Colors.red,
+                        margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: const Color(0xFF22c55e),
+                  ),
+                  child: Text(
+                    controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               // Display fetched data in cards
