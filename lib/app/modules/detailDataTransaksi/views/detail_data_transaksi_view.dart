@@ -157,7 +157,12 @@ class DetailDataTransaksiView extends GetView<DetailDataTransaksiController> {
                     TextRow(
                         label: 'Tanggal Diambil', value: formatDate(data['tanggal_diambil'])),
                     const SizedBox(height: 5),
-                    // Text fields for editing prices
+
+                    Visibility(
+                      visible: data['bukti_transfer'] != null,
+                      child: ImageRow(
+                          label: 'Bukti Transfer', value: data['bukti_transfer'] ?? '-'),
+                    )
                   ],
                 ),
               ),
@@ -229,6 +234,33 @@ class TextRow extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         Text(value),
+      ],
+    );
+  }
+}
+
+class ImageRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const ImageRow({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Image.network(
+          value,
+          width: 300,
+        ),
       ],
     );
   }
