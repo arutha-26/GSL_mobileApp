@@ -86,26 +86,26 @@ class InvoiceTransaksiController extends GetxController {
     // Get values from controllers
     String namaPelanggan = nameController.text;
 
-    if (nameController.text.isEmpty) {
-      Get.snackbar(
-        'ERROR',
-        'Data Pelanggan harus diisi',
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-    if (tanggalDatangController.text.isEmpty) {
-      Get.snackbar(
-        'ERROR',
-        'Harap Pilih Tanggal Transaksi!',
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
+    // if (nameController.text.isEmpty) {
+    //   Get.snackbar(
+    //     'ERROR',
+    //     'Data Pelanggan harus diisi',
+    //     snackPosition: SnackPosition.TOP,
+    //     colorText: Colors.white,
+    //     backgroundColor: Colors.red,
+    //   );
+    //   return;
+    // }
+    // if (tanggalDatangController.text.isEmpty) {
+    //   Get.snackbar(
+    //     'ERROR',
+    //     'Harap Pilih Tanggal Transaksi!',
+    //     snackPosition: SnackPosition.TOP,
+    //     colorText: Colors.white,
+    //     backgroundColor: Colors.red,
+    //   );
+    //   return;
+    // }
     // if (jatuhTempoController.text.isEmpty) {
     //   Get.snackbar(
     //     'ERROR',

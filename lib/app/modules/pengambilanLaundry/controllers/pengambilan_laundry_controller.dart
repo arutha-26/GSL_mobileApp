@@ -21,7 +21,7 @@ class PengambilanLaundryController extends GetxController {
 
       if (res.isNotEmpty) {
         Map<String, dynamic> user = res.first as Map<String, dynamic>;
-        namaKaryawanC.text = user["nama"].toString();
+        idKaryawanC.text = user["id_user"].toString();
         roleC.text = user["role"].toString();
       } else {
         if (kDebugMode) {
@@ -95,7 +95,7 @@ class PengambilanLaundryController extends GetxController {
   }
 
   void clearInputs() {
-    namaKaryawanC.clear();
+    idKaryawanC.clear();
     namaController.clear();
     noTelpController.clear();
     statusPembayaranController.clear();
@@ -108,6 +108,8 @@ class PengambilanLaundryController extends GetxController {
     phoneController.clear();
     beratController.clear();
     totalHargaController.clear();
+    metodePembayaranController.clear();
+    tglDatangController.clear();
     refresh();
   }
 
@@ -115,7 +117,7 @@ class PengambilanLaundryController extends GetxController {
   void onClose() {
     // Clear input fields
     clearInputs();
-    namaKaryawanC.dispose();
+    idKaryawanC.dispose();
     idTransaksiController.dispose();
     nameController.dispose();
     noTelpController.dispose();
@@ -125,13 +127,15 @@ class PengambilanLaundryController extends GetxController {
     tanggalDiambilController.dispose();
     beratLaundryController.dispose();
     hargaTotalController.dispose();
+    metodePembayaranController.dispose();
+    tglDatangController.dispose();
     super.onClose();
   }
 
   RxString statusCucian = ''.obs;
   RxString statusPembayaran = ''.obs;
   RxBool isLoading = false.obs;
-  TextEditingController namaKaryawanC = TextEditingController();
+  TextEditingController idKaryawanC = TextEditingController();
   TextEditingController tanggalDiambilController = TextEditingController();
   TextEditingController beratLaundryController = TextEditingController();
   TextEditingController hargaTotalController = TextEditingController();
@@ -316,7 +320,7 @@ class PengambilanLaundryController extends GetxController {
         var dataTransaksi = {};
 
         if (statusCucian.value == "Diambil" && statusPembayaran.value == "Lunas") {
-          dataTransaksi["id_karyawan_keluar"] = namaKaryawanC.text;
+          dataTransaksi["id_karyawan_keluar"] = idKaryawanC.text;
           dataTransaksi["tanggal_diambil"] =
               formatDateWithCurrentTime(DateTime.now().toString()).toString();
           dataTransaksi["metode_pembayaran"] = getSelectedPembayaran();
@@ -327,7 +331,7 @@ class PengambilanLaundryController extends GetxController {
               formatDateWithCurrentTime(DateTime.now().toString()).toString();
           dataTransaksi["bukti_transfer"] = imgUrlNih;
         } else if (statusCucian.value == "Diambil") {
-          dataTransaksi["id_karyawan_keluar"] = namaKaryawanC.text;
+          dataTransaksi["id_karyawan_keluar"] = idKaryawanC.text;
           dataTransaksi["tanggal_diambil"] =
               formatDateWithCurrentTime(DateTime.now().toString()).toString();
           dataTransaksi["status_cucian"] = statusCucian.value;
