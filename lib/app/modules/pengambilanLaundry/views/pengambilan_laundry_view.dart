@@ -316,13 +316,12 @@ class PengambilanLaundryView extends GetView<PengambilanLaundryController> {
                                   'Dalam Proses' &&
                               controller.statusPembayaranController.text.toString() ==
                                   "Lunas") ...[
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            const Text('Status Cucian:'),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 // Opsi "Selesai"
+
                                 Obx(() => GestureDetector(
                                       onTap: () => controller.setStatusCucian('Selesai'),
                                       child: Container(
