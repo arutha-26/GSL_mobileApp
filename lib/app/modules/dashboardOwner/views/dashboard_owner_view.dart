@@ -38,7 +38,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
               child: Column(
                 children: [
                   Image.asset('images/banner_1.png'),
-                  _buildStatusAndDebtsCard(),
+                  _buildPaidDebtsCard(),
                   _buildProfitAndTransactionCountCard(),
                   const SizedBox(height: 10),
                   const Text(
@@ -85,12 +85,12 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
     );
   }
 
-  Widget _buildStatusAndDebtsCard() {
-    return buildRowCard(
-      _buildPaidDebtsCard(),
-      _buildOutstandingDebtsCard(),
-    );
-  }
+  // Widget _buildStatusAndDebtsCard() {
+  //   return buildRowCard(
+  //     _buildPaidDebtsCard(),
+  //     // _buildOutstandingDebtsCard(),
+  //   );
+  // }
 
   Widget _buildProfitAndTransactionCountCard() {
     return buildRowCard(
@@ -196,7 +196,7 @@ class DashboardOwnerView extends GetView<DashboardOwnerController> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: ListTile(
-            title: const Text('Transaksi\nLunas'),
+            title: const Text('Data Transaksi Lunas'),
             subtitle: Obx(() => Text('Rp${controller.formattedTotalPaid.value}')),
           ),
         ),

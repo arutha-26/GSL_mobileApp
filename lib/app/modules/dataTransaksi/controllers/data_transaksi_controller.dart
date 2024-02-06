@@ -544,7 +544,7 @@ class DataTransaksiController extends GetxController {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('Data Transaksi Lunas'),
+                      pw.Text('Rekapitulasi Transaksi'),
                     ],
                   ),
                   pw.Column(
@@ -655,7 +655,7 @@ class DataTransaksiController extends GetxController {
                       pw.Container(),
                       pw.Container(
                         alignment: pw.Alignment.center,
-                        child: pw.Text('Total Biaya (Rp)',
+                        child: pw.Text('Total Pendapatan (Rp)',
                             textAlign: pw.TextAlign.center,
                             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                         width: 50, // Merge cells for the total label
@@ -934,7 +934,7 @@ class DataTransaksiController extends GetxController {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.center,
                 children: [
-                  pw.Text('Data Transaksi Simple'),
+                  pw.Text('Rekapitulasi Transaksi Simple'),
                 ],
               ),
               pw.Column(
@@ -1012,7 +1012,7 @@ class DataTransaksiController extends GetxController {
                   pw.Container(),
                   pw.Container(
                     alignment: pw.Alignment.center,
-                    child: pw.Text('Total Biaya (Rp)',
+                    child: pw.Text('Total Pendapatan (Rp)',
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     width: 50, // Merge cells for the total label

@@ -169,7 +169,7 @@ class LogHargaView extends GetView<LogHargaController> {
                                     ),
                                   ),
                                   Text(
-                                    'Di Perbaharui Pada: ${formatDate(userData['edit_at'] as String)}',
+                                    'Di Perbaharui Pada: ${formatDate(userData['created_at'] as String)}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,

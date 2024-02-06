@@ -49,7 +49,7 @@ class LogHargaController extends GetxController {
       final response = await client
           .from('log_harga')
           .select(
-              'id_log, harga_kilo_lama, harga_kilo_baru, edit_at, id_harga!inner(id_harga, kategori_pelanggan, metode_laundry_id, layanan_laundry_id, id_user)')
+              'id_log, harga_kilo_lama, harga_kilo_baru, created_at, id_harga!inner(id_harga, kategori_pelanggan, metode_laundry_id, layanan_laundry_id, id_user)')
           // .eq('id_user.nama', namaPelanggan)
           // .neq('status_cucian', 'Diambil')
           .order('id_log', ascending: false)
@@ -93,7 +93,7 @@ class LogHargaController extends GetxController {
 
     if (selectedStartDate.value != null && selectedEndDate.value != null) {
       filteredList = filteredList.where((logHarga) {
-        DateTime transactionDate = DateTime.parse(logHarga['edit_at']);
+        DateTime transactionDate = DateTime.parse(logHarga['created_at']);
         DateTime start = selectedStartDate.value!;
         DateTime end = selectedEndDate.value!.add(const Duration(days: 1));
 

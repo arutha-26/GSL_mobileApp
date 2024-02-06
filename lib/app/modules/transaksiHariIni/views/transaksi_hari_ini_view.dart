@@ -77,7 +77,7 @@ class TransaksiHariIniView extends GetView<TransaksiHariIniController> {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: Card(
-                        color: Colors.greenAccent,
+                        color: Colors.teal,
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(8.0),
                           title: Row(

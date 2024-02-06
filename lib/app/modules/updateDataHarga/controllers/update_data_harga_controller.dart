@@ -77,7 +77,7 @@ class UpdateDataHargaController extends GetxController {
             "id_harga": userData['id_harga'],
             "harga_kilo_lama": userData['harga_kilo'],
             "harga_kilo_baru": updateFields["harga_kilo"],
-            "edit_at": DateTime.now().toString(),
+            "created_at": DateTime.now().toString(),
           };
 
           print("Log Data Nih:$logData");

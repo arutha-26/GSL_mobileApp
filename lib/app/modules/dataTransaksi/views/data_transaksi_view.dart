@@ -89,7 +89,8 @@ class DataTransaksiView extends GetView<DataTransaksiController> {
               'metode_laundry',
               'kategori_pelanggan',
               'id_karyawan_masuk',
-              'no_telp'
+              'no_telp',
+              'bukti_transfer'
             ];
 
             List<DataColumn> columns = [

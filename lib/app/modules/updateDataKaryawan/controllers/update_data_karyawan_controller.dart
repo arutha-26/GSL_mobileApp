@@ -34,14 +34,14 @@ class UpdateDataKaryawanController extends GetxController {
         isLoading.value = false; // Reset the loading state
 
         if (response.status == 200 || response.status == 201 || response.status == 204) {
-          Get.snackbar(
-            'Success',
-            'User data updated successfully',
-            snackPosition: SnackPosition.BOTTOM,
-            margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-            colorText: Colors.white,
-            backgroundColor: Colors.indigoAccent,
-          );
+          // Get.snackbar(
+          //   'Success',
+          //   'User data updated successfully',
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+          //   colorText: Colors.white,
+          //   backgroundColor: Colors.indigoAccent,
+          // );
 
           // Log the updated data to the console
           if (kDebugMode) {

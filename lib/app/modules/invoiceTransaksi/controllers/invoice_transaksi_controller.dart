@@ -126,7 +126,7 @@ class InvoiceTransaksiController extends GetxController {
           .like('id_user.nama', '%$namaPelanggan%')
           .gte('tanggal_datang', formatDate(startDateController.text)) // Adjust as needed
           .lte('tanggal_datang', '${formatDate(endDateController.text)} 23:59:59')
-          .eq('status_pembayaran', 'Belum Lunas')
+          .eq('status_pembayaran', 'Lunas')
           .order('id_transaksi')
           .execute();
 

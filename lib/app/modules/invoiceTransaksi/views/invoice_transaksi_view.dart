@@ -38,30 +38,6 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
     }
   }
 
-  // Fungsi untuk menampilkan DatePicker
-  Future<DateTime?> selectSingleDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      confirmText: "Pilih",
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            primaryColor: Colors.greenAccent, // Header background color
-            hintColor: Colors.tealAccent, // Selected day color
-            colorScheme: const ColorScheme.light(primary: Colors.indigo),
-            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    return picked;
-  }
-
   Future<void> generateAndOpenInvoicePDF() async {
     final pdf = pw.Document();
     int rowIndex = 1;
@@ -87,14 +63,13 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text('LAPORAN TAGIHAN PELANGGAN'),
+                  pw.Text('Rekapitulasi Transaksi Pelanggan'),
                 ],
               ),
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
-                  pw.Text('Invoice Periode',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('Data Periode', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                   pw.Text(
                       '${formatDate(controller.startDate.toString())} - ${formatDate(controller.endDate.toString())}'),
                 ],
@@ -171,8 +146,8 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                       style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
-              for (var data in controller.invoiceData
-                  .where((data) => data.statusPembayaran == 'Belum Lunas'))
+              for (var data
+                  in controller.invoiceData.where((data) => data.statusPembayaran == 'Lunas'))
                 pw.TableRow(
                   children: [
                     pw.Text(textAlign: pw.TextAlign.center, '${rowIndex++}'),
@@ -207,7 +182,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                     textAlign: pw.TextAlign.right,
                     formatCurrency(
                       controller.invoiceData
-                          .where((data) => data.statusPembayaran == 'Belum Lunas')
+                          .where((data) => data.statusPembayaran == 'Lunas')
                           .fold<double>(
                             0.0,
                             (total, data) =>
@@ -253,7 +228,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
     // Save PDF to a temporary file
     final output = await getTemporaryDirectory();
     final file = File(
-        '${output.path}/Laporan_Tagihan_Pelanggan_${controller.nameController.text}_Periode_${formatDate(controller.startDate.toString())} - ${formatDate(controller.endDate.toString())}.pdf');
+        '${output.path}/Rekapitulasi_Transaksi_Pelanggan${controller.nameController.text}_Periode_${formatDate(controller.startDate.toString())} - ${formatDate(controller.endDate.toString())}.pdf');
     await file.writeAsBytes(await pdf.save());
 
     // Open the generated PDF file
@@ -355,29 +330,18 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
               // const SizedBox(height: 20),
               Obx(
                 () => ElevatedButton(
-                  onPressed: () {
-                    if (controller.nameController.text.isNotEmpty &&
-                        controller.tanggalDatangController.text.isNotEmpty) {
-                      controller.fetchDataTransaksi();
-                    } else {
-                      Get.snackbar(
-                        'ERROR',
-                        'Data harus di isi!',
-                        snackPosition: SnackPosition.BOTTOM,
-                        colorText: Colors.white,
-                        backgroundColor: Colors.red,
-                        margin: const EdgeInsets.fromLTRB(10, 5, 10, 20),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: const Color(0xFF22c55e),
-                  ),
-                  child: Text(
-                    controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
-                  ),
-                ),
+                    onPressed: () async {
+                      if (controller.isLoading.isFalse) {
+                        await controller.fetchDataTransaksi();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      backgroundColor: const Color(0xFF22c55e),
+                    ),
+                    child: Text(
+                      controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
+                    )),
               ),
               const SizedBox(height: 20),
               // Display fetched data in cards
@@ -437,7 +401,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                     foregroundColor: Colors.black,
                     backgroundColor: const Color(0xFF22c55e),
                   ),
-                  child: const Text('Buat Invoice')),
+                  child: const Text('Cetak Transaksi')),
             ],
           );
         },

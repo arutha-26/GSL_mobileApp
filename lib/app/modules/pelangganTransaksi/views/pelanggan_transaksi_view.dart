@@ -67,6 +67,7 @@ class PelangganTransaksiView extends GetView<PelangganTransaksiController> {
                   currentDate: DateTime.now(),
                   context: context,
                   firstDate: DateTime(2023),
+                  saveText: "Filter",
                   lastDate: DateTime(2100),
                   initialDateRange: DateTimeRange(
                     start: controller.selectedStartDate.value ?? DateTime.now(),
