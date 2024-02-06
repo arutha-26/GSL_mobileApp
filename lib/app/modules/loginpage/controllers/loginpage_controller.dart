@@ -170,12 +170,15 @@ class LoginpageController extends GetxController {
       } catch (e) {
         isLoading.value = false;
         Get.snackbar(
-          "ERROR",
-          e.toString(),
+          "Error",
+          "Email atau Password Salah!",
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
           backgroundColor: Colors.red,
         );
+        if (kDebugMode) {
+          print("Error Message: $e");
+        }
         return null;
       }
     } else {

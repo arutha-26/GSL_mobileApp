@@ -173,7 +173,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                   pw.Container(),
                   pw.Container(
                     alignment: pw.Alignment.center,
-                    child: pw.Text('Total Biaya (Rp)',
+                    child: pw.Text('Total (Rp)',
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     width: 50, // Merge cells for the total label
@@ -341,6 +341,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                     ),
                     child: Text(
                       controller.isLoading.isFalse ? "Cek Data Transaksi" : "Loading...",
+                      style: TextStyle(fontSize: 18),
                     )),
               ),
               const SizedBox(height: 20),
@@ -369,14 +370,16 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                     ),
                   );
                 } else {
-                  Get.snackbar(
-                    'Data Kosong',
-                    'Tidak Ada Data Transaksi',
-                    snackPosition: SnackPosition.BOTTOM,
-                    colorText: Colors.white,
-                    backgroundColor: Colors.redAccent,
-                  );
-                  return const Center(child: Text('Tidak Ada Data Untuk Ditampilkan'));
+                  // Get.snackbar(
+                  //   'Data Kosong',
+                  //   'Tidak Ada Data Transaksi',
+                  //   snackPosition: SnackPosition.BOTTOM,
+                  //   colorText: Colors.white,
+                  //   backgroundColor: Colors.redAccent,
+                  // );
+                  return const Center(
+                      child: Text('Tidak Ada Data Untuk Ditampilkan',
+                          style: TextStyle(fontSize: 18)));
                 }
               }),
               // Add the button to generate the invoice PDF
@@ -401,7 +404,7 @@ class InvoiceTransaksiView extends GetView<InvoiceTransaksiController> {
                     foregroundColor: Colors.black,
                     backgroundColor: const Color(0xFF22c55e),
                   ),
-                  child: const Text('Cetak Transaksi')),
+                  child: const Text('Cetak Transaksi', style: TextStyle(fontSize: 18))),
             ],
           );
         },

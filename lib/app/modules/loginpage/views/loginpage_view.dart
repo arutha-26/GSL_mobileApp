@@ -19,12 +19,15 @@ class LoginpageView extends GetView<LoginpageController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Text(
-                'Selamat Datang di Green Spirit Laundry!', // Tambahkan teks welcome di sini
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Selamat Datang di\nGreen Spirit Laundry!', // Tambahkan teks welcome di sini
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),

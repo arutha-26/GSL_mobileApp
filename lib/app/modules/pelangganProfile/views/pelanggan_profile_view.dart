@@ -94,15 +94,21 @@ class PelangganProfileView extends GetView<PelangganProfileController> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  autocorrect: false,
-                  controller: controller.passwordC,
-                  textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                    labelText: "Password Baru",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                Obx(() => TextFormField(
+                      controller: controller.passwordC,
+                      textInputAction: TextInputAction.done,
+                      obscureText: controller.isHidden.value,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () => controller.isHidden.toggle(),
+                            icon: controller.isHidden.isTrue
+                                ? const Icon(Icons.remove_red_eye)
+                                : const Icon(Icons.remove_red_eye_outlined)),
+                        labelText: 'Password Baru',
+                        labelStyle: const TextStyle(color: Colors.black87),
+                        border: const OutlineInputBorder(),
+                      ),
+                    )),
                 const SizedBox(
                   height: 20,
                 ),
